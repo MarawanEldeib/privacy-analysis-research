@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# Terminal session logs (regenerated on every run)
+data/raw/*/run_*.log
+
+# Local pid/tmp files used by the Makefile
+/tmp/privacy_mitm.pid
+
+# LaTeX build artefacts (when the report phase starts)
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# DO NOT ignore data/raw/*/run_*.json — those ARE the experimental results
+# DO NOT ignore data/raw/*/run_*.flow — needed for offline re-analysis
+# DO NOT ignore results/ — final per-tool summaries and charts

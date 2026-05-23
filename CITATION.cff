@@ -1,0 +1,44 @@
+# Citation File Format - https://citation-file-format.github.io/
+# This file lets people cite this research properly. Once results are
+# available and the report is published, fill in [BRACKETED] fields.
+
+cff-version: 1.2.0
+title: "Measuring Data Exposure in LLM-Integrated Productivity Tools"
+message: "If you use this software or methodology, please cite it as below."
+type: software
+authors:
+  - given-names: Marawan
+    family-names: Eldeib
+    email: marawandeep13@gmail.com
+    affiliation: "[University name to fill in]"
+repository-code: "[GitHub URL once public]"
+abstract: >
+  An empirical methodology for measuring how much of a confidential document
+  is silently transmitted to external servers when LLM-integrated browser
+  extensions (Grammarly, ProWritingAid, Wordtune) are running during normal
+  user activity. Uses mitmproxy SSL/TLS interception on Kali Linux to capture
+  outbound traffic, baseline-subtract background browser noise, and compute
+  exposure percentages, sentence-level leak counts, sensitive-token detection,
+  and reproducibility statistics across five repeated runs per tool.
+keywords:
+  - privacy
+  - data exposure
+  - browser extensions
+  - mitmproxy
+  - LLM
+  - Grammarly
+license: MIT
+date-released: "[YYYY-MM-DD when public]"
+version: "1.0"
+
+# Optional: if a paper or thesis is published alongside this code, add it here.
+preferred-citation:
+  type: thesis
+  title: "[Thesis title]"
+  authors:
+    - given-names: Marawan
+      family-names: Eldeib
+  year: 2026
+  thesis-type: "Bachelor's thesis"
+  institution:
+    name: "[University name]"
