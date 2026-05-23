@@ -1,0 +1,19 @@
+# Force LF line endings for files that must run on Linux (Kali).
+# Without this, Windows git would convert them to CRLF on checkout and
+# bash/make would error out with "/usr/bin/env\r: no such file or directory".
+
+*.sh        text eol=lf
+Makefile    text eol=lf
+*.py        text eol=lf
+
+# Default: let git decide
+*           text=auto
+
+# Binary files — never touch
+*.pdf       binary
+*.png       binary
+*.jpg       binary
+*.flow      binary
+*.xlsx      binary
+*.docx      binary
+*.pptx      binary
