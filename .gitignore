@@ -18,6 +18,11 @@ Thumbs.db
 # Terminal session logs (regenerated on every run)
 data/raw/*/run_*.log
 
+# Raw mitmproxy stream archives — contain DECRYPTED traffic, including the
+# session cookies and auth headers of the logged-in tool accounts. Keep them
+# LOCALLY for offline re-analysis, but NEVER commit them.
+data/raw/*/run_*.flow
+
 # Local pid/tmp files used by the Makefile
 /tmp/privacy_mitm.pid
 
@@ -32,6 +37,7 @@ data/raw/*/run_*.log
 *.fdb_latexmk
 *.synctex.gz
 
+# DO commit the .json summaries (the experimental results) and results/.
 # DO NOT ignore data/raw/*/run_*.json — those ARE the experimental results
-# DO NOT ignore data/raw/*/run_*.flow — needed for offline re-analysis
 # DO NOT ignore results/ — final per-tool summaries and charts
+# (.flow archives are intentionally ignored above — they hold decrypted auth tokens.)
