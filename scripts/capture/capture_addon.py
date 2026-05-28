@@ -21,7 +21,9 @@ Saves to:
 import gzip
 import json
 import os
+import re
 import sys
+import unicodedata
 import urllib.parse
 import zlib
 from datetime import datetime, timezone
@@ -155,8 +157,15 @@ session = {
     "requests":        [],
     "ws_messages":     [],
     "tls_failures":    [],
+    "read_failures":   [],
     "summary":         None,
 }
+
+# Full client->server bodies accumulated per host during the session, used for
+# the cross-event transcript pass in done(). Kept in memory only (NOT written to
+# JSON) so it can hold full bodies without bloating result files or storing
+# request headers. Fresh each run (one mitmdump process per run).
+PER_HOST_BODIES = {}
 
 # Helpers
 
@@ -194,18 +203,74 @@ def bytes_to_text(data):
     return data.decode("utf-8", errors="replace")
 
 
+# JSON string escapes that show up in real payloads. We unescape them anywhere
+# in the text (not only when the whole body is valid JSON) so 20-char windows
+# spanning an escaped newline (\n) or em-dash (—) still match. The old code
+# did json.loads(f'"{body}"') on the WHOLE body, which threw on any real body
+# (they contain " and newlines) — so that variant never actually ran.
+_JSON_UXXXX  = re.compile(r'\\u([0-9a-fA-F]{4})')
+_JSON_SIMPLE = (('\\n', '\n'), ('\\t', '\t'), ('\\r', '\r'),
+                ('\\"', '"'), ('\\/', '/'))
+
+
+def _json_string_values(obj, out):
+    """Recursively collect every string (keys and values) from parsed JSON."""
+    if isinstance(obj, str):
+        out.append(obj)
+    elif isinstance(obj, dict):
+        for k, v in obj.items():
+            out.append(k)
+            _json_string_values(v, out)
+    elif isinstance(obj, list):
+        for v in obj:
+            _json_string_values(v, out)
+
+
+def _json_unescape(s):
+    s = _JSON_UXXXX.sub(lambda m: chr(int(m.group(1), 16)), s)
+    for esc, ch in _JSON_SIMPLE:
+        s = s.replace(esc, ch)
+    return s
+
+
 def build_search_corpus(raw_text):
+    """Return text variants to search. Additive: each variant can only ADD
+    coverage, never remove it, so a spurious unescape is harmless."""
     variants = [raw_text]
+    seen = {raw_text}
+
+    def add(v):
+        if v and v not in seen:
+            seen.add(v)
+            variants.append(v)
+
+    # Unicode normalization (NFC) so composed/decomposed forms align.
     try:
-        decoded = urllib.parse.unquote_plus(raw_text)
-        if decoded != raw_text:
-            variants.append(decoded)
+        add(unicodedata.normalize("NFC", raw_text))
     except Exception:
         pass
+    # URL / form-encoded transmission.
     try:
-        unescaped = json.loads(f'"{raw_text}"')
-        if unescaped != raw_text:
-            variants.append(unescaped)
+        add(urllib.parse.unquote_plus(raw_text))
+    except Exception:
+        pass
+    # JSON-escaped transmission (1): if the text parses as JSON, pull out every
+    # string value — the parser has already unescaped \n and \uXXXX for us.
+    try:
+        parsed = json.loads(raw_text)
+        strings = []
+        _json_string_values(parsed, strings)
+        for s in strings:
+            add(s)
+        if strings:
+            add("\n".join(strings))
+    except Exception:
+        pass
+    # JSON-escaped transmission (2): when the body isn't cleanly parseable
+    # (e.g. it's embedded in a url+headers blob, or is a streamed fragment),
+    # unescape JSON-style escapes in place.
+    try:
+        add(_json_unescape(raw_text))
     except Exception:
         pass
     return variants
@@ -244,12 +309,42 @@ def make_body_preview(text):
     return text[:BODY_PREVIEW_BYTES] + f"...[truncated, full length {len(text)} chars]"
 
 
+def safe_body(message):
+    """Return (body_bytes, encoding_to_apply).
+
+    mitmproxy's `.content` is already decompressed, but reading it RAISES
+    ValueError when the content-encoding is one it can't handle — and
+    `message.content or b""` does NOT catch that, so the event would be lost
+    silently. We catch it and fall back to `.raw_content` + the header encoding
+    so our own decompress() (with brotli) can try. Read failures are recorded in
+    session["read_failures"] so "couldn't read" is never scored as "clean".
+    Happy path returns encoding="" because `.content` is already decoded
+    (decompress() is then a no-op)."""
+    enc = message.headers.get("content-encoding", "")
+    try:
+        c = message.content                  # decoded; may raise ValueError
+        if c is not None:
+            return c, ""
+    except Exception:
+        pass
+    try:
+        raw = message.raw_content
+        if raw:
+            return raw, enc                  # still compressed -> decompress() tries
+    except Exception:
+        pass
+    session["read_failures"].append({
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "content_encoding": enc,
+    })
+    return b"", ""
+
+
 def extract_request_text(flow):
     parts = [flow.request.pretty_url]
     for key, val in flow.request.headers.items():
         parts.append(f"{key}: {val}")
-    raw  = flow.request.content or b""
-    enc  = flow.request.headers.get("content-encoding", "")
+    raw, enc = safe_body(flow.request)
     body = bytes_to_text(decompress(raw, enc))
     if body:
         parts.append(body)
@@ -259,8 +354,7 @@ def extract_request_text(flow):
 def extract_response_text(flow):
     if not flow.response:
         return ""
-    raw = flow.response.content or b""
-    enc = flow.response.headers.get("content-encoding", "")
+    raw, enc = safe_body(flow.response)
     return bytes_to_text(decompress(raw, enc))
 
 
@@ -298,6 +392,8 @@ class ExposureTracker:
             "tokens_found":      tokens,
             "body_preview":      make_body_preview(body_only),
         }
+        if body_only:
+            PER_HOST_BODIES.setdefault(flow.request.pretty_host, []).append(body_only)
         session["requests"].append(entry)
         log_event("REQ", flow.request.pretty_host, covered, tokens,
                   f"| {flow.request.method} {flow.request.path[:50]}")
@@ -346,13 +442,14 @@ class ExposureTracker:
             "host":              flow.request.pretty_host,
             "frame_type":        "binary" if isinstance(msg.content, bytes) else "text",
             "content_length":    len(msg.content),
-            "tls":               flow.request.scheme == "wss",
+            "tls":               flow.request.scheme in ("https", "wss"),
             "covered_positions": sorted(covered),
             "exposure_chars":    len(covered),
             "exposure_pct":      round(len(covered) / TOTAL_CHARS * 100, 2),
             "tokens_found":      tokens,
             "body_preview":      make_body_preview(text),
         }
+        PER_HOST_BODIES.setdefault(flow.request.pretty_host, []).append(text)
         session["ws_messages"].append(entry)
         log_event("WS ", flow.request.pretty_host, covered, tokens,
                   f"| {len(msg.content)} bytes")
@@ -395,17 +492,22 @@ class ExposureTracker:
             union_covered.update(ev["covered_positions"])
             union_tokens.update(ev.get("tokens_found", []))
 
-        per_host_text = {}
-        for ev in all_events:
-            preview = ev.get("body_preview", "")
-            if preview:
-                per_host_text.setdefault(ev["host"], []).append(preview)
-
-        transcript_covered = set()
-        transcript_tokens  = set()
-        for host, parts in per_host_text.items():
-            joined = "\n".join(parts)
-            transcript_covered.update(find_covered_positions(joined))
+        # Cross-event ("transcript") pass — built from FULL client->server bodies
+        # accumulated during the session, NOT the 4 KB JSON previews (too small to
+        # catch chunking past 4 KB). Responses are excluded: this measures data
+        # leaving the user, not echoes coming back. Per-host covered positions are
+        # stored so analyze.py can union them AFTER baseline subtraction.
+        transcript_covered     = set()
+        transcript_tokens      = set()
+        transcript_cov_by_host = {}
+        for host, parts in PER_HOST_BODIES.items():
+            if should_ignore(host):
+                continue
+            joined   = "\n".join(parts)
+            host_cov = find_covered_positions(joined)
+            if host_cov:
+                transcript_cov_by_host[host] = sorted(host_cov)
+            transcript_covered.update(host_cov)
             transcript_tokens.update(find_tokens_in_text(joined))
 
         total_covered = union_covered | transcript_covered
@@ -429,8 +531,10 @@ class ExposureTracker:
             "https_events":              https_events,
             "https_event_pct":           https_event_pct,
             "tls_handshake_failures":    tls_failures,
+            "body_read_failures":        len(session["read_failures"]),
             "per_event_covered_chars":   len(union_covered),
             "transcript_covered_chars":  len(transcript_covered),
+            "transcript_covered_by_host": transcript_cov_by_host,
             "union_covered_chars":       len(total_covered),
             "union_exposure_pct":        round(len(total_covered) / TOTAL_CHARS * 100, 2),
             "any_exposure":              len(total_covered) > 0 or bool(total_tokens),
