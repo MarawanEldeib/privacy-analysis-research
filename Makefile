@@ -101,6 +101,7 @@ define run_one
 	@echo "Step 1/4: loading test document into clipboard..."
 	xclip -selection clipboard < "$(TEST_DOC)"
 	@echo "Step 2/4: starting mitmproxy in background..."
+	@mkdir -p data/raw/$(1)
 	@TOOL_NAME=$(1) RUN_ID=$(2) mitmdump \
 		--listen-host 127.0.0.1 --listen-port 8080 \
 		--ssl-insecure \
@@ -108,7 +109,6 @@ define run_one
 		-s scripts/capture/capture_addon.py \
 		> "data/raw/$(1)/run_$(2).log" 2>&1 & \
 	echo $$! > /tmp/privacy_mitm.pid
-	@mkdir -p data/raw/$(1)
 	@sleep 3
 	@echo "Step 3/4: pasting into Firefox..."
 	xdotool key --window "$$(xdotool search --name 'Mozilla Firefox' | head -1)" ctrl+v
