@@ -148,11 +148,21 @@ def rederive_covered_positions_from_previews(run_data, window_size):
     return union
 
 
-def union_exposure_from_run(run_data):
+def union_exposure_from_run(run_data, baseline_domains=None):
     union = set()
     all_events = run_data.get("requests", []) + run_data.get("ws_messages", [])
     for ev in all_events:
         union.update(ev.get("covered_positions", []))
+    # Cross-event ("transcript") coverage: windows that span two outbound frames
+    # are invisible to per-event matching. The addon stores per-host transcript
+    # coverage computed over FULL client->server bodies; fold it in here, skipping
+    # any host that also appears in the baseline (same rule as per-event events).
+    summary = run_data.get("summary", {}) or {}
+    by_host = summary.get("transcript_covered_by_host", {}) or {}
+    for host, positions in by_host.items():
+        if baseline_domains and host in baseline_domains:
+            continue
+        union.update(positions)
     pct = round(len(union) / TOTAL_CHARS * 100, 2) if TOTAL_CHARS else 0.0
     return union, pct
 
@@ -227,7 +237,7 @@ def analyze_run(run_path, baseline_domains=None,
         union_covered = rederive_covered_positions_from_previews(run_data, window_override)
         exposure_pct  = round(len(union_covered) / TOTAL_CHARS * 100, 2) if TOTAL_CHARS else 0.0
     else:
-        union_covered, exposure_pct = union_exposure_from_run(run_data)
+        union_covered, exposure_pct = union_exposure_from_run(run_data, baseline_domains)
 
     https_pct, tls_failures       = tls_visibility(run_data)
     sensitive_found               = check_sensitive_tokens(run_data)
