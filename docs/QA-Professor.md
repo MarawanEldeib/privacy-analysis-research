@@ -5,6 +5,20 @@ This file tracks questions that need clarification before we can finalize the pr
 
 ---
 
+## Confirmed decisions (2026-05-28 — locked with Marawan)
+
+1. **Documents:** use **3** test documents (current memo + a long report + a code/structured snippet), not one — a single document can't support tool-vs-tool comparison.
+2. **Tools:** keep the **3 browser extensions** (Grammarly, ProWritingAid, Wordtune); add a non-browser tool later only if the professor asks.
+3. **Framing:** factual wording — "the tool transmitted the confidential document to its servers under default settings, despite a no-share instruction" — **not** "leak".
+4. **Fields:** main runs on the local practice page **plus 1 run each in Gmail and Google Docs** to confirm representativeness.
+5. **Stats:** report the simple 95%-CI-overlap comparison; add a formal pairwise test only if the professor requests it.
+6. **Exposure counts outbound only** (client→server). Server echoes are captured and reported separately, never added to the headline %.
+7. **Headline metric = planted-secret count** ("N of 12 identifiers, incl. the canary, transmitted"); exposure % is secondary; the sentence-leak number is dropped (its unit wrongly counted header lines).
+
+**Still to ask the professor:** interim deadlines before Oct 10; permission + university IP rules for open-sourcing after grading; a quick confirm of the metric set.
+
+---
+
 ## Q1 — Which specific tools should we test?
 
 **Status:** ✅ Decided (revised 2026-05-23)  
@@ -42,7 +56,9 @@ In practice: search all captured and decrypted request bodies/payloads for subst
 ## Q3 — How is "confidence level" defined?
 
 **Status:** 🔄 We decided — confirm with professor  
-**Decision:** Confidence is composed of two factors:
+**Status note:** ❌ REJECTED / superseded — this composite formula was dropped. Reproducibility and traffic-visibility are now reported as two SEPARATE numbers, never multiplied (see "Confirmed decisions" at the top and `methodology.md`). The text below is kept only to record what we moved away from.
+
+**Decision (rejected):** Confidence was originally composed of two factors:
 
 1. **Reproducibility score:** % of repeated runs (out of 5) that showed the same exposure result
    - e.g. 5/5 runs showed exposure → 100% reproducible
