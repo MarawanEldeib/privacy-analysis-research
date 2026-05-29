@@ -29,7 +29,7 @@ tools would have broken the "same capture protocol for all tools" requirement.
 The framing of the research question has also been sharpened. Rather than
 calling it "passive" exposure, I now describe it as **default-configuration
 exposure during routine writing**: the tool is installed and active in its
-default state, the user types the test document into a normal text field, and
+default state, the user pastes the test document into a normal text field, and
 I measure what is transmitted. This is more accurate — the tool is doing
 exactly what it was designed to do — and the underlying question is how much
 of that transmission is something the user may not be aware of.
@@ -55,9 +55,9 @@ number:
   after subtracting domains seen in a no-tool baseline run.
 - **Reproducibility** — the standard deviation of exposure % across the 5
   repeated runs. Reported as a number (pp) and a qualitative label.
-- **Traffic visibility** — the fraction of outbound bytes mitmproxy could
-  actually decrypt. Reported as a separate coverage metric, not multiplied
-  into a single "confidence" number.
+- **Traffic visibility** — reported as TWO separate numbers: the share of
+  intercepted events that used HTTPS, and a count of TLS handshakes we could
+  not intercept (e.g. cert pinning). Not multiplied into a single "confidence" number.
 
 Additionally, I check each of the twelve planted sensitive tokens individually:
 the report will state how many of them appeared in captured traffic across

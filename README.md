@@ -60,7 +60,7 @@ Plus 95% confidence intervals on the mean exposure and a sentence-level leak cou
 
 ## Project status
 
-Methodology and scripts locked at v3.1 after two critical reviews. Kali environment setup and data collection are the next steps. See `docs/Timeline.md` for milestones.
+Methodology and scripts at v3.1; issues found across three reviews have been fixed (see `docs/`). Kali environment setup and data collection are the next steps. See `docs/Timeline.md` for milestones.
 
 ## Note on the test document
 

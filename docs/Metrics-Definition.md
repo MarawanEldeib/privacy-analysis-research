@@ -70,7 +70,7 @@ different kinds of uncertainty and produces a figure with no clear interpretatio
 
 ## 4. Sensitive Token Detection
 
-**Definition:** A binary check for each of the 11 planted identifiers in the test document. A token is "detected" if it appears verbatim (case-insensitive) in any captured payload across any of the 5 runs.
+**Definition:** A binary check for each of the 12 planted identifiers in the test document. A token is "detected" if it appears verbatim (case-insensitive) in any captured payload across any of the 5 runs.
 
 **Token list (12 tokens — canonical; kept in sync with `analyze.py::SENSITIVE_TOKENS` and `input-data/README.md`):**
 
