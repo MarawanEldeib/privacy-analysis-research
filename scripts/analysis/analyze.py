@@ -15,6 +15,8 @@ Usage:
     python scripts/analysis/analyze.py grammarly --no-baseline --window 12 --sentence-threshold 0.5
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import math
@@ -47,8 +49,7 @@ SENSITIVE_TOKENS = [
 ]
 
 if not TEST_DOC_PATH.exists():
-    print(f"[ERROR] Test document not found: {TEST_DOC_PATH}", file=sys.stderr)
-    sys.exit(1)
+    raise RuntimeError(f"Test document not found: {TEST_DOC_PATH}")
 
 TEST_CONTENT = TEST_DOC_PATH.read_text(encoding="utf-8")
 TOTAL_CHARS  = len(TEST_CONTENT)
@@ -94,7 +95,7 @@ def _t_critical_95(df):
     return T_CRIT_95[keys[-1]] if keys else 12.706
 
 
-def confidence_interval_95(values):
+def confidence_interval_95(values: list[float]) -> tuple[float, float, float]:
     n = len(values)
     if n == 0:
         return (0.0, 0.0, 0.0)
@@ -107,7 +108,7 @@ def confidence_interval_95(values):
     return (mean, mean - t * se, mean + t * se)
 
 
-def sentences_fully_leaked(covered_positions, leak_threshold=0.9):
+def sentences_fully_leaked(covered_positions: set[int], leak_threshold: float = 0.9) -> list[tuple[int, str]]:
     leaked = []
     for i, (start, end, text) in enumerate(SENTENCES):
         total = end - start
@@ -148,10 +149,12 @@ def rederive_covered_positions_from_previews(run_data, window_size):
     return union
 
 
-def union_exposure_from_run(run_data, baseline_domains=None):
+def union_exposure_from_run(run_data: dict, baseline_domains: set[str] | None = None) -> tuple[set[int], float]:
     union = set()
     all_events = run_data.get("requests", []) + run_data.get("ws_messages", [])
     for ev in all_events:
+        if ev.get("kind") == "http_response":
+            continue  # server echoes are diagnostic, not outbound exposure (decided 2026-05-28)
         union.update(ev.get("covered_positions", []))
     # Cross-event ("transcript") coverage: windows that span two outbound frames
     # are invisible to per-event matching. The addon stores per-host transcript
@@ -167,13 +170,12 @@ def union_exposure_from_run(run_data, baseline_domains=None):
     return union, pct
 
 
-def tls_visibility(run_data):
+def tls_visibility(run_data: dict) -> tuple[float, int]:
     s = run_data.get("summary", {}) or {}
-    https_pct = s.get("https_event_pct")
-    if https_pct is None:
-        total = s.get("total_request_bytes", 0)
-        tls   = s.get("tls_request_bytes", 0)
-        https_pct = round(tls / total * 100, 2) if total > 0 else 100.0
+    # The addon always writes https_event_pct; default to 100.0 only for a run
+    # JSON that predates the field. (Removed a dead fallback that referenced
+    # total_request_bytes / tls_request_bytes — keys the addon never writes.)
+    https_pct = s.get("https_event_pct", 100.0)
     return float(https_pct), int(s.get("tls_handshake_failures", 0))
 
 
@@ -271,7 +273,13 @@ def analyze_run(run_path, baseline_domains=None,
             if e.get("exposure_chars", 0) > 0 or e.get("tokens_found")
         ),
         "unique_domains":      len({e.get("host") for e in all_events}),
-        "total_request_bytes": s.get("total_request_bytes", 0),
+        # Outbound bytes = client->server payloads (HTTP requests + WS client
+        # frames), excluding response bodies. Previously read a summary key the
+        # addon never wrote, so this was always 0.
+        "total_request_bytes": sum(
+            e.get("content_length", 0) for e in all_events
+            if e.get("kind") != "http_response"
+        ),
         "websocket_messages":  s.get("websocket_messages", 0),
         "baseline_subtracted": baseline_domains is not None,
     }
@@ -313,7 +321,7 @@ def analyze_tool(tool_name, subtract_baseline=True,
     min_exp     = min(exposures)
     max_exp     = max(exposures)
 
-    ci_mean_raw, ci_low_raw, ci_high_raw = confidence_interval_95(exposures)
+    _, ci_low_raw, ci_high_raw = confidence_interval_95(exposures)
     ci_low  = max(0.0, round(ci_low_raw, 2))
     ci_high = min(100.0, round(ci_high_raw, 2))
     ci_half_width = round((ci_high - ci_low) / 2, 2)
@@ -351,19 +359,25 @@ def analyze_tool(tool_name, subtract_baseline=True,
         f"95% CI [{ci_low:.1f}%, {ci_high:.1f}%]"
         if n > 1 else "single run, no CI"
     )
-    conclusion = (
-        f"{tool_name.title()} transmitted approximately {median_exp:.1f}% of the input document "
-        f"to external servers during default-configuration use "
-        f"(median across {n} runs, std dev {stdev_exp:.1f}pp, mean {mean_exp:.1f}% {ci_phrase}). "
-        f"Reproducibility: {repro_label}. "
-        f"At the sentence level, a median of {median_sentences_leaked:.0f} of {TOTAL_SENTENCES} "
-        f"sentences leaked fully per run ({len(union_sentences)} unique sentences across all runs). "
-        f"Of intercepted events, {avg_https_pct:.1f}% used HTTPS.{tls_note} "
-        + (
-            f"{tok_count} of {len(SENSITIVE_TOKENS)} planted sensitive tokens were detected in traffic."
-            if any_exp else
-            "No test document content was detected in outbound traffic."
+    canary_found = any(t.startswith("CANARY-") for t in all_sensitive)
+    if any_exp:
+        lead = (
+            f"{tool_name.title()} transmitted {tok_count} of {len(SENSITIVE_TOKENS)} planted "
+            f"sensitive identifiers to external servers during default-configuration use"
         )
+        lead += " (including the unique canary token)." if canary_found else "."
+    else:
+        lead = (f"{tool_name.title()}: no planted identifiers or document content were "
+                f"detected in outbound traffic.")
+    # Headline = the planted-secret count (decided 2026-05-28); exposure % is
+    # secondary; the sentence-leak figure is no longer reported (its unit
+    # incorrectly counted header/label lines).
+    conclusion = (
+        lead
+        + f" Overall, approximately {median_exp:.1f}% of the document's characters were transmitted "
+        f"(median across {n} runs; std dev {stdev_exp:.1f}pp; mean {mean_exp:.1f}% {ci_phrase}; "
+        f"reproducibility {repro_label}). "
+        f"Of intercepted events, {avg_https_pct:.1f}% used HTTPS.{tls_note}"
     )
 
     summary = {
@@ -416,6 +430,8 @@ def print_tool_table(s):
     if s.get("analysis_window_override"):
         print(f"  [analysis: window={s['analysis_window_override']}, threshold={s['analysis_sentence_threshold']}]")
     print(sep)
+    print(f"  >> SECRETS TRANSMITTED: {s['sensitive_token_detection_rate']} planted identifiers")
+    print(f"  {sub}")
     print(f"  Runs:                   {s['num_runs']}")
     print(f"  Exposure per run (%):   {[round(e,1) for e in s['exposures_per_run']]}")
     print(f"  Median exposure:        {s['median_exposure_pct']:.1f}%")
@@ -423,10 +439,6 @@ def print_tool_table(s):
     print(f"  Std deviation:          {s['stdev_exposure_pct']:.1f} pp")
     print(f"  Min / Max:              {s['min_exposure_pct']:.1f}% / {s['max_exposure_pct']:.1f}%")
     print(f"  Reproducibility:        {s['reproducibility']} (stdev {s['stdev_exposure_pct']:.1f}pp)")
-    print(f"  {sub}")
-    print(f"  Sentences leaked/run:   {s['sentences_leaked_per_run']}")
-    print(f"  Median sentences leaked: {s['median_sentences_leaked']:.0f} of {s['total_sentences_in_document']}")
-    print(f"  Unique sentences (any run): {len(s['unique_sentences_leaked_any_run'])} of {s['total_sentences_in_document']}")
     print(f"  {sub}")
     print(f"  HTTPS event share:      {s['avg_https_event_pct']:.1f}% of intercepted events")
     print(f"  TLS handshake failures: {s['total_tls_handshake_failures']}  (missed traffic, if any)")
