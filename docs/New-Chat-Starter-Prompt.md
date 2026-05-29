@@ -1,92 +1,74 @@
-# Starter Prompt — Paste this at the beginning of every new Opus 4.7 session
+# Starter Prompt — paste at the start of a new Claude session on this project
 
----
+> Keep this file current with the latest project vision. Whenever decisions, status,
+> or scope change, update it so a fresh session is bootstrapped correctly.
 
-You are helping me with my university research project. Before doing anything else,
-read every file listed below in full. Then give me an honest status check and tell me
-if anything is wrong, missing, or can be improved before I start collecting data.
+You are helping me with my university research project. Read the files listed below
+(in order) before doing anything, then give me an honest status check and tell me the
+single next action.
 
 ## Project in one paragraph
 
-I am measuring how much of a confidential document gets silently transmitted to
-external servers when LLM-integrated browser extensions (Grammarly, ProWritingAid,
-Wordtune) are running during normal use. I capture outbound network traffic using
-mitmproxy with SSL interception on Kali Linux, compare against a no-tool baseline,
-and report per tool: exposure % (what fraction of the document was found in traffic),
-reproducibility (std dev across 5 runs), and traffic visibility (% of bytes
-successfully decrypted). The project is for university — final deadline October 10, 2026.
+I measure how much of a confidential document is silently transmitted to a writing
+tool's servers when an LLM-integrated **browser extension** (Grammarly, ProWritingAid,
+Wordtune) is running by default. Scenario: a user is told not to share a document with
+AI tools but has the extension active in the background; they paste the document into a
+normal text field; the extension transmits it. I capture outbound traffic with
+**mitmproxy** (SSL interception) on **Kali**, compare against a no-extension baseline,
+and report — **leading with the planted-secret count** (how many of 12 unique fictional
+identifiers, including a UUID canary, reached the servers), with exposure % as a
+supporting number. Final deadline: **2026-10-10**. (Use today's date from the
+environment — this file is not re-dated each session.)
 
-## My workspace folder
+## Workspace
 
-F:\Research Project - Privacy analysis\
+`F:\Research Project - Privacy analysis\` on Windows; mirrored to Kali at
+`/media/sf_privacy_analysis/`. I commit from Windows only (never git from Kali).
 
-## Project-specific skill (read this FIRST)
+## Read first — the project skill (auto-loads, but read in full)
 
-This project has a dedicated skill at `skills/privacy-analysis-project/`.
-Read these four files first — they contain locked decisions, the protocol,
-known failure modes, and how to read the analyzer output. They will save
-you from re-deriving context:
+1. `skills/privacy-analysis-project/SKILL.md` — current state, engineering rules, what's fixed vs open
+2. `skills/privacy-analysis-project/methodology.md` — locked decisions + rationale (cross-check vs the review)
+3. `skills/privacy-analysis-project/protocol.md` — per-run capture checklist
+4. `skills/privacy-analysis-project/gotchas.md` — known failure modes
+5. `skills/privacy-analysis-project/interpretation.md` — how to read the analyzer output
 
-1. skills/privacy-analysis-project/SKILL.md           — overview + working style notes
-2. skills/privacy-analysis-project/methodology.md     — every locked decision + why
-3. skills/privacy-analysis-project/protocol.md        — per-run capture checklist
-4. skills/privacy-analysis-project/gotchas.md         — known failure modes
-5. skills/privacy-analysis-project/interpretation.md  — how to read the analyzer output
+## Then read
 
-## Files to read — read ALL of these before responding
+- `docs/QA-Professor.md` — **confirmed decisions** (top) + open questions for the professor
+- `docs/Independent-Critical-Review-2026-05-28.md` — methodology/code review (bugs now fixed; read as history)
+- `docs/Engineering-Architecture-Review-2026-05-28.md` — code-quality review + refactor backlog
+- `docs/Operational-Prompts.md` — P5–P9 setup/capture prompts to run on Kali
+- `docs/Capture-Protocol.md`, `docs/Metrics-Definition.md`, `docs/Setup-Guide.md`, `docs/Timeline.md`
+- `input-data/test-document.txt`, `input-data/test-page.html`, `input-data/README.md`
+- `scripts/capture/capture_addon.py`, `scripts/analysis/analyze.py`, `tests/`
 
-1. docs/Project-Overview.md          — high-level summary and current status
-2. docs/QA-Professor.md              — all decisions made and open questions
-3. docs/Metrics-Definition.md        — exact metric formulas (v2)
-4. docs/Capture-Protocol.md          — per-run protocol (locked)
-5. docs/Timeline.md                  — milestones and deadlines
-6. docs/Setup-Guide.md               — Kali + Firefox + mitmproxy setup steps (v3)
-7. input-data/test-document.txt      — the synthetic confidential document used in all experiments
-8. input-data/test-page.html         — the local HTML page we paste into during capture
-9. input-data/README.md              — list of planted identifiers in the test document
-10. scripts/capture/capture_addon.py — mitmproxy addon (v3)
-11. scripts/capture/run_capture.sh   — shell script to start a capture session
-12. scripts/analysis/analyze.py      — analysis script (v3)
-13. docs/Professor-Update-Email.md   — draft email to professor (not sent yet)
+## Confirmed direction (decided 2026-05-28)
 
-## What happened so far
+1. **3 test documents** (the memo + a long report + a code/structured snippet).
+2. **3 browser extensions** only (Grammarly, ProWritingAid, Wordtune); a non-browser tool only if the professor later asks.
+3. **Factual framing** — "transmitted to the tool's servers despite a no-share instruction" — **not** "leak".
+4. Main runs on the **local practice page**, **plus 1 run each in Gmail and Google Docs** to confirm representativeness.
+5. **Simple 95%-CI-overlap** comparison now; a formal pairwise test only if the professor asks.
+6. **Exposure counts outbound only** (client→server); server echoes are captured but reported separately.
+7. **Headline = planted-secret count**; exposure % is secondary; the sentence-leak metric is dropped.
 
-- The project proposal was submitted. The professor approved it.
-- All planning, methodology, scripts, and setup guide were written.
-- Two full critical reviews caught and fixed multiple issues: truncated body
-  previews invalidating exposure numbers, missing WebSocket hooks, no baseline
-  subtraction, bad multiplicative "confidence" formula, broken token detection
-  (analyzer read a field the capture script never wrote), misleading TLS-bytes
-  visibility metric, missing cross-event chunked-send detection, and an
-  unspecified input method that would have contaminated the std-dev reproducibility
-  number. These are all fixed in v3 of the scripts.
-- GitHub Copilot was dropped from the tool list (VS Code doesn't use Firefox proxy
-  reliably) and replaced with Wordtune (browser extension, same capture method).
-- The "passive exposure" framing was corrected to "default-configuration exposure
-  when a user handles a confidential document they received."
-- The capture protocol was locked: scripted paste via xclip + xdotool into a
-  local HTML page with a single textarea, 60-second wait. See docs/Capture-Protocol.md.
-- No data has been collected yet. The Kali environment has not been set up yet.
-- The professor has not been updated since the project started. The email draft
-  in docs/Professor-Update-Email.md will be sent after the first Grammarly POC.
+## Status / next
 
-## Important rules for working with me
+- **Code:** third-review bugs fixed; pytest suite + pinned deps added; safe refactors done. The instrument (`capture_addon.py`, `analyze.py`) is **FROZEN** until after captures. A few structural refactors (logging, state-into-instance, token de-dup) are pending a `pytest` + smoke-capture checkpoint.
+- **Not started:** Kali dependency setup, the **P8 pipeline-validation gate** (one Grammarly capture proving the extension fires on the page, the paste lands, traffic decrypts, and the canary appears in the `.flow`), then the capture cycle.
+- **Pending the professor:** interim deadlines, publication + university IP rules, and a quick confirm of the metric set (see `docs/QA-Professor.md`).
 
-- Never assume anything I haven't confirmed — if something is unclear, ask me.
-- If you are unsure about a direction, add the question to docs/QA-Professor.md
-  rather than inventing an answer.
-- Always update docs/Timeline.md and the memory system when significant decisions
-  are made or progress happens.
-- Save all final outputs to F:\Research Project - Privacy analysis\
-- Today's date is 2026-05-23. I have one week of university holiday to work intensively.
+## How to work with me
 
-## What I want from you right now
+- I'm an undergraduate, not a security expert — plain words first, define terms inline.
+- Explain reasoning, not just instructions; I push back — listen and re-think rather than defend.
+- Decide step by step: one short multiple-choice question at a time, with a concrete example and your recommendation + why.
+- Hand me diffs with short commit messages; I run git on Windows.
+- Don't refactor the frozen instrument without a test to guard it.
 
-1. Read all the files above.
-2. Check everything critically — methodology, scripts, setup guide, metrics, test
-   document. Tell me if anything is still wrong or can be improved before I touch
-   Kali.
-3. Tell me exactly what to do first today on Kali to start getting real data.
-4. If everything looks good, say so clearly so I know I can start.
+## What I want right now
 
-Do not assume the previous review caught everything. Be independently critical.
+1. Read the files above.
+2. Give an honest status check; flag anything wrong or risky before I collect data.
+3. Tell me the single next action to take.
