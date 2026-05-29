@@ -18,11 +18,12 @@ Saves to:
                                                (via run_capture.sh --save-stream-file)
 """
 
+from __future__ import annotations
+
 import gzip
 import json
 import os
 import re
-import sys
 import unicodedata
 import urllib.parse
 import zlib
@@ -114,8 +115,7 @@ IGNORE_SUFFIXES = {
 # Load test document
 
 if not TEST_DOC_PATH.exists():
-    print(f"[ERROR] Test document not found: {TEST_DOC_PATH}", file=sys.stderr)
-    sys.exit(1)
+    raise RuntimeError(f"Test document not found: {TEST_DOC_PATH}")
 
 TEST_CONTENT = TEST_DOC_PATH.read_text(encoding="utf-8")
 TOTAL_CHARS  = len(TEST_CONTENT)
@@ -233,7 +233,7 @@ def _json_unescape(s):
     return s
 
 
-def build_search_corpus(raw_text):
+def build_search_corpus(raw_text: str) -> list[str]:
     """Return text variants to search. Additive: each variant can only ADD
     coverage, never remove it, so a spurious unescape is harmless."""
     variants = [raw_text]
@@ -276,7 +276,7 @@ def build_search_corpus(raw_text):
     return variants
 
 
-def find_covered_positions(text):
+def find_covered_positions(text: str) -> set[int]:
     covered = set()
     for variant in build_search_corpus(text):
         variant_lower = variant.lower()
@@ -291,7 +291,7 @@ def find_covered_positions(text):
     return covered
 
 
-def find_tokens_in_text(text):
+def find_tokens_in_text(text: str) -> list[str]:
     found = set()
     for variant in build_search_corpus(text):
         variant_lower = variant.lower()
@@ -309,7 +309,7 @@ def make_body_preview(text):
     return text[:BODY_PREVIEW_BYTES] + f"...[truncated, full length {len(text)} chars]"
 
 
-def safe_body(message):
+def safe_body(message) -> tuple[bytes, str]:
     """Return (body_bytes, encoding_to_apply).
 
     mitmproxy's `.content` is already decompressed, but reading it RAISES
@@ -322,10 +322,10 @@ def safe_body(message):
     (decompress() is then a no-op)."""
     enc = message.headers.get("content-encoding", "")
     try:
-        c = message.content                  # decoded; may raise ValueError
+        c = message.content                  # decoded; raises ValueError on bad encoding
         if c is not None:
             return c, ""
-    except Exception:
+    except ValueError:
         pass
     try:
         raw = message.raw_content
@@ -372,6 +372,9 @@ def log_event(label, host, covered, tokens, extra=""):
 class ExposureTracker:
 
     def request(self, flow):
+        """Scan an outbound HTTP request (URL + headers + body) for document
+        windows and sensitive tokens; record the event and buffer the body for
+        the cross-event transcript pass."""
         if should_ignore(flow.request.pretty_host):
             return
         search_text, body_only = extract_request_text(flow)
@@ -383,7 +386,7 @@ class ExposureTracker:
             "host":              flow.request.pretty_host,
             "method":            flow.request.method,
             "path":              flow.request.path,
-            "content_length":    len(flow.request.content or b""),
+            "content_length":    len(flow.request.raw_content or b""),
             "tls":               flow.request.scheme == "https",
             "content_encoding":  flow.request.headers.get("content-encoding", ""),
             "covered_positions": sorted(covered),
@@ -399,6 +402,9 @@ class ExposureTracker:
                   f"| {flow.request.method} {flow.request.path[:50]}")
 
     def response(self, flow):
+        """Scan an HTTP response body for document content (some tools echo it
+        back). Diagnostic only — whether responses should count toward exposure
+        is the open 'Blocker B' question."""
         if should_ignore(flow.request.pretty_host):
             return
         text = extract_response_text(flow)
@@ -411,7 +417,7 @@ class ExposureTracker:
             "timestamp":         datetime.now(timezone.utc).isoformat(),
             "host":              flow.request.pretty_host,
             "status_code":       flow.response.status_code if flow.response else None,
-            "content_length":    len(flow.response.content or b"") if flow.response else 0,
+            "content_length":    len(flow.response.raw_content or b"") if flow.response else 0,
             "tls":               flow.request.scheme == "https",
             "content_encoding":  flow.response.headers.get("content-encoding", "") if flow.response else "",
             "covered_positions": sorted(covered),
@@ -425,6 +431,9 @@ class ExposureTracker:
             log_event("RSP", flow.request.pretty_host, covered, tokens)
 
     def websocket_message(self, flow):
+        """Scan the latest client->server WebSocket frame for document content
+        and buffer it for the cross-event transcript pass (server frames are
+        ignored)."""
         if should_ignore(flow.request.pretty_host):
             return
         msg = flow.websocket.messages[-1]
@@ -455,6 +464,8 @@ class ExposureTracker:
                   f"| {len(msg.content)} bytes")
 
     def tls_failed_client(self, data):
+        """Record a client-side TLS handshake we could not intercept (e.g. cert
+        pinning); its contents are unknown, so reported exposure is a lower bound."""
         try:
             sni = getattr(getattr(data, "conn", None), "sni", None) or "unknown"
         except Exception:
@@ -469,6 +480,7 @@ class ExposureTracker:
         print(f"[TLS-FAIL] client refused MITM for SNI={sni}")
 
     def tls_failed_server(self, data):
+        """Record a server-side TLS handshake mitmproxy could not complete."""
         try:
             sni = getattr(getattr(data, "conn", None), "sni", None) or "unknown"
         except Exception:
@@ -483,6 +495,8 @@ class ExposureTracker:
         print(f"[TLS-FAIL] server refused MITM for SNI={sni}")
 
     def done(self):
+        """Finalize the run: union per-event and cross-event coverage, assemble
+        the summary, and write data/raw/<tool>/run_<id>.json."""
         session["end_time"] = datetime.now(timezone.utc).isoformat()
         all_events = session["requests"] + session["ws_messages"]
 
