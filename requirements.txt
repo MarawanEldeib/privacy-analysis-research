@@ -1,0 +1,19 @@
+# Runtime dependencies for the privacy-analysis capture + analysis pipeline.
+#
+# These are version CONSTRAINTS, not exact pins, because the exact versions are
+# environment-specific (installed on Kali in setup phase P5). For a reproducible
+# study, lock your EXACT versions on the capture machine AFTER installing:
+#
+#     pip freeze > requirements.txt
+#
+# Results depend on mitmproxy's version-specific behaviour (HTTP `.content`
+# decoding, WebSocket scheme handling — both of which we had to work around), so
+# the locked file is the reproducibility artifact that belongs with your data.
+
+mitmproxy~=10.0      # HTTPS interception + the capture-addon hook API
+brotli~=1.1          # decode Brotli-compressed bodies (Content-Encoding: br)
+matplotlib~=3.7      # results/comparison_chart.{png,svg} for the report
+
+# Optional accelerator — also declared as the [fast] extra in pyproject.toml.
+# The addon falls back to a slower pure-Python scan if it is absent.
+pyahocorasick~=2.0

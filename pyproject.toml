@@ -1,0 +1,26 @@
+# Dev-tool configuration for the privacy-analysis repo.
+#
+# This repo is a set of scripts run via the Makefile, not an installable
+# package, so there is intentionally NO [build-system] section. This file only
+# configures tooling (pytest, ruff, black). Runtime deps live in requirements.txt.
+
+[project]
+name = "privacy-analysis-research"
+version = "0.1.0"
+description = "Measuring data exposure in LLM-integrated productivity tools"
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+fast = ["pyahocorasick~=2.0"]   # optional Aho-Corasick accelerator for window matching
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
