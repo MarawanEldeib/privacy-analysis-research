@@ -1,0 +1,405 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+\definecolor{leakred}{HTML}{B23A48}
+\newcommand{\canary}{\texttt{CANARY-BC267061-\allowbreak 67DC-485B-8E51-6F5494765CAB}}
+
+\title{\vspace{-1.0cm}\textbf{Measuring Data Exposure in\\ LLM-Integrated Productivity Tools}}
+\author{Marawan Eldeib \\ \small Matrikelnummer: 3764796}
+\date{July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+LLM-integrated writing assistants run as browser extensions that observe the text
+a user types or pastes into ordinary web fields. This study measures how much of a
+confidential document such tools transmit to their own servers \emph{by default} ---
+that is, with no action beyond installing the extension and pasting text, and even
+when the user has been instructed not to share the document with AI tools. Using an
+HTTPS man-in-the-middle proxy on an isolated Linux virtual machine, we captured the
+outbound traffic of two widely used grammar-checking extensions, Grammarly and
+LanguageTool, as a synthetic ``confidential memo'' containing twelve unique planted
+identifiers (including a UUID canary) was pasted into a controlled local page. Across
+five runs each, both extensions transmitted essentially the entire document
+(Grammarly \textbf{99.0\%}, LanguageTool \textbf{91.9\%} of characters) and
+\textbf{all twelve planted secrets, including the canary}, to their servers over
+encrypted channels; a no-extension baseline transmitted nothing (0\%). The result was
+perfectly reproducible (standard deviation 0.0 percentage points across runs). We
+frame this not as an exploit but as a gap between default tool behaviour and
+reasonable user expectation, and we distinguish two behavioural classes ---
+\emph{automatic} transmitters that send on paste versus \emph{on-demand} transmitters
+that send only on explicit user action. All test data is synthetic and the
+methodology is fully reproducible.
+\end{abstract}
+
+\section{Introduction}
+
+Large-language-model (LLM) integrated productivity tools --- grammar checkers,
+paraphrasers, and ``AI assistant'' extensions --- have become a default part of many
+users' browsers. They work by observing the content of text fields and sending that
+content to remote servers for analysis, then returning suggestions. The convenience is
+real; the privacy cost is largely invisible. A user who has been handed a confidential
+file and told ``do not share this with any AI tool'' would not knowingly paste it into
+a chatbot. But that same user may have a grammar-checking extension enabled in the
+background, silently watching every field they type or paste into. The question this
+project asks is deliberately mundane:
+
+\begin{quote}
+\emph{How does user data exposure differ across LLM-integrated productivity tools
+during controlled use?}
+\end{quote}
+
+Concretely: when a confidential document is pasted into an ordinary text field with a
+writing-assistant extension running by default, how much of that document leaves the
+machine, and does it include the specifically sensitive parts?
+
+This is not a search for a vulnerability. The tools examined here are doing exactly
+what they were designed to do. The contribution is a transparent, reproducible
+\emph{measurement} of that default behaviour and an honest account of what it means
+for a user's expectations. Our contributions are:
+
+\begin{itemize}[nosep]
+  \item A controlled, reproducible measurement pipeline (HTTPS interception plus a
+        planted-secret detector) that quantifies how much of a known document reaches
+        a tool's servers, with an unforgeable UUID canary as the headline evidence.
+  \item Empirical results for two independent, widely used grammar-checking
+        extensions (Grammarly and LanguageTool) against a no-extension baseline.
+  \item A distinction between two behavioural classes --- \emph{automatic/background}
+        versus \emph{on-demand} transmitters --- that explains why not every ``AI
+        writing tool'' leaks under this threat model.
+  \item A documented account of the tools that were evaluated and excluded, including
+        a cautionary case of a counterfeit extension impersonating a popular product.
+\end{itemize}
+
+\section{Background and Threat Model}
+\label{sec:threat}
+
+\paragraph{How these tools work.} A writing-assistant extension registers content
+scripts that attach to editable elements (\texttt{<textarea>} and
+\texttt{[contenteditable]}) on visited pages. When text appears in such a field, the
+extension transmits it --- typically over HTTPS or a WebSocket --- to its backend,
+which runs the analysis and returns suggestions. Because the analysis is server-side,
+the text itself must leave the user's machine for the feature to function at all.
+
+\paragraph{Threat model.} We model an ordinary, non-adversarial situation:
+
+\begin{quote}
+A user receives a confidential file and is explicitly told not to share it with AI
+tools. They have a writing-assistant extension installed and enabled --- the default
+state for millions of users. In the course of normal work they paste part of the
+document into a normal text field (an email reply, a web form, a notes box). Without
+any further action, the extension transmits the content to its servers.
+\end{quote}
+
+The adversary here is not a criminal; it is the gap between the tool's default
+behaviour and the user's mental model. The user believes they have withheld the
+document from AI tools. In fact, merely pasting it into a field an unrelated extension
+happens to watch has already transmitted it. Our measurement targets precisely this
+gap: exposure that occurs with \emph{no user action beyond pasting}.
+
+\section{Related Work}
+\label{sec:related}
+
+The privacy risks of browser extensions have been studied for the better part of a
+decade. \citet{starov2017extended} were among the first to systematically measure the
+``privacy diffusion'' enabled by extensions, showing that many leak identifying
+information far beyond what their function requires. \citet{weissbacher2017exray}
+built Ex-Ray to detect history-leaking extensions, and \citet{aggarwal2018ispy}
+analysed and detected ``spying'' extensions that exfiltrate browsing behaviour. These
+works established that extension data collection is widespread and frequently
+undisclosed.
+
+More recent large-scale studies have moved from browsing metadata to \emph{page
+content}. \citet{nayak2024experimental} experimentally analysed sensitive-data access
+by extensions, including access to credentials on login pages, across the Chrome Web
+Store. \citet{xie2024arcanum} built Arcanum, a dynamic taint-tracking system, and
+found that thousands of extensions --- used by an estimated 144 million people ---
+collect sensitive on-page content such as email bodies, social-media activity, and
+banking information, often without accurate disclosure. From the tracking side,
+\citet{dambra2022sally} measured web tracking from the user's perspective.
+
+Closest to the present work, \citet{vekaria2025bighelp} audited nine generative-AI
+browser assistants and, using traffic decryption, showed that several forward full
+webpage content --- including medical and banking details --- to their own servers and
+to third-party trackers. Our study is narrower and complementary: rather than a
+broad crawl, we perform a deep, controlled, and \emph{fully reproducible} measurement
+of a specific, common threat model (a confidential document pasted into a field with a
+grammar checker running by default), using a planted-canary methodology that makes
+each leak individually and unambiguously attributable. Where prior large-scale work
+answers ``how many extensions leak,'' we answer ``exactly how much of a specific
+confidential document leaves, and which sensitive tokens, for two representative
+tools, with what reproducibility.''
+
+\section{Methodology}
+\label{sec:method}
+
+\subsection{Study design and conditions}
+
+We measure three conditions: two writing-assistant extensions and a control.
+
+\begin{itemize}[nosep]
+  \item \textbf{Grammarly} --- the archetypal always-on grammar/style checker and the
+        motivating example for this project.
+  \item \textbf{LanguageTool} --- an independent grammar checker from a different
+        vendor (LanguageTooler GmbH) that requires no account, making it the cleanest
+        possible replication partner.
+  \item \textbf{Baseline} --- the identical browser and procedure with \emph{no}
+        extension installed, to capture and subtract ordinary browser background
+        traffic.
+\end{itemize}
+
+Two independent tools exhibiting the same behaviour constitutes within-class
+replication, which is substantially stronger evidence than a single data point. The
+scope was reached by evaluating and excluding several other candidates
+(Section~\ref{sec:limitations}); the final design measures \emph{automatic /
+background} exposure by grammar checkers.
+
+\subsection{Test document and planted secrets}
+
+The input is a synthetic ``confidential memo'' (2{,}065 characters, 245 words) written
+to look like an internal compliance document and explicitly marked
+``\textsc{do not forward}.'' Embedded in its prose are \textbf{twelve unique,
+fictional identifiers} --- names, an email address, a phone number, project and
+reference codes, and a UUID \emph{canary}, \canary{}. None of these strings exists
+anywhere on the public internet, so any occurrence in captured network traffic is
+unambiguously attributable to our input. The canary in particular gives a single,
+unforgeable yes/no signal: if it appears in outbound traffic, the confidential payload
+provably reached the tool's servers.
+
+\subsection{Interception setup}
+
+All captures were performed on an isolated Kali Linux virtual machine so that the
+man-in-the-middle configuration never touched real browsing. We used
+mitmproxy~\citep{mitmproxy} (version 12.2.3) as an intercepting HTTPS/WebSocket proxy
+on \texttt{127.0.0.1:8080}. Each tool ran in its own clean Firefox profile with the
+proxy configured and the mitmproxy certificate authority trusted \emph{only within
+that profile}, so decryption was scoped to the experiment. Before any data collection,
+interception was verified per profile (a known HTTPS site must load without a
+certificate warning and appear in the proxy); this guards against the most dangerous
+failure mode in such studies, in which a broken interception silently looks identical
+to a genuine zero-exposure result.
+
+The document was pasted into a bare local HTML page containing a single text field and
+nothing else --- no third-party scripts, analytics, or other domains --- served over
+\texttt{http://localhost} so that extension content scripts activate exactly as they
+would on a real site, but with zero background noise to filter out.
+
+\subsection{Capture procedure}
+
+For each run, the document was loaded into the clipboard and pasted with a
+\emph{real, manual} \texttt{Ctrl+V} into the focused field, after which the run
+recorded for sixty seconds. The manual paste is a deliberate methodological point: a
+scripted/synthetic paste fills the field visually but does not fire the DOM
+\texttt{input} event the extensions listen for, so the tool never ingests the text and
+nothing is transmitted --- a misleading ``clean'' zero. A genuine keystroke is what
+causes the tool to receive the document. Each tool was captured for \textbf{five runs}
+and the baseline for \textbf{three}, following an identical, locked protocol so that
+between-run variance measures reproducibility rather than procedural drift.
+
+\subsection{Metrics}
+\label{sec:metrics}
+
+A mitmproxy add-on scored every decrypted outbound request, response, and WebSocket
+frame; the raw captures were also archived so they can be re-analysed offline. We
+report, in order of importance:
+
+\begin{description}[nosep,style=nextline]
+  \item[Planted-secret count (headline).] How many of the twelve identifiers reached
+        the servers, verified individually. The canary makes this unambiguous.
+  \item[Exposure \%.] The fraction of the document's characters whose 20-character
+        sliding window appears anywhere in outbound traffic, after subtracting hosts
+        seen in the baseline. A 20-character window is long enough to avoid false
+        matches from common words and short enough to catch fragmented sends; a
+        per-host concatenated-transcript pass additionally catches content split
+        across multiple frames. Matching is performed over plain, URL-decoded, and
+        JSON-unescaped variants so that encoded transmission is still detected.
+  \item[Reproducibility.] The standard deviation of exposure \% across a tool's runs,
+        labelled High ($<3$~pp), Medium ($3$--$10$~pp), or Low ($>10$~pp).
+  \item[Traffic visibility.] Reported as \emph{two} separate numbers --- the share of
+        intercepted events that used HTTPS, and the count of TLS handshakes that could
+        not be intercepted (e.g.\ certificate pinning) --- never combined into a single
+        figure, because a non-zero failure count means the exposure result is a lower
+        bound.
+\end{description}
+
+\noindent
+We additionally report a 95\% confidence interval on the mean exposure using a
+$t$-distribution ($n{-}1$ degrees of freedom), and use non-overlapping intervals as
+informal evidence of a real difference between conditions.
+
+\section{Results}
+\label{sec:results}
+
+\subsection{Headline: both tools transmit the whole document and every secret}
+
+Table~\ref{tab:results} and Figure~\ref{fig:exposure} summarise the findings. Both
+extensions transmitted essentially the entire document and \textbf{all twelve planted
+secrets, including the canary}, to their servers. Grammarly transmitted a median
+\textbf{99.0\%} of the document's characters; LanguageTool transmitted \textbf{91.9\%}.
+The no-extension baseline transmitted \textbf{0.0\%} and none of the secrets. All
+transmission used HTTPS, and there were \emph{zero} un-interceptable TLS handshakes ---
+so the reported figures are complete, not lower bounds.
+
+\begin{table}[h]
+\centering
+\caption{Default-configuration exposure per condition. Exposure is the median across
+runs; secrets are the number of the twelve planted identifiers detected in outbound
+traffic. ``TLS fail'' is the count of handshakes that could not be intercepted.}
+\label{tab:results}
+\small
+\begin{tabular}{lccccccc}
+\toprule
+\textbf{Condition} & \textbf{Runs} & \textbf{Exposure} & \textbf{Std.\ dev.} &
+\textbf{Secrets} & \textbf{Canary?} & \textbf{HTTPS} & \textbf{TLS fail} \\
+\midrule
+Grammarly    & 5 & \textbf{99.0\%} & 0.0 pp & \textbf{12/12} & yes & 100\% & 0 \\
+LanguageTool & 5 & \textbf{91.9\%} & 0.0 pp & \textbf{12/12} & yes & 100\% & 0 \\
+Baseline     & 3 & 0.0\%           & 0.0 pp & 0/12           & no  & ---  & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.72\linewidth]{figures/exposure_chart.pdf}
+\caption{Share of the confidential document transmitted to each tool's servers by
+default. Both grammar checkers transmit essentially the whole document and all twelve
+planted secrets; the no-extension baseline transmits nothing.}
+\label{fig:exposure}
+\end{figure}
+
+\subsection{Perfect reproducibility}
+
+Both tools produced \emph{identical} exposure on every run: the standard deviation was
+0.0 percentage points, and the 95\% confidence interval collapses to a point
+(Grammarly $[99.0, 99.0]$; LanguageTool $[91.9, 91.9]$). This is a stronger result
+than mere ``High reproducibility'': the behaviour is deterministic. Pasting the
+document reliably causes the same near-complete transmission every time, which is
+consistent with the transmission being a fixed part of the tools' normal operation
+rather than an occasional or sampled event. The two tools' intervals are disjoint from
+each other and from the baseline, so the differences are unambiguous.
+
+\subsection{What was transmitted, and how}
+
+Grammarly streamed the document to its backend over a WebSocket connection (a median
+of roughly 6~kB of outbound payload per run across about two tool-related hosts).
+LanguageTool sent it as an HTTPS \texttt{POST} to \texttt{api.languagetool.org/v2/check}
+(roughly 5.6~kB to a single host). In both cases the twelve planted identifiers,
+including the canary, were recovered from the decrypted outbound traffic. The
+$\sim$8~percentage-point gap between the two tools reflects how much surrounding
+boilerplate each includes rather than any difference in whether the sensitive content
+leaves: both transmitted \emph{all} of the sensitive tokens.
+
+\subsection{Two exposure classes}
+
+The excluded-tool investigation (Section~\ref{sec:limitations}) surfaced a distinction
+worth stating as a result. Writing tools fall into two behavioural classes under this
+threat model: \emph{automatic / background} transmitters, which send the document with
+no user action beyond pasting (Grammarly and LanguageTool), and \emph{on-demand}
+transmitters, which send only text the user actively submits (e.g.\ a paraphraser
+invoked by selecting text and clicking ``rewrite''). Under the study's exact scenario
+--- an extension running in the background while the user merely pastes --- the
+automatic class leaks and the on-demand class does not. Grammar checkers trend toward
+the automatic class; paraphrasers toward the on-demand class. This is a meaningful
+distinction for users and policy, not a measurement artefact.
+
+\section{Discussion}
+\label{sec:discussion}
+
+The most striking single data point is not the percentage but the canary. A unique
+token that existed only inside a document marked ``\textsc{do not forward}'' was found,
+seconds after an ordinary paste, in traffic bound for two companies' servers --- placed
+there by software the user installed once and forgot. Nothing here is a bug or an
+exploit: server-side analysis \emph{requires} the text to be uploaded, and both vendors
+document that they process user text. The finding is about the distance between that
+design and what a user, told ``don't share this with AI,'' would reasonably believe had
+happened when they simply pasted a paragraph into an unrelated field.
+
+This distance matters because the exposure is (a) invisible --- there is no prompt, no
+click, no confirmation; (b) complete --- essentially the whole document, not a
+fragment; and (c) deterministic --- it happens every time, reliably. For an individual
+handling regulated data (health, legal, financial) the implication is direct:
+default-configuration writing assistants are incompatible with a ``do not share''
+instruction unless explicitly disabled, and disabling them is not the default. The
+two-class distinction gives users a practical lever: automatic grammar checkers are the
+ones that leak passively, whereas on-demand paraphrasers only transmit what is actively
+submitted.
+
+\section{Limitations and Excluded Tools}
+\label{sec:limitations}
+
+\paragraph{Excluded tools (the honest trail).} Not every candidate fit the controlled
+Firefox method, and recording why is part of the methodology.
+\begin{itemize}[nosep]
+  \item \textbf{ProWritingAid} --- a genuine extension, but it did not attach to the
+        controlled test field (it sent only small heartbeats, never the document), so
+        it produced no measurable transmission under this protocol.
+  \item \textbf{QuillBot} --- has no official Firefox extension (Chrome only) and so
+        cannot be tested under a Firefox-based method that must be identical for every
+        tool.
+  \item \textbf{Wordtune} --- the obvious Firefox listing proved to be a
+        \emph{counterfeit} (a clone under an unrelated publisher, with a scam support
+        link, that echoed text locally and never contacted a server); the genuine tool
+        is published by AI21 Labs but is \emph{on-demand} and therefore does not leak
+        on a background paste. This underscores a practical user lesson: verify an
+        extension's publisher before installing.
+\end{itemize}
+
+\paragraph{Other limitations.}
+\begin{itemize}[nosep]
+  \item \textbf{Single document.} All runs used one test document; exposure is reported
+        for that document. Because the finding is essentially ``all of it, every time,''
+        document-to-document variance is unlikely to change the qualitative result, but
+        multi-document measurement would strengthen external validity.
+  \item \textbf{Controlled field.} A bare local page isolates the signal but is not a
+        real website; a small number of Gmail/Google-Docs confirmation runs would test
+        representativeness (planned as future work).
+  \item \textbf{Tool drift.} These are cloud products that auto-update. The
+        \emph{pipeline} reproduces exactly; the specific percentages reflect tool
+        behaviour at capture time (each run is timestamped).
+  \item \textbf{Scope of interception.} Certificate pinning can hide traffic; here the
+        count of un-interceptable handshakes was zero, so this did not affect the
+        result, but in general the exposure figure is a lower bound.
+\end{itemize}
+
+\section{Ethics and Responsible Disclosure}
+
+All test data is synthetic: no real person, organisation, or system is referenced, and
+no real personal data was captured or transmitted. The study measures
+default-configuration behaviour of legitimately installed software on the researcher's
+own machine; it does not attack the vendors' systems or other users. Consistent with
+responsible-disclosure norms, findings are intended to be shared with the affected
+vendors, with a reasonable window to respond, before any public release of the
+repository.
+
+\section{Conclusion and Future Work}
+
+Two independent, widely used grammar-checking browser extensions each silently
+transmitted essentially an entire confidential document --- and every one of twelve
+planted secrets, including a unique canary --- to their servers, automatically, on a
+single paste, with perfect reproducibility, while a no-extension baseline transmitted
+nothing. The tools are behaving as designed; the result documents how far that design
+sits from the expectations of a user told not to share a document with AI tools, and it
+distinguishes the automatic transmitters that leak passively from on-demand tools that
+do not. Future work includes a small set of real-field (Gmail, Google Docs)
+confirmation runs, extension to additional tools and multiple documents, and
+measurement of whether disabling or configuring the tools changes the default outcome.
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}
