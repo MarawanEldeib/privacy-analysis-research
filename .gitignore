@@ -37,6 +37,7 @@ Worklog.xlsx
 credentials.local.txt
 
 # LaTeX build artefacts (when the report phase starts)
+report/log*.txt
 *.aux
 *.log
 *.out
