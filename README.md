@@ -1,6 +1,6 @@
 # Measuring Data Exposure in LLM-Integrated Productivity Tools
 
-University research project — measures how much of a confidential document is silently transmitted to external servers when LLM-integrated browser extensions (Grammarly, ProWritingAid, Wordtune) are running during normal use.
+University research project — measures how much of a confidential document is silently transmitted to external servers when LLM-integrated writing-assistant browser extensions (Grammarly, LanguageTool) are running by default during normal use.
 
 **Student:** Marawan Eldeib · **Matrikelnummer:** 3764796 · **Deadline:** 2026-10-10
 
@@ -19,9 +19,10 @@ Concretely: a user receives a confidential file, is told not to share it with AI
 | `scripts/capture/` | mitmproxy addon that captures and scores outbound traffic |
 | `scripts/analysis/` | Analyzer (per-tool stats, 95% CIs, sentence-leak count, comparison chart) |
 | `skills/privacy-analysis-project/` | Project knowledge for Claude sessions (auto-loaded) |
-| `Makefile` | One-line commands for the 18-run capture/analysis cycle |
+| `Makefile` | One-line commands for the capture/analysis cycle |
 | `data/raw/` | Capture outputs per tool (one folder per tool) |
 | `results/` | Analyzer outputs: per-tool summaries, comparison table, chart PNG/SVG |
+| `Project-Dashboard.html` | Self-contained results & progress dashboard (open in any browser) |
 
 ## Quick start
 
@@ -60,7 +61,11 @@ Plus 95% confidence intervals on the mean exposure and a sentence-level leak cou
 
 ## Project status
 
-Methodology and scripts at v3.1; issues found across three reviews have been fixed (see `docs/`). Kali environment setup and data collection are the next steps. See `docs/Timeline.md` for milestones.
+Data collection is **complete for the final tool set**: **Grammarly** and **LanguageTool** — two independent automatic grammar checkers — plus a **no-extension baseline**. Across 5 runs each, both tools silently transmitted ~the entire test document (Grammarly **99.0%**, LanguageTool **91.9%**) and **all 12 planted secrets including the canary**; the baseline transmitted **0%**. Per-tool summaries live in `results/`, and `Project-Dashboard.html` gives a self-contained overview.
+
+ProWritingAid, QuillBot, and Wordtune were evaluated but dropped and are recorded as limitations (ProWritingAid didn't attach to the controlled field; QuillBot has no official Firefox extension; the `/wordtune/` Firefox listing was a clone and the genuine tool is on-demand). See `docs/QA-Professor.md` for the reasoning.
+
+Remaining: an optional real-field (Gmail / Google Docs) representativeness run, and the written report. See `docs/Timeline.md` for milestones.
 
 ## Note on the test document
 
