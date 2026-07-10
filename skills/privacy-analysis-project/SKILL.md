@@ -1,6 +1,6 @@
 ---
 name: privacy-analysis-project
-description: Marawan's privacy research project measuring data exposure in Grammarly, ProWritingAid, and Wordtune via mitmproxy on Kali. Use when the user mentions this project, the workspace folder "Research Project - Privacy analysis", any of the three tools by name, mitmproxy capture, the canary token, or the analyzer scripts.
+description: Marawan's privacy research project measuring data exposure in Grammarly and LanguageTool via mitmproxy on Kali. Use when the user mentions this project, the workspace folder "Research Project - Privacy analysis", either tool by name, mitmproxy capture, the canary token, or the analyzer scripts.
 ---
 
 # Privacy Analysis Project — Working Context
@@ -9,42 +9,43 @@ This skill loads when Marawan is working on his university research project meas
 
 ## Project at a glance
 
-**Workspace folder:** `F:\Research Project - Privacy analysis\`
+**Workspace folder:** `F:\Projects\Research Project - Privacy analysis\`
 **Final deadline:** 2026-10-10
-**Status:** Third-review bugs FIXED + committed 2026-05-28 (see status section below). Instrument idioms deliberately deferred until after captures. Reviews: `docs/Independent-Critical-Review-2026-05-28.md` and `docs/Engineering-Architecture-Review-2026-05-28.md`.
+**Status (2026-07-10):** Data collection COMPLETE for the final tool set. Grammarly (99.0%, 12/12 secrets) and LanguageTool (91.9%, 12/12) are both automatic/background leakers; baseline 0%. Instrument bugs from the 2026-05-28 reviews are all fixed. Remaining: optional Gmail/Google-Docs representativeness run + the report. Entry point: `docs/WALKTHROUGH.md`.
 
 **Threat model:** A user receives a confidential document, is told not to share it with AI tools, but has a writing-assistant browser extension running by default in the background. They paste content into a normal text field (email, doc, comment box). The extension silently transmits that content. We measure how much.
 
-**Tools tested:** Grammarly, ProWritingAid, Wordtune (all Firefox extensions). GitHub Copilot was dropped — VS Code doesn't use the Firefox proxy reliably.
+**Tools tested (final):** Grammarly + LanguageTool (both Firefox extensions, both automatic grammar checkers) vs a no-extension baseline. ProWritingAid (didn't attach to the controlled field), QuillBot (no official Firefox extension), and Wordtune (Firefox listing was a clone; genuine tool is on-demand) were evaluated and dropped — recorded as limitations. GitHub Copilot was excluded earlier (VS Code bypasses the Firefox proxy). **Key finding — two exposure classes:** automatic/background transmitters (Grammarly, LanguageTool) leak on paste; on-demand transmitters (Wordtune) don't. Always verify an extension's publisher before installing (the `/wordtune/` slug was a clone).
 
 ## Companion files in this skill (read as needed)
 
-- `methodology.md` — locked decisions and their rationale. **NOT FINAL** — some have been challenged by the third review; cross-check before defending any locked decision.
+- `methodology.md` — decisions and their rationale (final scope: Grammarly + LanguageTool + baseline).
 - `protocol.md` — per-run capture protocol as a checklist.
 - `gotchas.md` — known failure modes.
 - `interpretation.md` — how to read the analyzer's output.
 - `future-skills.md` — skills to create when later phases begin (LaTeX template, etc.).
 
-## REQUIRED reading outside the skill before suggesting anything
+## Orientation reading
 
-- `docs/Independent-Critical-Review-2026-05-28.md` — third independent review. Identifies real bugs (the analyzer drops transcript coverage so chunked sends report 0%; JSON-unescape is dead code; `decompress()` runs on already-decompressed bytes; WS scheme check probably wrong; Makefile mkdir ordering bug). Read this BEFORE treating anything in `methodology.md` as still locked.
+- `docs/WALKTHROUGH.md` — the doc map; start here. It points to the reproduction,
+  narrative, and technical walkthroughs.
+- `docs/Independent-Critical-Review-2026-05-28.md` — a historical review snapshot. The
+  bugs it identified are all fixed; read it for context on *why* the instrument is
+  built the way it is, not as an open bug list.
 
-## Third-review findings — current status
+## Instrument status (historical reviews resolved)
 
-**Fixed + committed 2026-05-28 (do NOT re-flag these as bugs):**
-1. `analyze.py::union_exposure_from_run` now folds in the addon's per-host transcript coverage (post-baseline) — chunked WebSocket sends no longer read as ~0%.
-2. `build_search_corpus()` now parses JSON + unescapes `\n`/`\uXXXX` in place; the dead `json.loads(f'"..."')` whole-body path is gone.
-3. `safe_body()` wraps `.content` (falls back to `raw_content`, records `read_failures`) — no more silent event drops on bad encoding.
-4. `websocket_message` uses `scheme in ("https", "wss")` — `https_event_pct` no longer tanks for WS-heavy tools.
-5. Makefile creates `data/raw/<tool>/` BEFORE mitmdump writes the log/flow — no silent first-run failure.
-6. `data/raw/*/run_*.flow` is gitignored — decrypted auth tokens are not committed (verified: none ever were).
-7. `analyze.py` cleanups: dead TLS-bytes fallback removed; `total_request_bytes` computed from events (was always 0); unused `ci_mean_raw` dropped.
+The 2026-05-28 review bugs are all fixed (transcript fold-in, JSON-escape parsing,
+`safe_body` on bad encoding, WS scheme flag, Makefile mkdir ordering, `.flow`
+gitignored, analyzer cleanups). The doc reconciliation flagged back then is also
+done (README, Timeline, QA, Metrics-Definition, Professor email, starter prompt all
+brought to final scope on 2026-07-10; `Setup-Guide.md` retired in favour of
+`Reproduction-Guide.md`). Do NOT re-flag these as open.
 
-**Still open — deliberately deferred (instrument frozen until after captures):**
-- `SENSITIVE_TOKENS` + window/token matching duplicated across both scripts (DRY); implicit JSON-schema coupling.
-- Residual `.content` reads on length fields (`capture_addon.py:386/:414`); module-level side effects + `sys.exit` on import; module globals vs instance state; broad `except: pass`; `print` vs `logging`; provenance env vars unset.
-- Sentence parser counts label lines; responses counted in the exposure union (Blocker B).
-- Doc reconciliation: Professor-Update-Email (typing/bytes), QA Q3 + Timeline Phase 3 (rejected composite formula), starter prompt, README, Metrics-Definition "11"→12.
+Deferred-by-design (only worth doing if the project turns into a product): DRY the
+duplicated `SENSITIVE_TOKENS` list across the two scripts; `print`→`logging`;
+broad `except: pass`. The instrument was frozen during collection and collection is
+now done, so a careful structural pass is *permissible* but not required.
 
 ## What's confirmed VALID strengths
 
@@ -80,25 +81,31 @@ Distilled from the 2026-05-28 reviews — these override generic "refactor every
 
 ```
 Research Project - Privacy analysis/
-├── Makefile                              one-line commands for the capture cycle (has mkdir ordering bug)
+├── Makefile                              one-line commands for the capture cycle
+├── Project-Dashboard.html                self-contained results/progress dashboard
 ├── docs/
+│   ├── WALKTHROUGH.md                    ← doc map / entry point
+│   ├── Reproduction-Guide.md             run the study from scratch (replaces Setup-Guide)
+│   ├── Narrative-Walkthrough.md          the project story + dead ends
+│   ├── Technical-Walkthrough.md          how the code works
 │   ├── Project-Overview.md
 │   ├── Capture-Protocol.md
-│   ├── Setup-Guide.md
 │   ├── Metrics-Definition.md
-│   ├── QA-Professor.md                   (has doc drift — see review §2.7)
-│   ├── Timeline.md                       (has doc drift — Phase 3 still mentions rejected composite formula)
-│   ├── Professor-Update-Email.md         (not sent yet)
+│   ├── ENVIRONMENT.md
+│   ├── QA-Professor.md
+│   ├── Timeline.md
+│   ├── Setup-Guide.md                    (RETIRED — redirect stub)
+│   ├── Professor-Update-Email.md         (historical May-2026 draft)
 │   ├── New-Chat-Starter-Prompt.md
-│   └── Independent-Critical-Review-2026-05-28.md   ← READ THIS FIRST
+│   └── *-Review-2026-05-28.md            historical review snapshots
 ├── input-data/
 │   ├── test-document.txt
 │   ├── test-page.html
 │   └── README.md
 ├── scripts/
-│   ├── capture/capture_addon.py          (v3.1 + 2026-05-28 fixes; idioms deferred)
+│   ├── capture/capture_addon.py          (v3.1 + 2026-05-28 fixes)
 │   ├── capture/run_capture.sh
-│   └── analysis/analyze.py               (v3.1 — has known bugs above)
+│   └── analysis/analyze.py               (v3.1; final TOOLS = grammarly, languagetool, baseline)
 └── skills/privacy-analysis-project/      this skill
 ```
 
@@ -128,7 +135,7 @@ See `docs/QA-Professor.md` — but note the document drift in Q3 and the headlin
 The repo is prepared for public release (MIT LICENSE, CITATION.cff, README disclaimer) but stays **PRIVATE** until ALL three:
 
 1. Professor explicitly approves publication; university IP rules cleared.
-2. Vendors (Grammarly, ProWritingAid, Wordtune) notified under responsible-disclosure norms, ≥90 days to respond.
+2. Tested vendors (Grammarly, LanguageTool) notified under responsible-disclosure norms, ≥90 days to respond.
 3. Final results stable (no re-captures planned).
 
 If Marawan asks about going public, **first check this gate**. Documented in `docs/Timeline.md`.

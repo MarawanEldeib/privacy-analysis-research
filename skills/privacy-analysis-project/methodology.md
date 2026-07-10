@@ -2,11 +2,20 @@
 
 Every decision below has been considered and locked. Each is paired with the reason and (where relevant) the alternative that was rejected. If you're tempted to suggest a change, find the entry below first.
 
-## Tool selection: Grammarly + ProWritingAid + Wordtune
+## Tool selection: Grammarly + LanguageTool + baseline (final, 2026-07-10)
 
-**Decision:** Three Firefox extensions only.
-**Why:** All use the same Firefox/mitmproxy capture path, which keeps the methodology consistent.
-**Rejected alternative:** GitHub Copilot. It runs inside VS Code and doesn't reliably honour the Firefox system proxy, so traffic capture would have been inconsistent with the other two tools. Mixing capture methods would break the "same protocol for all tools" requirement.
+**Decision:** Two automatic grammar-checker Firefox extensions (Grammarly,
+LanguageTool) vs a no-extension baseline.
+**Why:** Both use the same Firefox/mitmproxy capture path, and both transmit
+*automatically in the background* — the exact threat model. Two independent vendors
+showing the same behaviour is within-class replication.
+**Dropped (recorded as limitations):** ProWritingAid (didn't attach to the controlled
+field), QuillBot (no official Firefox extension — Chrome only), Wordtune (the
+`/wordtune/` listing was a clone; the genuine tool is on-demand, so it doesn't leak on
+a background paste). The original 2×2 plan (adding those three) is superseded — see
+`docs/QA-Professor.md`.
+**Rejected earlier:** GitHub Copilot — runs inside VS Code and doesn't reliably honour
+the Firefox proxy, which would break the "same protocol for all tools" requirement.
 
 ## Threat model: "received a doc, handle it normally"
 
@@ -14,19 +23,30 @@ Every decision below has been considered and locked. Each is paired with the rea
 **Why:** This matches the professor's original example. The user wouldn't deliberately paste a doc into Grammarly's own app — they'd paste it into a normal field, where Grammarly silently intercepts.
 **Rejected alternative:** "Passive background exposure" was the original framing. It was technically imprecise — Grammarly is doing what it was designed to do. The new framing is more accurate.
 
-## Input method: scripted paste via xdotool
+## Input method: manual Ctrl+V paste (revised)
 
-**Decision:** `xclip` loads the test document into the clipboard, `xdotool key ctrl+v` triggers the paste into the focused Firefox window, wait 60s.
-**Why:** Reproducible across runs (no timing variance from human typing), matches the threat model (paste, not fresh writing), fast.
-**Rejected alternatives:**
-- *Typing via xdotool keystrokes* — reproducible but doesn't match the "received a document" scenario; user would never type a confidential doc fresh.
-- *Manual typing* — introduces human timing variance that inflates std dev. Tedious to do 15 times.
-- *Selenium / Playwright* — anti-bot detection in Grammarly often blocks them. xdotool driving a real Firefox session is safer.
+**Decision:** `xclip` loads the test document into the clipboard; the operator pastes
+with a **real Ctrl+V** into the focused box, then waits 60s.
+**Why manual, not scripted (important correction):** the original plan used
+`xdotool key ctrl+v`, but a scripted/synthetic paste fills the box **without firing
+the DOM `input` event** the extensions listen for — so the tool never ingests the
+text and nothing is transmitted (a false 0%). A real keystroke is what makes the tool
+receive the document. An opt-in `AUTO=1` xdotool path remains in the Makefile but is
+not used.
+**Why paste at all (not typing):** matches the "received a document" threat model, and
+avoids the keystroke-timing variance that would inflate std dev.
+**Rejected:** Selenium / Playwright — anti-bot detection often blocks them; driving a
+real Firefox session is safer.
 
 ## Test field: local HTML page with one textarea
 
-**Decision:** A static HTML file (`input-data/test-page.html`) with a single `<textarea>`. Opened via `file://` URL in Firefox.
-**Why:** Zero third-party JavaScript and zero third-party network traffic. Whatever the extension sends is the *only* traffic to interpret. Grammarly/ProWritingAid/Wordtune all activate on standard textareas, so the extension's behaviour here is the same as on Gmail or Google Docs.
+**Decision:** A static HTML page (`input-data/test-page.html`) with a single
+`<textarea>`, served over `http://localhost:8000` (not `file://`).
+**Why:** Zero third-party JavaScript and zero third-party network traffic. Whatever the
+extension sends is the *only* traffic to interpret. Grammarly and LanguageTool both
+activate on standard textareas, so behaviour here matches Gmail or Google Docs. Serving
+over `http://localhost` (rather than `file://`) avoids Firefox's restrictions on
+extension content scripts running on `file://` pages.
 **Stretch (only if time permits in September):** 1-2 supplementary runs in Gmail and Google Docs to confirm the local page is representative of real-world fields.
 **Rejected alternative:** Gmail/Google Docs as primary fields — too noisy; baseline subtraction would be much harder.
 
@@ -44,7 +64,7 @@ Every decision below has been considered and locked. Each is paired with the rea
 
 ## 5 runs per tool + 3 baseline runs
 
-**Decision:** 5 captures per tool × 3 tools = 15 main runs, plus 3 baseline runs (no extension installed).
+**Decision:** 5 captures per tool × 2 tools (Grammarly, LanguageTool) = 10 main runs, plus 3 baseline runs (no extension installed).
 **Why:** 5 is enough to compute a meaningful std dev and 95% CI without consuming all your time. 3 baseline runs give a stable picture of background Firefox noise to subtract.
 
 ## Reproducibility = std dev across 5 runs
@@ -74,7 +94,7 @@ Every decision below has been considered and locked. Each is paired with the rea
 
 ## Reporting per tool, plus side-by-side comparison
 
-**Decision:** Three separate result statements (one per tool) + a comparison table with 95% CIs + a visual CI-overlap check.
+**Decision:** A result statement per tool (Grammarly, LanguageTool) + a comparison table with 95% CIs + a visual CI-overlap check.
 **Why:** Marawan asked whether tools needed to be compared against each other or reported individually — both. Individual reports per tool are the primary deliverable. The comparison table + CI overlap check is a free bonus that lets the reader spot real differences without formal hypothesis tests.
 **Open question for professor (Q12):** Is CI overlap sufficient, or are formal pairwise t-tests required?
 

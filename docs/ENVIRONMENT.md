@@ -3,8 +3,8 @@
 The exact software environment the captures were produced in, plus commands to
 (a) recreate a compatible environment and (b) lock *your* exact versions
 alongside your data. This is the reproducibility appendix to
-[`WALKTHROUGH.md`](WALKTHROUGH.md) — the walkthrough tells you *what to do*; this
-file pins *what it ran on*.
+[`Reproduction-Guide.md`](Reproduction-Guide.md) — the guide tells you *what to
+do*; this file pins *what it ran on*.
 
 > **Why this matters.** The results depend on version-specific behaviour of
 > mitmproxy (HTTP `.content` decoding and WebSocket scheme handling both had to
@@ -106,8 +106,8 @@ result was produced in.
 
 All installs above come from the distro repositories (`apt`) and PyPI (`pip`).
 The **browser extensions** must come from their official listings — clones exist
-(see [`WALKTHROUGH.md`](WALKTHROUGH.md) §4.4). Confirm the publisher before
-installing:
+(see [`Reproduction-Guide.md`](Reproduction-Guide.md) Step 4). Confirm the
+publisher before installing:
 
 | Tool | Official Firefox add-on | Publisher |
 |---|---|---|
