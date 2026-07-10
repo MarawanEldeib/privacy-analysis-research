@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Analysis — Project Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1"></script>
+<style>
+:root{
+  --bg:#0b1220; --bg2:#111a2e; --page:#eef1f7; --card:#ffffff;
+  --ink:#0f172a; --muted:#64748b; --line:#e5e9f2;
+  --danger:#e11d48; --danger-soft:#ffe4e9;
+  --safe:#10b981; --safe-soft:#d8f5ea;
+  --warn:#f59e0b; --warn-soft:#fef2d9;
+  --accent:#6366f1; --accent-soft:#e6e7ff;
+  --slate:#94a3b8; --slate-soft:#eef2f7;
+  --radius:14px; --gap:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--page);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding:22px}
+a{color:var(--accent)}
+
+/* Header / hero */
+.hero{background:radial-gradient(1200px 400px at 80% -20%,#1e2b4d 0%,var(--bg) 55%);color:#fff;border-radius:var(--radius);padding:28px 30px;position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(15,23,42,.18)}
+.hero:before{content:"";position:absolute;inset:0;background:
+  radial-gradient(500px 200px at 10% 120%,rgba(225,29,72,.22),transparent 60%),
+  radial-gradient(400px 160px at 95% 10%,rgba(99,102,241,.20),transparent 60%);pointer-events:none}
+.eyebrow{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#9fb3d1;font-weight:700}
+.hero h1{font-size:27px;font-weight:800;margin:6px 0 6px;line-height:1.2}
+.hero p.lede{color:#c9d6ea;font-size:15px;max-width:820px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);color:#e7eefb;font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:999px}
+.chip b{color:#fff}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dot.live{background:#34d399;box-shadow:0 0 0 4px rgba(52,211,153,.22)}
+
+/* Section scaffolding */
+section{margin-top:24px}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+.sec-head h2{font-size:16px;font-weight:800;letter-spacing:.2px}
+.sec-head span{font-size:13px;color:var(--muted)}
+
+/* Finding band */
+.finding{display:grid;grid-template-columns:1fr auto 1fr;gap:0;background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:0 2px 10px rgba(15,23,42,.06);border:1px solid var(--line)}
+.finding .side{padding:22px 26px}
+.finding .side small{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.finding .big{font-size:46px;font-weight:800;line-height:1;margin:6px 0 2px}
+.finding .side p{font-size:13px;color:var(--muted)}
+.finding .leak{background:linear-gradient(180deg,#fff, #fff7f9)}
+.finding .leak .big{color:var(--danger)}
+.finding .safe{background:linear-gradient(180deg,#fff,#f4fdf9)}
+.finding .safe .big{color:var(--safe)}
+.finding .vs{display:flex;align-items:center;justify-content:center;padding:0 6px;background:var(--bg);color:#fff}
+.finding .vs span{font-weight:800;font-size:14px;letter-spacing:1px;color:#9fb3d1;writing-mode:vertical-rl;transform:rotate(180deg)}
+.finding .foot{grid-column:1/-1;border-top:1px solid var(--line);padding:12px 26px;font-size:13px;color:var(--ink);background:#fbfcfe}
+.finding .foot b{color:var(--danger)}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--gap)}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:0 1px 3px rgba(15,23,42,.05);position:relative}
+.kpi .lab{font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700}
+.kpi .val{font-size:27px;font-weight:800;margin-top:6px;line-height:1}
+.kpi .sub{font-size:12.5px;color:var(--muted);margin-top:6px}
+.kpi .bar{height:5px;border-radius:5px;background:var(--slate-soft);margin-top:11px;overflow:hidden}
+.kpi .bar>i{display:block;height:100%;border-radius:5px}
+.accent-danger .val{color:var(--danger)} .accent-danger .bar>i{background:var(--danger)}
+.accent-safe .val{color:var(--safe)} .accent-safe .bar>i{background:var(--safe)}
+.accent-accent .val{color:var(--accent)} .accent-accent .bar>i{background:var(--accent)}
+.accent-warn .val{color:#b45309} .accent-warn .bar>i{background:var(--warn)}
+
+/* Cards / grid */
+.grid-2{display:grid;grid-template-columns:1.35fr 1fr;gap:var(--gap)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:0 1px 3px rgba(15,23,42,.05)}
+.card h3{font-size:14px;font-weight:800;margin-bottom:4px}
+.card .hint{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+.toggle{display:inline-flex;background:var(--slate-soft);border-radius:9px;padding:3px;gap:3px;margin-bottom:8px}
+.toggle button{border:0;background:transparent;font:inherit;font-size:12.5px;font-weight:700;color:var(--muted);padding:6px 12px;border-radius:7px;cursor:pointer}
+.toggle button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.chart-box{position:relative;height:290px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:6px;vertical-align:middle}
+
+/* Pipeline */
+.pipe{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.step{background:#fbfcff;border:1px solid var(--line);border-radius:12px;padding:14px;position:relative}
+.step .n{width:24px;height:24px;border-radius:7px;background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
+.step h4{font-size:13px;margin:9px 0 4px}
+.step p{font-size:12px;color:var(--muted)}
+.step:not(:last-child):after{content:"→";position:absolute;right:-9px;top:50%;transform:translateY(-50%);color:var(--slate);font-weight:800;z-index:2}
+
+/* Tool tracker */
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:var(--gap)}
+.tool{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:0 1px 3px rgba(15,23,42,.05);border-top:4px solid var(--slate)}
+.tool.t-complete{border-top-color:var(--danger)}
+.tool.t-control{border-top-color:var(--safe)}
+.tool.t-blocked{border-top-color:var(--warn)}
+.tool.t-pending{border-top-color:var(--slate)}
+.tool .fam{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.tool .nm{font-size:17px;font-weight:800;margin:2px 0 8px}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px}
+.s-complete{background:var(--danger-soft);color:#be123c}
+.s-control{background:var(--safe-soft);color:#047857}
+.s-blocked{background:var(--warn-soft);color:#b45309}
+.s-pending{background:var(--slate-soft);color:#475569}
+.tool .rows{margin-top:12px;font-size:12.5px;color:var(--ink)}
+.tool .rows div{display:flex;justify-content:space-between;padding:4px 0;border-top:1px dashed var(--line)}
+.tool .rows div:first-child{border-top:0}
+.tool .rows b{font-weight:700}
+
+/* Table */
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{text-align:left;padding:9px 12px;border-bottom:2px solid var(--line);color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;cursor:pointer;user-select:none;white-space:nowrap}
+thead th:hover{color:var(--ink)}
+tbody td{padding:9px 12px;border-bottom:1px solid #f1f4f9}
+tbody tr:hover{background:#f8fafd}
+.pct{font-weight:800}
+.pct.hi{color:var(--danger)} .pct.lo{color:var(--safe)}
+.badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}
+.b-yes{background:var(--danger-soft);color:#be123c}
+.b-no{background:var(--safe-soft);color:#047857}
+
+/* Secrets */
+.secrets{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.secret{border:1px solid var(--line);border-radius:11px;padding:11px 13px;background:#fff;position:relative}
+.secret.canary{border-color:#fbbf24;background:linear-gradient(180deg,#fffdf5,#fff)}
+.secret .t{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+.secret .v{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;margin-top:3px;word-break:break-all}
+.secret .tag{position:absolute;top:10px;right:10px;font-size:10px;font-weight:800;color:var(--danger)}
+.secret.canary .tag{color:#b45309}
+
+/* Roadmap */
+.road{position:relative;margin-left:8px}
+.road .item{display:grid;grid-template-columns:26px 1fr;gap:12px;padding:8px 0}
+.road .mk{width:22px;height:22px;border-radius:50%;border:2px solid var(--slate);background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--slate);z-index:2}
+.road .item.done .mk{border-color:var(--safe);background:var(--safe);color:#fff}
+.road .item.doing .mk{border-color:var(--warn);background:var(--warn-soft);color:#b45309}
+.road .item .txt b{font-size:14px}
+.road .item .txt p{font-size:12.5px;color:var(--muted)}
+.road:before{content:"";position:absolute;left:10px;top:12px;bottom:12px;width:2px;background:var(--line)}
+
+footer{margin-top:26px;padding:16px 6px;color:var(--muted);font-size:12.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;border-top:1px solid var(--line)}
+.note{background:#fbfcfe;border:1px dashed var(--line);border-radius:10px;padding:10px 14px;font-size:12.5px;color:var(--muted);margin-top:10px}
+
+@media(max-width:900px){.grid-2{grid-template-columns:1fr}.pipe{grid-template-columns:1fr 1fr}.step:after{display:none}.finding{grid-template-columns:1fr}.finding .vs{display:none}}
+@media print{body{background:#fff}.wrap{max-width:none}.toggle{display:none}.card,.kpi,.tool{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="eyebrow">University Research Project · Privacy &amp; Security</div>
+    <h1>Measuring Data Exposure in LLM-Integrated Productivity Tools</h1>
+    <p class="lede">How much of a confidential document is silently transmitted to a writing-assistant's servers
+      when its browser extension is running by default — even after the user is told <em>not</em> to share the file with AI tools.</p>
+    <div class="hero-meta">
+      <span class="chip"><span class="dot live"></span> <b>Data collection in progress</b></span>
+      <span class="chip">Researcher: <b>Marawan&nbsp;Eldeib</b></span>
+      <span class="chip">Deadline: <b>10&nbsp;Oct&nbsp;2026</b></span>
+      <span class="chip">Environment: <b>Kali&nbsp;·&nbsp;mitmproxy&nbsp;·&nbsp;Firefox</b></span>
+      <span class="chip">Effort logged: <b>16h&nbsp;25m+</b></span>
+    </div>
+  </header>
+
+  <!-- HEADLINE FINDING -->
+  <section>
+    <div class="sec-head"><h2>The headline finding</h2><span>Identical setup — the only difference is the extension</span></div>
+    <div class="finding">
+      <div class="side leak">
+        <small>Grammar checker active</small>
+        <div class="big">99.0%</div>
+        <p>of the confidential document transmitted to Grammarly's servers · <b style="color:var(--danger)">12 of 12</b> planted secrets sent, including the unique canary token</p>
+      </div>
+      <div class="vs"><span>VERSUS</span></div>
+      <div class="side safe">
+        <small>No extension (control)</small>
+        <div class="big">0.0%</div>
+        <p>of the document left the machine · <b style="color:var(--safe)">0 of 12</b> secrets transmitted — the browser alone leaks nothing</p>
+      </div>
+      <div class="foot">Same page, same document, same paste, same interception. Flipping <b>one variable</b> — the writing-assistant extension — turns a 0% exposure into a near-total one. And it's not a one-tool fluke: <b>LanguageTool</b>, an independent grammar checker, silently transmitted <b>91.9%</b> and <b>all 12 secrets</b> too — replicating the finding across two separate tools.</div>
+    </div>
+  </section>
+
+  <!-- KPIs -->
+  <section>
+    <div class="kpis">
+      <div class="kpi accent-danger">
+        <div class="lab">Grammarly exposure</div><div class="val">99.0%</div>
+        <div class="sub">median across 5 runs · std dev 0.0pp</div>
+        <div class="bar"><i style="width:99%"></i></div>
+      </div>
+      <div class="kpi accent-danger">
+        <div class="lab">LanguageTool exposure</div><div class="val">91.9%</div>
+        <div class="sub">median across 5 runs · std dev 0.0pp</div>
+        <div class="bar"><i style="width:91.9%"></i></div>
+      </div>
+      <div class="kpi accent-danger">
+        <div class="lab">Secrets transmitted</div><div class="val">12 / 12</div>
+        <div class="sub">by both tools · incl. UUID canary</div>
+        <div class="bar"><i style="width:100%"></i></div>
+      </div>
+      <div class="kpi accent-safe">
+        <div class="lab">Baseline exposure</div><div class="val">0.0%</div>
+        <div class="sub">3 control runs · no extension</div>
+        <div class="bar"><i style="width:2%"></i></div>
+      </div>
+      <div class="kpi accent-accent">
+        <div class="lab">Reproducibility</div><div class="val">High</div>
+        <div class="sub">10/10 leaker runs identical (0.0pp)</div>
+        <div class="bar"><i style="width:100%"></i></div>
+      </div>
+      <div class="kpi accent-accent">
+        <div class="lab">Valid captures</div><div class="val">13</div>
+        <div class="sub">5 Grammarly + 5 LanguageTool + 3 baseline</div>
+        <div class="bar"><i style="width:65%"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON + STATUS -->
+  <section>
+    <div class="sec-head"><h2>Comparison view</h2><span>Document exposure &amp; secrets by tool</span></div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="toggle">
+          <button id="tg-exp" class="on" onclick="setMetric('exp')">Document exposure (%)</button>
+          <button id="tg-sec" onclick="setMetric('sec')">Secrets sent (of 12)</button>
+        </div>
+        <div class="chart-box"><canvas id="cmp"></canvas></div>
+        <div class="legend">
+          <span><i style="background:var(--danger)"></i>Leaked (measured)</span>
+          <span><i style="background:var(--safe)"></i>Control (no leak)</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Where the data went</h3>
+        <p class="hint">Both grammar checkers shipped the document to their own servers.</p>
+        <div class="chart-box" style="height:230px"><canvas id="don"></canvas></div>
+        <div class="note">Destinations: <b>capi.grammarly.com</b> (WebSocket <code>/freews</code>) and <b>api.languagetool.org</b> (<code>POST /v2/check</code>). 100% of intercepted events used HTTPS; 0 TLS-handshake failures — nothing hidden by certificate pinning.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METHODOLOGY -->
+  <section>
+    <div class="sec-head"><h2>How the measurement works</h2><span>Threat model: a user pastes a received confidential file into a normal text field</span></div>
+    <div class="card">
+      <div class="pipe">
+        <div class="step"><div class="n">1</div><h4>Plant secrets</h4><p>A synthetic 2,065-char memo carries 12 unique fictional identifiers, incl. a UUID canary.</p></div>
+        <div class="step"><div class="n">2</div><h4>Paste it</h4><p>Into a plain field on a local page, with the tool's extension running by default.</p></div>
+        <div class="step"><div class="n">3</div><h4>Intercept</h4><p>mitmproxy decrypts the HTTPS traffic leaving Firefox on Kali Linux.</p></div>
+        <div class="step"><div class="n">4</div><h4>Measure</h4><p>A capture add-on scans traffic for the document (20-char windows) &amp; the 12 secrets.</p></div>
+        <div class="step"><div class="n">5</div><h4>Compare</h4><p>Tool run vs a no-extension baseline, repeated 5× for reproducibility.</p></div>
+      </div>
+      <div class="note"><b>Headline metric:</b> how many of the 12 planted secrets reached the servers (the canary makes any match unambiguous). <b>Supporting metric:</b> % of document characters transmitted. Exposure counts <b>outbound</b> traffic only (client&nbsp;→&nbsp;server).</div>
+    </div>
+  </section>
+
+  <!-- TOOL TRACKER -->
+  <section>
+    <div class="sec-head"><h2>Tool progress</h2><span>Two independent automatic grammar checkers, plus a no-extension control</span></div>
+    <div class="tools" id="tools"></div>
+    <div class="note"><b>Scope.</b> The study measures <em>automatic / background</em> transmission — tools that send the document with no user action beyond pasting. Two independent grammar checkers (Grammarly, LanguageTool) are compared against a no-extension control. On-demand paraphrasers were considered but fall outside this scope: they only transmit text the user actively submits, so they don't pose the same passive-exposure risk.</div>
+  </section>
+
+  <!-- PER-RUN TABLE -->
+  <section>
+    <div class="sec-head"><h2>Per-run results</h2><span>Click a column to sort · 13 captures</span></div>
+    <div class="card" style="overflow-x:auto">
+      <table id="runtab">
+        <thead><tr>
+          <th data-k="tool">Tool</th>
+          <th data-k="run">Run</th>
+          <th data-k="exposure">Exposure %</th>
+          <th data-k="secrets">Secrets (of 12)</th>
+          <th data-k="canary">Canary</th>
+          <th data-k="channel">Destination</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECRETS -->
+  <section>
+    <div class="sec-head"><h2>The 12 planted secrets</h2><span>All fictional · all transmitted by both grammar checkers</span></div>
+    <div class="secrets" id="secrets"></div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section>
+    <div class="sec-head"><h2>What we did &amp; what's next</h2><span>Project roadmap</span></div>
+    <div class="card">
+      <div class="road" id="road"></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Self-contained dashboard · generated <span id="gen"></span> · all identifiers are fictional test data</span>
+    <span>Privacy-analysis research project · Marawan Eldeib</span>
+  </footer>
+</div>
+
+<script>
+/* ---------- DATA ---------- */
+const CONDS = [
+  {name:'Grammarly',     family:'Grammar checker', status:'complete', runs:5, exposure:99.0, secrets:12, cls:'t-complete', schip:'s-complete', slab:'Complete · 5/5 runs', channel:'capi.grammarly.com · WebSocket /freews'},
+  {name:'LanguageTool',  family:'Grammar checker', status:'complete', runs:5, exposure:91.9, secrets:12, cls:'t-complete', schip:'s-complete', slab:'Complete · 5/5 runs', channel:'api.languagetool.org · POST /v2/check'},
+  {name:'Baseline',      family:'Control (no extension)', status:'control', runs:3, exposure:0.0, secrets:0, cls:'t-control', schip:'s-control', slab:'Complete · 3/3 runs', channel:'none — nothing transmitted'},
+];
+const RUNS = [
+  ...[1,2,3,4,5].map(r=>({tool:'Grammarly',run:r,exposure:99.0,secrets:12,canary:true,channel:'capi.grammarly.com (WebSocket)'})),
+  ...[1,2,3,4,5].map(r=>({tool:'LanguageTool',run:r,exposure:91.9,secrets:12,canary:true,channel:'api.languagetool.org (POST)'})),
+  ...[1,2,3].map(r=>({tool:'Baseline',run:r,exposure:0.0,secrets:0,canary:false,channel:'—'})),
+];
+const SECRETS=[
+  {t:'Full name',v:'Helena Voss'},
+  {t:'Employee ID',v:'HV-2026-391847'},
+  {t:'Full name',v:'Theodora Baumgartner-Klein'},
+  {t:'Email address',v:'theodora.baumgartner@priv-research-demo.invalid'},
+  {t:'Phone number',v:'+49 30 4827-9153'},
+  {t:'Project codename',v:'Project Nighthawk-3'},
+  {t:'Cross-reference',v:'XREF-291-ALPHA'},
+  {t:'Reserve-fund ref',v:'NHK3-RES-7741'},
+  {t:'Document ref',v:'AC-2026-00293-DELTA'},
+  {t:'Contract number',v:'2026-LGL-00847'},
+  {t:'National ID',v:'DE-291-847-3309'},
+  {t:'UUID canary',v:'CANARY-BC267061-67DC-485B-8E51-6F5494765CAB',canary:true},
+];
+const ROAD=[
+  {s:'done',b:'Environment + pipeline validated',p:'Kali VM, mitmproxy interception, Firefox profiles, capture add-on & analyzer — P8 validation gate passed.'},
+  {s:'done',b:'Grammarly — 5 runs (automatic leaker)',p:'99.0% exposure and 12/12 secrets every run (std dev 0.0pp), streamed over a WebSocket to capi.grammarly.com.'},
+  {s:'done',b:'LanguageTool — 5 runs (independent replication)',p:'91.9% and 12/12 every run, POSTed to api.languagetool.org. A second, unrelated grammar checker confirms the finding.'},
+  {s:'done',b:'Baseline — 3 runs complete',p:'0.0% / 0-of-12 with no extension. Proves the leak is the tool, not the browser.'},
+  {s:'done',b:'Scoped to automatic/background leakers',p:'Verified the finding on two independent grammar checkers; on-demand and non-Firefox tools fall outside this scope and are noted as limitations.'},
+  {s:'todo',b:'Analysis, comparison charts & final report',p:'Per-tool means ± 95% CI, the two-checker replication, and the written report + code release.'},
+];
+
+/* ---------- HELPERS ---------- */
+const $=s=>document.querySelector(s);
+document.getElementById('gen').textContent=new Date().toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'});
+
+/* ---------- TOOL CARDS ---------- */
+$('#tools').innerHTML=CONDS.map(c=>`
+  <div class="tool ${c.cls}">
+    <div class="fam">${c.family}</div>
+    <div class="nm">${c.name}</div>
+    <span class="status ${c.schip}"><span class="dot" style="background:currentColor"></span>${c.slab}</span>
+    <div class="rows">
+      <div><span>Exposure</span><b>${c.exposure===null?'—':c.exposure.toFixed(1)+'%'}</b></div>
+      <div><span>Secrets sent</span><b>${c.secrets===null?'—':c.secrets+' / 12'}</b></div>
+      <div><span>Runs</span><b>${c.runs||'—'}</b></div>
+    </div>
+  </div>`).join('');
+
+/* ---------- SECRETS ---------- */
+$('#secrets').innerHTML=SECRETS.map(s=>`
+  <div class="secret ${s.canary?'canary':''}">
+    <div class="tag">${s.canary?'CANARY ✓':'SENT'}</div>
+    <div class="t">${s.t}</div>
+    <div class="v">${s.v}</div>
+  </div>`).join('');
+
+/* ---------- ROADMAP ---------- */
+$('#road').innerHTML=ROAD.map(r=>`
+  <div class="item ${r.s==='done'?'done':r.s==='doing'?'doing':''}">
+    <div class="mk">${r.s==='done'?'✓':r.s==='doing'?'●':''}</div>
+    <div class="txt"><b>${r.b}</b><p>${r.p}</p></div>
+  </div>`).join('');
+
+/* ---------- TABLE ---------- */
+let sortK='tool',sortDir=1;
+function drawTable(){
+  const rows=[...RUNS].sort((a,b)=>{let x=a[sortK],y=b[sortK];return (x<y?-1:x>y?1:0)*sortDir;});
+  $('#runtab tbody').innerHTML=rows.map(r=>`
+    <tr>
+      <td><b>${r.tool}</b></td>
+      <td>#${r.run}</td>
+      <td class="pct ${r.exposure>50?'hi':'lo'}">${r.exposure.toFixed(1)}%</td>
+      <td>${r.secrets} / 12</td>
+      <td><span class="badge ${r.canary?'b-yes':'b-no'}">${r.canary?'FOUND':'—'}</span></td>
+      <td style="color:var(--muted)">${r.channel}</td>
+    </tr>`).join('');
+}
+document.querySelectorAll('#runtab th').forEach(th=>th.onclick=()=>{
+  const k=th.dataset.k; sortDir=(k===sortK)?-sortDir:1; sortK=k; drawTable();
+});
+drawTable();
+
+/* ---------- CHARTS ---------- */
+const C={danger:'#e11d48',safe:'#10b981',ghost:'#cbd5e1'};
+const labels=CONDS.map(c=>c.name);
+function colorFor(c){return c.status==='complete'?C.danger:c.status==='control'?C.safe:C.ghost;}
+const cols=CONDS.map(colorFor);
+let metric='exp';
+const expData=CONDS.map(c=>c.exposure===null?0:c.exposure);
+const secData=CONDS.map(c=>c.secrets===null?0:c.secrets);
+
+const cmp=new Chart($('#cmp'),{
+  type:'bar',
+  data:{labels,datasets:[{data:expData,backgroundColor:cols.map(x=>x+'d9'),borderColor:cols,borderWidth:1.5,borderRadius:7,maxBarThickness:64}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+    tooltip:{callbacks:{label:c=>{const cd=CONDS[c.dataIndex];
+      if(cd.status==='pending')return 'Not testable in Firefox';
+      if(cd.status==='blocked')return 'Did not attach — not measurable';
+      return metric==='exp'?` ${cd.exposure.toFixed(1)}% of document transmitted`:` ${cd.secrets} of 12 secrets sent`;}}}},
+    scales:{y:{beginAtZero:true,max:100,grid:{color:'#eef1f7'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}
+});
+const don=new Chart($('#don'),{
+  type:'doughnut',
+  data:{labels:['Transmitted (avg of both checkers)','Not transmitted'],datasets:[{data:[95.5,4.5],backgroundColor:[C.danger,'#e6ebf3'],borderColor:'#fff',borderWidth:3}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,padding:14,font:{size:12}}},
+    tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed}%`}}}}
+});
+function setMetric(m){
+  metric=m;
+  $('#tg-exp').classList.toggle('on',m==='exp');
+  $('#tg-sec').classList.toggle('on',m==='sec');
+  cmp.data.datasets[0].data = m==='exp'?expData:secData;
+  cmp.options.scales.y.max = m==='exp'?100:12;
+  cmp.options.scales.y.ticks.callback = m==='exp'?(v=>v+'%'):(v=>v);
+  cmp.update();
+}
+window.setMetric=setMetric;
+</script>
+</body>
+</html>

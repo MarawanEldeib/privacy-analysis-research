@@ -1,51 +1,60 @@
-# Makefile - orchestrate the 18-run capture and analysis cycle
+# Makefile - orchestrate the capture and analysis cycle
+# Final tool set: Grammarly + LanguageTool (automatic grammar checkers) + baseline.
+#   (ProWritingAid / QuillBot / Wordtune were dropped — see docs/QA-Professor.md.)
 #
 # Quick reference (most-used commands):
-#   make check          - verify dependencies are installed
-#   make page           - open the test page in Firefox (use before every run)
-#   make grammarly-1    - run Grammarly capture #1
-#   make baseline-1     - run baseline #1 (no extension)
-#   make analyze        - run analysis on whatever has been captured so far
-#   make chart          - produce comparison_chart.png + .svg in results/
-#   make clean          - delete all captures and results (CAREFUL)
+#   make check           - verify dependencies are installed
+#   make page-grammarly  - start the page server + open the tool's Firefox profile
+#   make grammarly-1     - run Grammarly capture #1 (you do the Ctrl+V when prompted)
+#   make languagetool-1  - run LanguageTool capture #1
+#   make baseline-1      - run baseline #1 (no extension)
+#   make smoke           - test the Makefile without touching real data
+#   make analyze         - run analysis on whatever has been captured so far
+#   make chart           - produce comparison_chart.png + .svg in results/
+#   make clean           - delete all captures and results (CAREFUL)
 #
 # Per-run procedure (see docs/Capture-Protocol.md for full details):
-#   1. Make sure the right Firefox profile is open and the test page is loaded
-#      (run `make page-<tool>` to open the right profile).
-#   2. Click into the textarea so it has focus.
-#   3. In a separate terminal, run `make grammarly-1` (or whichever run).
-#   4. The Makefile target loads the document into clipboard, pastes it,
-#      waits 60s, and stops mitmproxy automatically.
+#   1. `make page-<tool>`  -> starts the localhost page server and opens the
+#      right Firefox profile at http://localhost:8000/test-page.html
+#   2. Click into the textarea so it has keyboard focus (cursor blinking).
+#   3. `make <tool>-<n>`   -> loads the doc to the clipboard and starts the
+#      recorder, then PAUSES and asks you to paste.
+#   4. Switch to Firefox, empty the box, Ctrl+V to paste, come back, press ENTER.
+#   5. The target records for 60s, stops the recorder, and prints the summary.
+#
+# NOTE: the paste is deliberately MANUAL. Auto-paste (xdotool) fills the box
+# visually but the extension registers no input event and sends nothing (a
+# fake-clean 0%). A real Ctrl+V is what makes the tool ingest the text. An
+# opt-in `AUTO=1` exists but is not recommended.
 
 PROJECT_ROOT := $(shell pwd)
 TEST_DOC     := $(PROJECT_ROOT)/input-data/test-document.txt
-TEST_PAGE    := file://$(PROJECT_ROOT)/input-data/test-page.html
-RUN_SCRIPT   := $(PROJECT_ROOT)/scripts/capture/run_capture.sh
+PAGE_DIR     := $(PROJECT_ROOT)/input-data
+PAGE_PORT    := 8000
+TEST_PAGE    := http://localhost:$(PAGE_PORT)/test-page.html
 ANALYZE      := python3 $(PROJECT_ROOT)/scripts/analysis/analyze.py
 WAIT_SECONDS := 60
 
-.PHONY: help check page page-grammarly page-prowritingaid page-wordtune page-baseline \
+.PHONY: help check serve smoke \
+        page-grammarly page-languagetool page-baseline \
         clean analyze analyze-lenient chart \
-        grammarly-all prowritingaid-all wordtune-all baseline-all \
-        $(foreach r,1 2 3 4 5,grammarly-$(r) prowritingaid-$(r) wordtune-$(r)) \
+        grammarly-all languagetool-all baseline-all \
+        $(foreach r,1 2 3 4 5,grammarly-$(r) languagetool-$(r)) \
         $(foreach r,1 2 3,baseline-$(r))
 
 help:
 	@echo "Privacy analysis - Makefile targets"
 	@echo ""
 	@echo "Setup checks:"
-	@echo "  make check                 - verify mitmproxy, xdotool, xclip, etc."
+	@echo "  make check                 - verify mitmproxy, xclip, firefox, etc."
+	@echo "  make smoke                 - dry-run the capture flow into a throwaway dir"
 	@echo ""
-	@echo "Open test page in the right Firefox profile (do this before each run):"
-	@echo "  make page-grammarly"
-	@echo "  make page-prowritingaid"
-	@echo "  make page-wordtune"
-	@echo "  make page-baseline"
+	@echo "Open the page in the right Firefox profile (does 'serve' for you):"
+	@echo "  make page-grammarly / page-languagetool / page-baseline"
 	@echo ""
-	@echo "Individual captures (run after the page is open + textarea focused):"
+	@echo "Individual captures (page open + textarea focused first):"
 	@echo "  make grammarly-1 ... grammarly-5"
-	@echo "  make prowritingaid-1 ... prowritingaid-5"
-	@echo "  make wordtune-1 ... wordtune-5"
+	@echo "  make languagetool-1 ... languagetool-5"
 	@echo "  make baseline-1 ... baseline-3"
 	@echo ""
 	@echo "Analyze:"
@@ -60,70 +69,98 @@ check:
 	@echo "Checking required tools..."
 	@command -v mitmdump >/dev/null 2>&1 && echo "  mitmproxy: OK" || echo "  MISSING: mitmproxy (pip install --break-system-packages mitmproxy)"
 	@command -v xclip    >/dev/null 2>&1 && echo "  xclip:     OK" || echo "  MISSING: xclip (sudo apt install xclip)"
-	@command -v xdotool  >/dev/null 2>&1 && echo "  xdotool:   OK" || echo "  MISSING: xdotool (sudo apt install xdotool)"
 	@command -v firefox  >/dev/null 2>&1 && echo "  firefox:   OK" || echo "  MISSING: firefox (sudo apt install firefox-esr)"
-	@command -v jq       >/dev/null 2>&1 && echo "  jq:        OK" || echo "  optional: jq (sudo apt install jq)"
+	@command -v python3  >/dev/null 2>&1 && echo "  python3:   OK" || echo "  MISSING: python3"
 	@python3 -c "import mitmproxy"     2>/dev/null && echo "  python mitmproxy: OK" || echo "  MISSING: python mitmproxy"
 	@python3 -c "import ahocorasick"   2>/dev/null && echo "  pyahocorasick:    OK" || echo "  optional: pyahocorasick"
 	@python3 -c "import brotli"        2>/dev/null && echo "  brotli:           OK" || echo "  optional: brotli"
 	@python3 -c "import matplotlib"    2>/dev/null && echo "  matplotlib:       OK" || echo "  MISSING: matplotlib (needed for make chart)"
 	@test -f "$(TEST_DOC)"             && echo "  test-document.txt: present" || echo "  MISSING: $(TEST_DOC)"
-	@test -f "$(PROJECT_ROOT)/input-data/test-page.html" && echo "  test-page.html: present" || echo "  MISSING: test-page.html"
+	@test -f "$(PAGE_DIR)/test-page.html" && echo "  test-page.html: present" || echo "  MISSING: test-page.html"
 
-# Open test page in a specific Firefox profile
-page-grammarly:
-	firefox -P grammarly-test --no-remote "$(TEST_PAGE)" &
+# Start the localhost page server if it is not already running.
+serve:
+	@if pgrep -f "http.server $(PAGE_PORT)" >/dev/null 2>&1; then \
+		echo "Page server already running on :$(PAGE_PORT)."; \
+	else \
+		echo "Starting page server on :$(PAGE_PORT) (serving $(PAGE_DIR))..."; \
+		cd "$(PAGE_DIR)" && nohup python3 -m http.server $(PAGE_PORT) >/dev/null 2>&1 & \
+		sleep 1; \
+		echo "Started."; \
+	fi
+
+# Open the test page in a specific Firefox profile (starts the server first).
+page-grammarly: serve
+	@firefox -P grammarly-test --no-remote "$(TEST_PAGE)" &
 	@echo ""
-	@echo "Firefox opened with profile grammarly-test."
-	@echo "1. Wait ~5 seconds for Firefox to settle."
-	@echo "2. CLICK INTO THE TEXTAREA so it has keyboard focus."
-	@echo "3. Then in another terminal, run: make grammarly-1"
+	@echo "Firefox opened: profile grammarly-test at $(TEST_PAGE)"
+	@echo "1. Wait ~5s for it to load."
+	@echo "2. CLICK INTO THE TEXTAREA so the cursor is blinking inside it."
+	@echo "3. Then run:  make grammarly-1"
 
-page-prowritingaid:
-	firefox -P prowritingaid-test --no-remote "$(TEST_PAGE)" &
-	@echo "Profile prowritingaid-test loaded. Click into textarea, then: make prowritingaid-1"
+page-languagetool: serve
+	@firefox -P languagetool-test --no-remote "$(TEST_PAGE)" &
+	@echo "Profile languagetool-test at $(TEST_PAGE). Click the textarea, then: make languagetool-1"
 
-page-wordtune:
-	firefox -P wordtune-test --no-remote "$(TEST_PAGE)" &
-	@echo "Profile wordtune-test loaded. Click into textarea, then: make wordtune-1"
-
-page-baseline:
-	firefox -P baseline-test --no-remote "$(TEST_PAGE)" &
-	@echo "Profile baseline-test loaded (no extension). Click into textarea, then: make baseline-1"
+page-baseline: serve
+	@firefox -P baseline-test --no-remote "$(TEST_PAGE)" &
+	@echo "Profile baseline-test (no extension) at $(TEST_PAGE). Click the textarea, then: make baseline-1"
 
 # Generic per-run target. Usage: $(call run_one,grammarly,1)
-# It loads the document to clipboard, starts mitmproxy in background,
-# pastes via xdotool, waits, then stops mitmproxy.
+# Loads the doc to the clipboard, starts the recorder, PAUSES for you to paste
+# manually, records for $(WAIT_SECONDS)s, then stops and prints the summary.
 define run_one
 	@echo "============================================================"
-	@echo " $(1) run $(2)"
+	@echo " $(1) - run $(2)"
 	@echo "============================================================"
-	@echo "Step 1/4: loading test document into clipboard..."
-	xclip -selection clipboard < "$(TEST_DOC)"
-	@echo "Step 2/4: starting mitmproxy in background..."
 	@mkdir -p data/raw/$(1)
+	@echo "[1/4] Loading test document into clipboard..."
+	@xclip -selection clipboard < "$(TEST_DOC)"
+	@echo "[2/4] Starting recorder (mitmproxy)..."
 	@TOOL_NAME=$(1) RUN_ID=$(2) mitmdump \
 		--listen-host 127.0.0.1 --listen-port 8080 \
-		--ssl-insecure \
 		--save-stream-file "data/raw/$(1)/run_$(2).flow" \
 		-s scripts/capture/capture_addon.py \
 		> "data/raw/$(1)/run_$(2).log" 2>&1 & \
 	echo $$! > /tmp/privacy_mitm.pid
-	@sleep 3
-	@echo "Step 3/4: pasting into Firefox..."
-	xdotool key --window "$$(xdotool search --name 'Mozilla Firefox' | head -1)" ctrl+v
-	@echo "Step 4/4: waiting $(WAIT_SECONDS)s for the extension to send..."
+	@sleep 2
+	@if [ -n "$(AUTO)" ]; then \
+		echo "[3/4] AUTO paste via xdotool (experimental - verify the % below!)..."; \
+		win=$$(xdotool search --name 'Mozilla Firefox' | head -1); \
+		xdotool windowactivate --sync $$win; sleep 1; \
+		xdotool key --clearmodifiers ctrl+a; xdotool key --clearmodifiers Delete; sleep 0.3; \
+		xdotool key --clearmodifiers ctrl+v; \
+	else \
+		echo ""; \
+		echo ">>> PASTE NOW:"; \
+		echo ">>>   1. Switch to Firefox."; \
+		echo ">>>   2. Empty the text box (Ctrl+A, then Backspace)."; \
+		echo ">>>   3. Click the box and press Ctrl+V - watch the document appear."; \
+		echo ">>>   4. Come back to THIS terminal and press ENTER."; \
+		read _paste; \
+	fi
+	@echo "[3/4] Recording $(WAIT_SECONDS)s for the tool to send..."
 	@sleep $(WAIT_SECONDS)
-	@echo "Stopping mitmproxy..."
+	@echo "[4/4] Stopping recorder..."
 	@kill -INT $$(cat /tmp/privacy_mitm.pid) 2>/dev/null || true
 	@sleep 2
 	@rm -f /tmp/privacy_mitm.pid
 	@echo ""
-	@echo "Capture complete. Results:"
-	@echo "  data/raw/$(1)/run_$(2).json   (analyzed summary)"
-	@echo "  data/raw/$(1)/run_$(2).flow   (raw archive)"
-	@echo "  data/raw/$(1)/run_$(2).log    (mitmproxy console output)"
+	@echo "------------------------- RESULT ---------------------------"
+	@sed -n '/SESSION COMPLETE/,$$p' "data/raw/$(1)/run_$(2).log" 2>/dev/null || true
+	@echo "------------------------------------------------------------"
+	@echo "Saved: data/raw/$(1)/run_$(2).json   (.flow + .log alongside)"
 endef
+
+# Smoke test: exercises the whole Makefile flow but writes to a throwaway dir
+# so it never touches real tool/baseline data. Use any open profile+page.
+smoke: serve
+	@echo "SMOKE TEST -> data/raw/_smoketest (throwaway; gitignored)."
+	@echo "Open ANY profile+page first (grammarly-test ~= 99%, baseline-test = 0%)."
+	$(call run_one,_smoketest,1)
+	@echo ""
+	@echo "If a SESSION COMPLETE summary printed above, the Makefile works."
+	@echo "Remove the throwaway data with:  rm -rf data/raw/_smoketest"
 
 # Per-tool, per-run targets
 grammarly-1:      ; $(call run_one,grammarly,1)
@@ -131,33 +168,24 @@ grammarly-2:      ; $(call run_one,grammarly,2)
 grammarly-3:      ; $(call run_one,grammarly,3)
 grammarly-4:      ; $(call run_one,grammarly,4)
 grammarly-5:      ; $(call run_one,grammarly,5)
-prowritingaid-1:  ; $(call run_one,prowritingaid,1)
-prowritingaid-2:  ; $(call run_one,prowritingaid,2)
-prowritingaid-3:  ; $(call run_one,prowritingaid,3)
-prowritingaid-4:  ; $(call run_one,prowritingaid,4)
-prowritingaid-5:  ; $(call run_one,prowritingaid,5)
-wordtune-1:       ; $(call run_one,wordtune,1)
-wordtune-2:       ; $(call run_one,wordtune,2)
-wordtune-3:       ; $(call run_one,wordtune,3)
-wordtune-4:       ; $(call run_one,wordtune,4)
-wordtune-5:       ; $(call run_one,wordtune,5)
+languagetool-1:   ; $(call run_one,languagetool,1)
+languagetool-2:   ; $(call run_one,languagetool,2)
+languagetool-3:   ; $(call run_one,languagetool,3)
+languagetool-4:   ; $(call run_one,languagetool,4)
+languagetool-5:   ; $(call run_one,languagetool,5)
 baseline-1:       ; $(call run_one,baseline,1)
 baseline-2:       ; $(call run_one,baseline,2)
 baseline-3:       ; $(call run_one,baseline,3)
 
 # "all" targets - reminders only; you still must reset Firefox between runs
 grammarly-all:
-	@echo "NOTE: you must reset the textarea between runs (refresh the page)."
-	@echo "Run: make grammarly-1, then refresh, make grammarly-2, etc."
+	@echo "Run: make grammarly-1, empty the box, make grammarly-2, ... through 5."
 
-prowritingaid-all:
-	@echo "Same as above for prowritingaid."
-
-wordtune-all:
-	@echo "Same as above for wordtune."
+languagetool-all:
+	@echo "Run: make languagetool-1 ... languagetool-5 (empty the box between each)."
 
 baseline-all:
-	@echo "Run: make baseline-1, then refresh, make baseline-2, then make baseline-3"
+	@echo "Run: make baseline-1, make baseline-2, make baseline-3."
 
 # Analysis targets
 analyze:

@@ -26,6 +26,16 @@ data/raw/*/run_*.flow
 # Local pid/tmp files used by the Makefile
 /tmp/privacy_mitm.pid
 
+# Throwaway Makefile smoke-test captures (make smoke)
+data/raw/_smoketest/
+
+# Personal work-hours log — not part of the research artifact.
+# Remove this line if you want it tracked (e.g. to show effort to the university).
+Worklog.xlsx
+
+# Private credentials note (throwaway research accounts) — NEVER commit.
+credentials.local.txt
+
 # LaTeX build artefacts (when the report phase starts)
 *.aux
 *.log
