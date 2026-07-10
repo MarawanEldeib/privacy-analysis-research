@@ -8,28 +8,37 @@ This file tracks questions that need clarification before we can finalize the pr
 ## Confirmed decisions (2026-05-28 — locked with Marawan)
 
 1. **Documents:** use **3** test documents (current memo + a long report + a code/structured snippet), not one — a single document can't support tool-vs-tool comparison.
-2. **Tools:** keep the **3 browser extensions** (Grammarly, ProWritingAid, Wordtune); add a non-browser tool later only if the professor asks.
+2. **Tools (FINAL, 2026-07-10):** **Grammarly + LanguageTool** — two independent grammar checkers with genuine Firefox extensions that transmit *automatically in the background* — compared against a **no-extension baseline**. ProWritingAid (did not attach to the controlled field), QuillBot (no official Firefox extension — Chrome-only), and Wordtune (Firefox listing was a clone; the genuine tool is on-demand) were dropped and are recorded as scope limitations. The study measures **automatic/background exposure**; on-demand paraphrasers are out of scope.
 3. **Framing:** factual wording — "the tool transmitted the confidential document to its servers under default settings, despite a no-share instruction" — **not** "leak".
 4. **Fields:** main runs on the local practice page **plus 1 run each in Gmail and Google Docs** to confirm representativeness.
 5. **Stats:** report the simple 95%-CI-overlap comparison; add a formal pairwise test only if the professor requests it.
 6. **Exposure counts outbound only** (client→server). Server echoes are captured and reported separately, never added to the headline %.
 7. **Headline metric = planted-secret count** ("N of 12 identifiers, incl. the canary, transmitted"); exposure % is secondary; the sentence-leak number is dropped (its unit wrongly counted header lines).
 
-**Still to ask the professor:** interim deadlines before Oct 10; permission + university IP rules for open-sourcing after grading; a quick confirm of the metric set.
+**Professor consultation — DEFERRED, not blocking (decided 2026-05-29):** Do not schedule a meeting now. Proceed with the decided scope; consult the professor only if he asks, once there are results, or if we conclude results aren't achievable. Items to raise then: interim deadlines, open-source/IP permission, and a quick metric confirm.
+
+**Key emerging finding (2026-07-10) — two exposure classes.** Tools split into: (a) **automatic / background transmitters** that send the document to their servers with no user action beyond pasting (Grammarly: 99%, 12/12) — the pure silent-exposure threat; and (b) **on-demand transmitters** that only transmit text the user actively submits (Wordtune: nothing leaves on a background paste; it transmits only on Select → Rewrite). Under the study's exact threat model — extension running in the background, user pastes a document they were told not to share — the automatic class **leaks** and the on-demand class **does not**. This is a meaningful result to report, not a measurement failure. Grammar checkers (Grammarly/ProWritingAid) trend toward class (a); paraphrasers (Wordtune/QuillBot) toward class (b). **Caution logged:** the `/wordtune/` AMO slug is a **clone** (publisher "Akajan Burno", scam support link, echoes text locally, never contacts a server) — the genuine one is `/wordtune-ai-writing-assistant/` by AI21 Labs. Always verify the publisher before installing an extension.
 
 ---
 
 ## Q1 — Which specific tools should we test?
 
-**Status:** ✅ Decided (revised 2026-05-23)  
-**Decision:** 3 tools total — all browser extensions for Firefox:
-1. **Grammarly** (browser extension — AI writing assistant) — professor's own example
-2. **ProWritingAid** (browser extension — AI writing assistant) — direct within-category comparison
-3. **Wordtune** (browser extension — AI rewriting assistant) — third writing tool, same capture method
+**Status:** ✅ Decided (revised 2026-07-02 — expanded to 4 tools)  
+**Decision:** 4 tools total — all Firefox browser extensions, in two families:
 
-**Why Wordtune instead of GitHub Copilot:** GitHub Copilot runs inside VS Code and does not use Firefox's proxy settings, making mitmproxy interception unreliable. Mixing a VS Code extension with two browser extensions would break the "same capture protocol for all tools" requirement. Wordtune is a browser extension like the others, making the comparison fair and the methodology consistent.
+*Grammar/style checkers:*
+1. **Grammarly** — professor's own example
+2. **ProWritingAid** — replication partner for Grammarly (does the checker finding generalise?)
 
-**Note:** All three tools are tested in isolated Firefox profiles with the mitmproxy CA certificate installed.
+*Paraphrasers/rewriters:*
+3. **Wordtune** — rewriting assistant
+4. **QuillBot** — replication partner for Wordtune; the more widely used paraphraser
+
+**Why this set (2×2):** two tools per family gives *within-category replication* — we can say "both grammar checkers and both paraphrasers transmitted the document," which is far stronger than one tool per family. Paraphrasers are especially relevant: rewriting inherently requires uploading the full text to the tool's servers.
+
+**Why all Firefox browser extensions (not GitHub Copilot):** Copilot runs inside VS Code and bypasses Firefox's proxy, making mitmproxy interception unreliable. Keeping every tool a Firefox extension preserves the "same capture protocol for all tools" requirement. QuillBot, like the others, ships a Firefox extension.
+
+**Note:** All four tools are tested in isolated Firefox profiles with the mitmproxy CA certificate installed.
 
 ---
 

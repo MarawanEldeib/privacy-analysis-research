@@ -178,10 +178,12 @@ Fresh session. Read first:
 
 PRECONDITIONS — confirm with me before running anything:
   1. Phase 8 passed all four checks.
-  2. My professor has signed off on (a) the scoping decision — whether claims are scoped
-     to "this document" or we add more documents — and (b) the proposal divergence (the
-     approved proposal asked for different integration types; we narrowed to three
-     browser extensions). Do not start collection until I confirm both.
+  2. Scope is already decided (3 documents; 3 browser extensions — see docs/QA-Professor.md).
+     No professor sign-off is required first: by my decision, the professor is consulted only
+     if he asks, once there are results, or if we conclude results aren't achievable.
+  NOTE: the full cycle spans 3 documents + a Gmail and a Google Docs spot check. That needs
+     multi-document support added first (the addon currently loads one fixed test document);
+     P8 above validates the pipeline on the existing memo (document 1).
 
 TASK (Phase 9 — full collection): 15 tool runs + 3 baseline runs.
   For each tool (grammarly, prowritingaid, wordtune):

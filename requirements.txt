@@ -10,7 +10,7 @@
 # decoding, WebSocket scheme handling — both of which we had to work around), so
 # the locked file is the reproducibility artifact that belongs with your data.
 
-mitmproxy~=10.0      # HTTPS interception + the capture-addon hook API
+mitmproxy==12.2.3    # HTTPS interception + capture-addon hooks (verified working on Kali, 2026-07-02)
 brotli~=1.1          # decode Brotli-compressed bodies (Content-Encoding: br)
 matplotlib~=3.7      # results/comparison_chart.{png,svg} for the report
 
