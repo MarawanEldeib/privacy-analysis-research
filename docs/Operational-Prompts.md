@@ -1,5 +1,14 @@
 # Operational Prompts — Paste into Claude Code on Kali, one phase at a time
 
+> **⚠️ Largely superseded (2026-07-10).** Data collection is complete and the
+> current from-scratch instructions live in **`docs/Reproduction-Guide.md`**. These
+> phase prompts are kept for reference, but note two scope/method changes since they
+> were written: (1) the final tool set is **Grammarly + LanguageTool + baseline**
+> (no ProWritingAid/Wordtune profiles); (2) the paste is now a **manual Ctrl+V** —
+> the old scripted `xdotool` paste fills the box but doesn't fire the DOM input
+> event, so the tool never ingests the text (a false 0%). Profile/tool references
+> below have been corrected to the final scope.
+
 These are self-contained prompts for the data-collection phases. Each is written
 for a **fresh Claude Code session on Kali** (it can't see this conversation), so
 each one re-establishes context by pointing at the skill files.
@@ -58,7 +67,7 @@ STOP after `make check` and report the result. Wait for me to confirm before Pha
 Fresh session. Read for context first:
   /media/sf_privacy_analysis/skills/privacy-analysis-project/SKILL.md
   /media/sf_privacy_analysis/skills/privacy-analysis-project/gotchas.md
-  /media/sf_privacy_analysis/docs/Setup-Guide.md   (Step 2 covers this exactly)
+  /media/sf_privacy_analysis/docs/Reproduction-Guide.md   (Step 2 covers this exactly)
 
 TASK (Phase 6 — make HTTPS interception work). Most of this is Firefox GUI that I do by
 hand; your job is to give precise click-by-click instructions and then verify it worked.
@@ -83,24 +92,24 @@ Do NOT run git. STOP and report the two verification results. Wait before Phase 
 
 ---
 
-## P7 — Create the four Firefox profiles + install extensions (manual GUI, then verify)
+## P7 — Create the Firefox profiles + install extensions (manual GUI, then verify)
 
 ```text
 Fresh session. Read for context first:
   /media/sf_privacy_analysis/skills/privacy-analysis-project/SKILL.md
-  /media/sf_privacy_analysis/docs/Setup-Guide.md   (Steps 3-4)
+  /media/sf_privacy_analysis/docs/Reproduction-Guide.md   (Steps 3-4)
 
 TASK (Phase 7 — isolated profiles). I create the profiles and install extensions by hand
 in the Firefox GUI; you give exact steps and then verify the setup is clean.
 
-1. Guide me to create four profiles via `firefox -ProfileManager`:
-     grammarly-test, prowritingaid-test, wordtune-test, baseline-test
-2. For EACH of the four profiles: set the proxy to 127.0.0.1:8080 and confirm the
-   mitmproxy CA is trusted (re-do the example.com check per profile — proxy/cert are
-   per-profile in Firefox).
-3. Install exactly ONE extension per tool profile (and log into a free account):
-     grammarly-test → Grammarly,  prowritingaid-test → ProWritingAid,
-     wordtune-test → Wordtune.   baseline-test → NOTHING (it's the control).
+1. Guide me to create three profiles via `firefox -ProfileManager`:
+     grammarly-test, languagetool-test, baseline-test
+2. For EACH profile: set the proxy to 127.0.0.1:8080 and confirm the mitmproxy CA
+   is trusted (re-do the example.com check per profile — proxy/cert are per-profile
+   in Firefox).
+3. Install exactly ONE extension per tool profile (verify the publisher first):
+     grammarly-test → Grammarly (sign in to a free account),
+     languagetool-test → LanguageTool (no login needed).   baseline-test → NOTHING (it's the control).
 4. Verify per profile and have me confirm: only the intended extension is present, it's
    enabled, the icon is active/colored, and I'm logged in.
 
@@ -137,10 +146,10 @@ Then verify ALL FOUR and report each explicitly:
   (a) EXTENSION ACTIVE ON THE file:// PAGE — was the Grammarly icon colored/active on the
       test page, and did a suggestion underline appear? If grey/inactive, the extension
       isn't running on file:// → STOP (this is the Blocker 2 risk; gotchas.md #4).
-  (b) PASTE LANDED — did the full test document actually appear in the textarea after the
-      scripted paste? If empty, the xdotool synthetic paste failed (gotchas: try
-      `xdotool windowactivate --sync <id>` then `xdotool key ctrl+v`, and close other
-      Firefox windows). A blank textarea = 0% for the wrong reason.
+  (b) PASTE LANDED AND WAS INGESTED — after a MANUAL Ctrl+V, did the full test document
+      appear in the textarea AND did the tool react (icon active / underline)? A scripted
+      xdotool paste can fill the box without firing the DOM input event, so the tool never
+      ingests it → a false 0%. Always paste with a real Ctrl+V and confirm the tool reacts.
   (c) WE COULD SEE THE TRAFFIC — open data/raw/grammarly/run_1.json and report from the
       summary: https_event_pct (should be ~100%), tls_handshake_failures (should be ~0),
       body_read_failures (should be 0). low https% or failures → cert/profile problem
@@ -161,14 +170,13 @@ and report exposure_pct, sentences_leaked, and sensitive_tokens_found. Note whet
 transcript fold-in (cross-event coverage) contributed — i.e. union exposure is sensible,
 not stuck at 0 from chunking.
 
-Do NOT run git. Do NOT proceed to the full 18-run cycle. STOP and report all four checks
-plus the analyzer output. We only move to P9 after all four pass AND I've cleared scope
-with my professor.
+Do NOT run git. Do NOT proceed to the full capture cycle. STOP and report all four checks
+plus the analyzer output. We only move to P9 after all four pass.
 ```
 
 ---
 
-## P9 — The 18-run cycle (ONLY after P8 passes AND professor sign-off)
+## P9 — The full capture cycle (ONLY after P8 passes)
 
 ```text
 Fresh session. Read first:
@@ -178,17 +186,14 @@ Fresh session. Read first:
 
 PRECONDITIONS — confirm with me before running anything:
   1. Phase 8 passed all four checks.
-  2. Scope is already decided (3 documents; 3 browser extensions — see docs/QA-Professor.md).
-     No professor sign-off is required first: by my decision, the professor is consulted only
-     if he asks, once there are results, or if we conclude results aren't achievable.
-  NOTE: the full cycle spans 3 documents + a Gmail and a Google Docs spot check. That needs
-     multi-document support added first (the addon currently loads one fixed test document);
-     P8 above validates the pipeline on the existing memo (document 1).
+  2. Scope is decided (final tool set: Grammarly + LanguageTool + baseline — see
+     docs/QA-Professor.md). Professor consultation is deferred by decision (only if he
+     asks, once there are results, or if we conclude results aren't achievable).
 
-TASK (Phase 9 — full collection): 15 tool runs + 3 baseline runs.
-  For each tool (grammarly, prowritingaid, wordtune):
+TASK (Phase 9 — full collection): 10 tool runs + 3 baseline runs.
+  For each tool (grammarly, languagetool):
     make page-<tool>     # click into the textarea
-    make <tool>-1        # then refresh the page (Ctrl+R) between runs
+    make <tool>-1        # empty the box (Ctrl+A, Backspace) + manual Ctrl+V between runs
     make <tool>-2 ... make <tool>-5
   Baseline (no extension):
     make page-baseline

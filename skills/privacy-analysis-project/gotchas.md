@@ -13,7 +13,8 @@ These are real failure modes that have caused (or could cause) silently wrong re
 2. If you see a certificate warning page → CA is not trusted.
 3. If the page loads but no traffic appears in mitmproxy → proxy not set in this profile's network settings.
 
-**Fix:** Re-do Steps 2c-2d of `docs/Setup-Guide.md` (import the `mitmproxy-ca-cert.cer` file into the Authorities tab of that specific profile).
+**Fix:** Re-do the CA import step in `docs/Reproduction-Guide.md` (Step 3 configures
+the proxy + trusts the mitmproxy CA in that specific profile).
 
 **Important:** Do NOT report "Grammarly leaked 0%" if you suspect this. It's a measurement failure, not a finding.
 
@@ -42,16 +43,20 @@ These are real failure modes that have caused (or could cause) silently wrong re
 **Symptom:** Zero events from `api.grammarly.com` (or the relevant tool's domains) even though the test page was pasted.
 
 **Likely cause:**
-- Not logged into the tool's account in that profile.
+- **The paste didn't register an input event** — a scripted/synthetic `xdotool` paste
+  fills the box visually but doesn't fire the DOM `input` event, so the tool never
+  ingests the text. Always paste with a **real manual Ctrl+V**. (Grammarly needs a login;
+  LanguageTool does not.)
+- Not logged into the tool's account in that profile (Grammarly).
 - Extension is installed but disabled.
 - Extension was installed in the wrong profile.
 
 **Diagnosis:**
 1. Open the test page in the relevant Firefox profile.
 2. Look at the extension icon in the toolbar — is it colored/active? If grey, it's not running.
-3. Type a single character in the textarea — does Grammarly show a suggestion underline? If no, the extension is not seeing the textarea.
+3. After a real Ctrl+V, does the tool react (suggestion underline / badge)? If no, the extension isn't seeing the textarea content.
 
-**Fix:** Open the extension's settings, log in, enable on the test page.
+**Fix:** Paste manually; open the extension's settings, log in (Grammarly), enable on the test page.
 
 ## 5. The body_preview bug (already fixed in v3, don't re-introduce)
 
@@ -100,9 +105,13 @@ If you ever see exposure > 100%, it's a bug. The math is `len(covered_positions)
 
 **Don't edit `test-document.txt` after capture starts.** If you must regenerate it, also wipe `data/raw/` and start over.
 
-## 10. Selenium / Playwright triggering anti-bot detection
+## 10. Automating the paste — don't
 
-If you ever consider replacing xdotool with browser-automation libraries: Grammarly's anti-bot detection often flags those tools and disables itself. xdotool driving a real Firefox session is what works. Stay with it.
+The paste is deliberately **manual** (a real Ctrl+V). Two reasons not to automate it:
+a scripted/synthetic paste (xdotool) fills the box without firing the DOM input event,
+so the tool never ingests the text → false 0% (see gotcha #4); and browser-automation
+libraries (Selenium / Playwright) often trip Grammarly's anti-bot detection, which
+disables the extension. A human Ctrl+V into a real Firefox session is what works.
 
 ---
 

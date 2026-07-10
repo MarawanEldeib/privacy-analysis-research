@@ -8,7 +8,19 @@
 
 ---
 
-## ⚠️ Situation as of May 23
+## ✅ Status update (2026-07-10)
+
+Data collection is **complete for the final tool set**: **Grammarly** and
+**LanguageTool** (two independent automatic grammar checkers) plus a no-extension
+baseline. Both transmitted ~the whole document and all 12 planted secrets;
+baseline 0%. ProWritingAid, QuillBot, and Wordtune were evaluated and dropped
+(recorded as limitations — see `docs/QA-Professor.md`). The phase plan below is the
+**original May-23 schedule**, kept for the record; tool-specific rows have been
+updated to the final scope. Current entry point for everything: `docs/WALKTHROUGH.md`.
+
+---
+
+## ⚠️ Situation as of May 23 *(historical — original plan)*
 
 - 6 weeks behind original plan
 - No data collected yet
@@ -23,7 +35,7 @@
 | Phase | Dates | Duration | Goal |
 |-------|-------|----------|------|
 | 1. Setup & first capture | May 23 – Jun 1 | 10 days | mitmproxy working, test doc ready, Grammarly POC done |
-| 2. Data Collection | Jun 2 – Jul 13 | 6 weeks | All 3 tools captured (5 runs each) |
+| 2. Data Collection | Jun 2 – Jul 13 | 6 weeks | Final tool set captured: Grammarly + LanguageTool (5 runs each) + baseline |
 | 3. Analysis | Jul 14 – Aug 10 | 4 weeks | Metrics computed, results per tool |
 | 4. Report Writing | Aug 11 – Sep 14 | 5 weeks | Full report written and revised |
 | 5. Final Polish | Sep 15 – Oct 10 | ~4 weeks | Final review, submission |
@@ -47,20 +59,19 @@
 ---
 
 ### Phase 2 — Data Collection (Jun 2 – Jul 13)
-- [ ] **Tool 1 — Grammarly:** 5 runs + baseline *(Jun 2–15, 2 weeks)*
-- [ ] **Tool 2 — ProWritingAid:** 5 runs + baseline *(Jun 16–29, 2 weeks)*
-- [ ] **Tool 3 — Wordtune:** 5 runs + baseline *(Jun 30–Jul 13, 2 weeks)*
+- [x] **Tool 1 — Grammarly:** 5 runs + baseline — **done** (99.0%, 12/12 secrets)
+- [x] **Tool 2 — LanguageTool:** 5 runs + baseline — **done** (91.9%, 12/12 secrets)
+- [~] **ProWritingAid / QuillBot / Wordtune:** evaluated and **dropped** (didn't attach / no Firefox extension / clone + on-demand) — recorded as limitations
 
-📋 **Professor update due: ~Jun 8** — Show Grammarly full results  
-📋 **Professor update due: ~Jun 22** — Show ProWritingAid results  
-📋 **Professor update due: ~Jul 6** — All 3 tools collected (or in progress)
+📋 **Professor update:** send only when there are results to show (consultation is
+deferred by decision — see `docs/QA-Professor.md`).
 
 ---
 
 ### Phase 3 — Analysis (Jul 14 – Aug 10)
 - [ ] Python parser for mitmproxy JSON output
 - [ ] Exposure % calculation (character-level substring match)
-- [ ] Confidence % calculation (reproducibility × visibility)
+- [ ] Reproducibility (std dev) + traffic visibility as TWO separate numbers (the old multiplicative "confidence %" was rejected — see `docs/Metrics-Definition.md`)
 - [ ] Per-tool result tables and comparison charts
 - [ ] Per-tool summary statements
 
@@ -102,9 +113,9 @@ until all three of the following are confirmed:
 1. **Professor approval.** Marawan must show the professor the repo + the disclaimer
    and get explicit "yes, you may publish this." Check whether the university has
    IP rules that affect publication.
-2. **Responsible disclosure to vendors.** Email Grammarly, ProWritingAid, and
-   Wordtune with the findings + the methodology, give them at least 90 days to respond
-   or fix anything before public release.
+2. **Responsible disclosure to vendors.** Email the tested vendors (Grammarly and
+   LanguageTool) with the findings + the methodology, give them at least 90 days to
+   respond or fix anything before public release.
 3. **Final results stable.** No re-captures planned that would change the headline numbers.
 
 Until all three hold, the GitHub repo stays **private**. This gate is not optional.

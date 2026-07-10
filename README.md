@@ -14,7 +14,7 @@ Concretely: a user receives a confidential file, is told not to share it with AI
 
 | Path | What |
 |---|---|
-| `docs/` | Methodology, capture protocol, setup guide, metrics, professor Q&A |
+| `docs/` | Walkthroughs (reproduction / narrative / technical), capture protocol, metrics, environment, professor Q&A — start at `docs/WALKTHROUGH.md` |
 | `input-data/` | Synthetic test document with 12 planted identifiers, controlled test HTML page |
 | `scripts/capture/` | mitmproxy addon that captures and scores outbound traffic |
 | `scripts/analysis/` | Analyzer (per-tool stats, 95% CIs, sentence-leak count, comparison chart) |
@@ -23,6 +23,14 @@ Concretely: a user receives a confidential file, is told not to share it with AI
 | `data/raw/` | Capture outputs per tool (one folder per tool) |
 | `results/` | Analyzer outputs: per-tool summaries, comparison table, chart PNG/SVG |
 | `Project-Dashboard.html` | Self-contained results & progress dashboard (open in any browser) |
+
+## Documentation
+
+Three focused walkthroughs (index at [`docs/WALKTHROUGH.md`](docs/WALKTHROUGH.md)):
+
+- [`docs/Reproduction-Guide.md`](docs/Reproduction-Guide.md) — run the whole study from scratch (exact commands + verified links).
+- [`docs/Narrative-Walkthrough.md`](docs/Narrative-Walkthrough.md) — the project story: goal, method, dead ends, findings.
+- [`docs/Technical-Walkthrough.md`](docs/Technical-Walkthrough.md) — how the pipeline, capture add-on, and analyzer are built.
 
 ## Quick start
 
@@ -34,7 +42,7 @@ pip3 install --break-system-packages mitmproxy brotli pyahocorasick matplotlib
 # 2. Sanity check
 make check
 
-# 3. Set up Firefox profiles + mitmproxy cert (see docs/Setup-Guide.md)
+# 3. Set up Firefox profiles + mitmproxy cert (see docs/Reproduction-Guide.md)
 
 # 4. Capture (one tool at a time, five runs each)
 make page-grammarly        # Terminal 1: open Firefox with the profile

@@ -20,7 +20,7 @@ The rule: skills capture hard-won, project-specific knowledge that would otherwi
 - Section structure aligned with the methodology already locked in:
   - Introduction (threat model recap from `methodology.md`)
   - Methodology (point to `docs/Metrics-Definition.md` for formulas)
-  - Setup (point to `docs/Setup-Guide.md` and `docs/Capture-Protocol.md`)
+  - Setup (point to `docs/Reproduction-Guide.md` and `docs/Capture-Protocol.md`)
   - Results (per-tool conclusion statements + comparison table + chart)
   - Discussion (with limitations from `gotchas.md` — TLS pinning, encoding surprises, etc.)
   - Conclusion

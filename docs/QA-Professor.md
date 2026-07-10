@@ -23,8 +23,14 @@ This file tracks questions that need clarification before we can finalize the pr
 
 ## Q1 — Which specific tools should we test?
 
-**Status:** ✅ Decided (revised 2026-07-02 — expanded to 4 tools)  
-**Decision:** 4 tools total — all Firefox browser extensions, in two families:
+> **⚠️ SUPERSEDED (2026-07-10).** The 4-tool plan below was the intended scope as of
+> 2026-07-02. It was revised: the **final tool set is Grammarly + LanguageTool +
+> baseline** (see the "Confirmed decisions" block at the top of this file).
+> ProWritingAid, QuillBot, and Wordtune were dropped and recorded as limitations.
+> The reasoning below is kept as the historical decision record.
+
+**Status:** ⛔ Superseded — see the FINAL decision at the top (2026-07-10).  
+**Decision (historical, 2026-07-02):** 4 tools total — all Firefox browser extensions, in two families:
 
 *Grammar/style checkers:*
 1. **Grammarly** — professor's own example

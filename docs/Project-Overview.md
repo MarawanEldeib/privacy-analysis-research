@@ -1,8 +1,17 @@
 # Project Overview — Measuring Data Exposure in LLM-Integrated Productivity Tools
 
 **Student:** Marawan Eldeib | Matrikelnummer: 3764796  
-**Last updated:** 2026-05-03  
-**Status:** Planning phase — awaiting professor confirmation on open questions
+**Last updated:** 2026-07-10  
+**Status:** Data collection complete for the final tool set — analysis done; report pending.
+
+> **Where things stand:** the pipeline is built and validated, and data collection is
+> complete for **Grammarly + LanguageTool + a no-extension baseline**. Both extensions
+> silently transmitted ~the whole test document and all 12 planted secrets (Grammarly
+> 99.0%, LanguageTool 91.9%); the baseline transmitted 0%. ProWritingAid, QuillBot, and
+> Wordtune were evaluated and dropped (recorded as limitations). Remaining: an optional
+> Gmail/Google-Docs representativeness run, and the written report. Full entry point:
+> `docs/WALKTHROUGH.md`. This overview is kept for background; the earlier "open
+> questions" below have been resolved (see `docs/QA-Professor.md`).
 
 ---
 
@@ -16,8 +25,11 @@ data these tools expose, and reports a confidence level on that finding.
 **Core research question:**  
 *How does user data exposure differ across LLM-integrated productivity tools during controlled use?*
 
-**Expected end result (per tool):**  
-> "Tool X exposes Y% of the input data. Confidence: Z%."
+**Result format (per tool):**  
+> "Tool X transmitted N of 12 planted secrets (incl. the canary) and ~Y% of the
+> document to its servers under default settings." The headline is the planted-secret
+> count; exposure % is secondary. (The earlier single "Confidence: Z%" figure was
+> rejected — reproducibility and traffic visibility are reported as separate numbers.)
 
 ---
 
@@ -35,9 +47,10 @@ data these tools expose, and reports a confidence level on that finding.
 - Store captured data in **CSV or JSON**
 - Analyze with **Python**
 
-### Tools (partially confirmed)
-- **Grammarly** — confirmed as the professor's illustrative example (browser extension category)
-- Full list of tools: **to be confirmed with professor** (see Q1 in QA-Professor.md)
+### Tools (final)
+- **Grammarly** and **LanguageTool** — two independent automatic grammar-checker
+  Firefox extensions — versus a **no-extension baseline**. See `docs/QA-Professor.md`
+  for why ProWritingAid, QuillBot, and Wordtune were dropped.
 
 ### Output
 - Comparative analysis report (written)
@@ -46,19 +59,20 @@ data these tools expose, and reports a confidence level on that finding.
 
 ---
 
-## What We Don't Know Yet (Open Questions)
+## Open questions — resolved
 
-See `docs/QA-Professor.md` for the full list. Key blockers:
+The planning-phase blockers below have all been decided; the resolutions are recorded
+in `docs/QA-Professor.md`.
 
-| # | Question | Blocks |
-|---|----------|--------|
-| Q1 | Which tools to test? | Everything |
-| Q2 | How is exposure % defined? | Analysis scripts |
-| Q3 | How is confidence level defined? | Reporting |
-| Q4 | What input data to use? | Experiment design |
-| Q5 | Active vs. passive exposure? | Task design |
-| Q6 | Environment isolation level? | Setup |
-| Q9 | Do we do SSL inspection? | Whether we can see content at all |
+| # | Question | Resolution |
+|---|----------|-----------|
+| Q1 | Which tools to test? | Grammarly + LanguageTool + baseline (final) |
+| Q2 | How is exposure % defined? | 20-char sliding-window character coverage, baseline-subtracted |
+| Q3 | How is confidence defined? | Composite "confidence %" rejected; report std dev + TLS visibility separately, plus 95% CI |
+| Q4 | What input data? | Synthetic memo with 12 planted identifiers incl. a UUID canary |
+| Q5 | Active vs. passive exposure? | Default-configuration / background exposure on paste |
+| Q6 | Environment isolation? | Kali VM, isolated Firefox profile per tool, one extension each |
+| Q9 | SSL inspection? | Yes — mitmproxy CA trusted per profile; un-interceptable handshakes counted |
 
 ---
 
@@ -88,15 +102,14 @@ Research Project - Privacy analysis/
 
 ---
 
-## Suggested Next Steps (after professor meeting)
+## Remaining next steps
 
-1. Finalize tool list
-2. Define exposure metric formula
-3. Create synthetic input document with planted identifiers
-4. Set up mitmproxy with SSL inspection (if approved)
-5. Write baseline capture script
-6. Run first experiment (Grammarly, if confirmed)
-7. Analyze and iterate
+1. (Optional) One Gmail and one Google-Docs run to confirm the local page is representative.
+2. Write the report — lead with the canary result, not the percentage.
+3. Pre-publication gate (see `docs/Timeline.md`): professor approval + vendor disclosure before the repo goes public.
+
+*(Steps 1–7 of the original plan — finalize tools, define metrics, build the document
+and scripts, first capture, analyze — are done.)*
 
 ---
 
@@ -106,4 +119,7 @@ Research Project - Privacy analysis/
 |------|----------|-----------|
 | 2026-05-03 | Created project structure | Starting phase |
 | 2026-05-03 | Parked tool list & metrics for professor confirmation | Cannot assume — affects all downstream work |
+| 2026-05-28 | Locked metrics; rejected composite "confidence %" | Reproducibility and TLS visibility are different kinds of uncertainty — report separately |
+| 2026-07-10 | Final tool set = Grammarly + LanguageTool + baseline | ProWritingAid didn't attach; QuillBot has no Firefox extension; Wordtune listing was a clone and the genuine tool is on-demand |
+| 2026-07-10 | Data collection complete | Both tools transmit all 12 secrets; baseline 0% |
 

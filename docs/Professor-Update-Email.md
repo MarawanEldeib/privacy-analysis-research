@@ -1,5 +1,12 @@
 # Professor Update Email — May 2026
 
+> **Historical artifact (May 2026).** This is the draft update as written during
+> the planning phase. It reflects the tool set **at that time** (Grammarly,
+> ProWritingAid, Wordtune) — before the scope was revised. The **final** tested
+> set is **Grammarly + LanguageTool + baseline** (ProWritingAid, QuillBot, and
+> Wordtune were dropped; see `docs/QA-Professor.md`). Kept as-sent for the record;
+> do not treat it as current scope.
+
 **To:** [Professor's email]
 **Subject:** Project Update — Measuring Data Exposure in LLM-Integrated Productivity Tools
 

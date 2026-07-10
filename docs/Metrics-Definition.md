@@ -1,8 +1,8 @@
 # Metric Definitions — Data Exposure Study (v2)
 
-**Status:** Draft — confirm with professor at next meeting  
-**Last updated:** 2026-05-23  
-**Changes from v1:** Removed multiplicative confidence formula; added baseline subtraction; fixed reproducibility metric; added sensitive token detection.
+**Status:** Final — implemented in `scripts/analysis/analyze.py` and used for the results.  
+**Last updated:** 2026-07-10  
+**Changes from v1:** Removed multiplicative confidence formula; added baseline subtraction; fixed reproducibility metric; added sensitive token detection. **Headline metric is the planted-secret count** (exposure % is secondary).
 
 ---
 
@@ -158,7 +158,10 @@ statistical claims need to be (Q12 in QA-Professor.md).
 
 ---
 
-## 8. Open questions for professor
+## 8. Open questions for professor *(deferred, not blocking)*
+
+These were left for a professor consult, which is deferred by decision (see
+`docs/QA-Professor.md`); the metrics were finalized and implemented without waiting.
 
 - Is the combination of 20-char window + sentence-level + sensitive-token detection
   sufficient, or do you want a different granularity?
@@ -168,4 +171,5 @@ statistical claims need to be (Q12 in QA-Professor.md).
 
 ---
 
-*To be confirmed with professor before finalising analysis scripts.*
+*Metrics are final and implemented in `scripts/analysis/analyze.py`. Professor
+confirmation is deferred by decision, not blocking.*

@@ -16,28 +16,28 @@ You'll need two terminals.
 
 **Terminal 1 — Firefox setup:**
 ```bash
-# Replace "grammarly" with prowritingaid, wordtune, or baseline as appropriate
+# Replace "grammarly" with languagetool or baseline as appropriate
 make page-grammarly
 ```
 Wait ~5 seconds for Firefox to settle, then **click into the textarea** to focus it. The cursor should be visibly blinking inside the textarea.
 
 **Terminal 2 — Capture:**
 ```bash
-make grammarly-1   # or grammarly-2 ... 5, or prowritingaid-N, etc.
+make grammarly-1   # or grammarly-2 ... 5, or languagetool-N, or baseline-N
 ```
 
 The Makefile target:
 1. Loads `test-document.txt` into the clipboard via xclip.
 2. Starts mitmproxy in the background with the addon attached.
-3. Waits 3 seconds for mitmproxy to be ready.
-4. Sends `Ctrl+V` to the Firefox window via xdotool.
-5. Waits 60 seconds for the extension to process and send.
-6. Kills mitmproxy (saves the session).
-7. Prints the output paths.
+3. Pauses and prints `>>> PASTE NOW`.
+4. **You paste manually:** switch to Firefox, empty the box (Ctrl+A, Backspace),
+   press a real **Ctrl+V**, then return and press Enter. (A scripted xdotool paste
+   doesn't fire the DOM input event, so the tool wouldn't ingest the text → false 0%.)
+5. Records ~60 seconds for the extension to process and send.
+6. Stops mitmproxy (saves the session) and prints the output paths.
 
 **Between runs of the same tool:**
-- Refresh the Firefox page (Ctrl+R or Cmd+R) to clear the textarea.
-- Or close and reopen with `make page-<tool>`.
+- Empty the textarea (Ctrl+A, Backspace) before the next paste.
 - Either way, the next paste should land in an empty textarea.
 
 ## Baseline runs
@@ -64,7 +64,7 @@ Then look at the per-tool table. Sanity checks:
 - HTTPS event share should be near 100%. If much lower, suspect cert issues.
 - TLS handshake failures should be 0 or very low.
 
-## After all three tools + baseline are done
+## After both tools + baseline are done
 
 ```bash
 make analyze     # final strict analysis with baseline subtraction
@@ -86,6 +86,6 @@ If lenient catches a lot more than strict, that's a signal to re-examine the str
 - The test document file (don't edit after first run).
 - The test HTML page (don't edit after first run).
 - The 60-second wait.
-- The xdotool paste method.
+- The paste method (manual Ctrl+V).
 
 If any of these change, runs before and after the change are not comparable.
