@@ -34,10 +34,10 @@ If Low: look at the gotchas first (cert issues across runs, paste timing variati
 ## When CI overlap means something
 
 The comparison table prints lines like:
-> `grammarly vs prowritingaid    DISJOINT (clear difference)`
-> `grammarly vs wordtune         overlap (no clear difference)`
+> `grammarly       vs languagetool    DISJOINT (clear difference)`
+> `grammarly       vs baseline        DISJOINT (clear difference)`
 
-- **DISJOINT** = the two tools' 95% CIs don't overlap. Strong informal evidence that they actually differ in exposure. You can say "Grammarly leaks notably more than ProWritingAid" with confidence.
+- **DISJOINT** = the two tools' 95% CIs don't overlap. Strong informal evidence that they actually differ in exposure. You can say "Tool A leaks notably more than Tool B" with confidence (e.g. any tool vs the 0% baseline).
 - **overlap** = CIs overlap. The difference (if any) is too small to claim with statistical confidence. You can still report the medians side-by-side, but don't claim one is "significantly more" without a formal t-test.
 
 This is a visual check, not a formal hypothesis test. If the professor specifically asks for "is the difference statistically significant?", we'd need to add a Welch's t-test on top.
