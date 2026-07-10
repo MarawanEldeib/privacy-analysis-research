@@ -9,6 +9,8 @@
 # Results depend on mitmproxy's version-specific behaviour (HTTP `.content`
 # decoding, WebSocket scheme handling — both of which we had to work around), so
 # the locked file is the reproducibility artifact that belongs with your data.
+#
+# Full environment manifest + "lock your exact versions" commands: docs/ENVIRONMENT.md
 
 mitmproxy==12.2.3    # HTTPS interception + capture-addon hooks (verified working on Kali, 2026-07-02)
 brotli~=1.1          # decode Brotli-compressed bodies (Content-Encoding: br)

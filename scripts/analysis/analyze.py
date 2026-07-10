@@ -31,7 +31,9 @@ DATA_DIR      = PROJECT_ROOT / "data" / "raw"
 RESULTS_DIR   = PROJECT_ROOT / "results"
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
-TOOLS = ["grammarly", "prowritingaid", "wordtune", "baseline"]
+# Final tool set (2026-07-10): two automatic grammar checkers + the no-extension
+# control. ProWritingAid / Wordtune / QuillBot were dropped (see docs/QA-Professor.md).
+TOOLS = ["grammarly", "languagetool", "baseline"]
 
 SENSITIVE_TOKENS = [
     "Helena Voss",
@@ -60,6 +62,11 @@ MIN_SENTENCE_CHARS = 25
 _SENT_END = re.compile(r'(?<=[\.!\?])\s+|\n+')
 
 def _parse_sentences(text):
+    """Split text into (start, end, sentence) tuples on sentence-ending
+    punctuation or newlines, keeping only sentences >= MIN_SENTENCE_CHARS.
+    start/end are character offsets into the ORIGINAL text: the lstrip() math
+    re-adds any leading whitespace that strip() removed, so the offsets stay
+    aligned with the un-stripped source used for coverage matching."""
     out = []
     pos = 0
     for m in _SENT_END.finditer(text):
@@ -87,6 +94,8 @@ T_CRIT_95 = {
 }
 
 def _t_critical_95(df):
+    """Two-tailed t critical value at 95% for `df` degrees of freedom, read
+    from a small lookup table (nearest lower df — conservative)."""
     if df < 1:
         return float("inf")
     if df in T_CRIT_95:
@@ -96,6 +105,8 @@ def _t_critical_95(df):
 
 
 def confidence_interval_95(values: list[float]) -> tuple[float, float, float]:
+    """Return (mean, lower, upper) for a 95% t-interval over `values`.
+    A single run has no interval, so it returns (mean, mean, mean)."""
     n = len(values)
     if n == 0:
         return (0.0, 0.0, 0.0)
@@ -109,6 +120,8 @@ def confidence_interval_95(values: list[float]) -> tuple[float, float, float]:
 
 
 def sentences_fully_leaked(covered_positions: set[int], leak_threshold: float = 0.9) -> list[tuple[int, str]]:
+    """Return the sentences whose covered-character fraction meets
+    `leak_threshold` (default 0.9) — i.e. those considered 'fully leaked'."""
     leaked = []
     for i, (start, end, text) in enumerate(SENTENCES):
         total = end - start
@@ -171,6 +184,8 @@ def union_exposure_from_run(run_data: dict, baseline_domains: set[str] | None = 
 
 
 def tls_visibility(run_data: dict) -> tuple[float, int]:
+    """Return (https_event_pct, tls_handshake_failures) — the two separate
+    interception-visibility numbers, never merged into one composite score."""
     s = run_data.get("summary", {}) or {}
     # The addon always writes https_event_pct; default to 100.0 only for a run
     # JSON that predates the field. (Removed a dead fallback that referenced
@@ -180,6 +195,8 @@ def tls_visibility(run_data: dict) -> tuple[float, int]:
 
 
 def check_sensitive_tokens(run_data):
+    """Return {token: bool} for each planted secret — True if it appears in the
+    run's recorded tokens or (fallback) anywhere in an event body_preview."""
     all_events = run_data.get("requests", []) + run_data.get("ws_messages", [])
     summary    = run_data.get("summary", {}) or {}
 
@@ -200,6 +217,8 @@ def check_sensitive_tokens(run_data):
 
 
 def get_baseline_domains(baseline_tool="baseline"):
+    """Collect the set of hosts seen in the no-extension baseline runs, so a
+    tool run can subtract that background traffic before scoring exposure."""
     baseline_dir = DATA_DIR / baseline_tool
     if not baseline_dir.exists():
         return set()
@@ -287,6 +306,10 @@ def analyze_run(run_path, baseline_domains=None,
 
 def analyze_tool(tool_name, subtract_baseline=True,
                  window_override=None, sentence_threshold=0.9):
+    """Analyze every run_*.json for one tool and aggregate: median/mean
+    exposure, 95% CI, reproducibility label, sensitive-token counts, and a
+    plain-language conclusion. Writes results/<tool>_summary.json and returns
+    the summary dict (or None if the tool has no data directory / no runs)."""
     tool_dir = DATA_DIR / tool_name
     if not tool_dir.exists():
         print(f"[WARN] No data directory for: {tool_name}")
@@ -422,6 +445,8 @@ def analyze_tool(tool_name, subtract_baseline=True,
 
 
 def print_tool_table(s):
+    """Pretty-print one tool's summary dict to the console: headline secret
+    count, exposure stats, TLS visibility, per-token hits, and conclusion."""
     t = s["tool"].upper()
     sep = "=" * 70
     sub = "-" * 57
@@ -460,6 +485,8 @@ def print_tool_table(s):
 
 
 def print_comparison_table(summaries):
+    """Print a side-by-side table across tools, plus pairwise 95%-CI-overlap
+    checks (non-overlapping CIs suggest a real between-tool difference)."""
     sep = "=" * 100
     print(f"\n{sep}")
     print("  COMPARISON TABLE  (all values after baseline subtraction)")
@@ -627,3 +654,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# Final tool set: grammarly, languagetool, baseline (see docs/QA-Professor.md).
