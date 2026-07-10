@@ -1,0 +1,58 @@
+{
+  "tool": "wordtune",
+  "num_runs": 1,
+  "baseline_subtracted": false,
+  "analysis_window_override": null,
+  "analysis_sentence_threshold": 0.9,
+  "exposures_per_run": [
+    0.0
+  ],
+  "median_exposure_pct": 0.0,
+  "mean_exposure_pct": 0.0,
+  "min_exposure_pct": 0.0,
+  "max_exposure_pct": 0.0,
+  "stdev_exposure_pct": 0.0,
+  "ci95_low_pct": 0.0,
+  "ci95_high_pct": 0.0,
+  "ci95_half_width_pp": 0.0,
+  "reproducibility": "High",
+  "sentences_leaked_per_run": [
+    0
+  ],
+  "median_sentences_leaked": 0,
+  "total_sentences_in_document": 35,
+  "unique_sentences_leaked_any_run": [],
+  "avg_https_event_pct": 100.0,
+  "total_tls_handshake_failures": 0,
+  "any_exposure": false,
+  "sensitive_tokens_detected": {},
+  "sensitive_token_detection_rate": "0/12",
+  "avg_events": 5,
+  "avg_exposed_events": 0,
+  "avg_unique_domains": 3,
+  "avg_request_bytes": 225,
+  "avg_ws_messages": 0,
+  "runs": [
+    {
+      "run_id": "1",
+      "tool": "wordtune",
+      "start_time": "2026-07-10T18:17:06.683240+00:00",
+      "exposure_pct": 0.0,
+      "any_exposure": false,
+      "covered_chars": 0,
+      "sentences_leaked": 0,
+      "sentences_leaked_total": 35,
+      "sentences_leaked_texts": [],
+      "https_event_pct": 100.0,
+      "tls_handshake_failures": 0,
+      "sensitive_tokens_found": {},
+      "total_events": 5,
+      "exposed_events": 0,
+      "unique_domains": 3,
+      "total_request_bytes": 225,
+      "websocket_messages": 0,
+      "baseline_subtracted": false
+    }
+  ],
+  "conclusion": "Wordtune: no planted identifiers or document content were detected in outbound traffic. Overall, approximately 0.0% of the document's characters were transmitted (median across 1 runs; std dev 0.0pp; mean 0.0% single run, no CI; reproducibility High). Of intercepted events, 100.0% used HTTPS."
+}

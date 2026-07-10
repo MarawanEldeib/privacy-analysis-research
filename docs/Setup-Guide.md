@@ -171,14 +171,14 @@ Each extension goes into its dedicated profile only. Never install more than one
 
 **4b. ProWritingAid** (in `prowritingaid-test` profile):
 1. Open Firefox with the `prowritingaid-test` profile.
-2. Visit `https://addons.mozilla.org/en-US/firefox/addon/prowritingaid-browser-extension/`.
+2. Visit `https://addons.mozilla.org/en-US/firefox/addon/prowritingaid/`.
 3. Click **Add to Firefox**.
 4. Sign in to a free ProWritingAid account.
 5. Confirm the extension icon is visible.
 
 **4c. Wordtune** (in `wordtune-test` profile):
 1. Open Firefox with the `wordtune-test` profile.
-2. Visit `https://addons.mozilla.org/en-US/firefox/addon/wordtune/`.
+2. Visit `https://addons.mozilla.org/en-US/firefox/addon/wordtune-ai-writing-assistant/`  (official, by AI21 Labs — NOT the `/wordtune/` clone).
 3. Click **Add to Firefox**.
 4. Sign in to a free Wordtune account.
 5. Confirm the extension icon is visible.

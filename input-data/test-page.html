@@ -7,7 +7,7 @@
   body  { font-family: system-ui, sans-serif; max-width: 720px; margin: 60px auto; padding: 0 16px; color: #222; }
   h1    { font-size: 18px; color: #555; }
   p     { font-size: 13px; color: #777; line-height: 1.5; }
-  textarea {
+  textarea, #editor {
     width: 100%;
     min-height: 320px;
     padding: 14px;
@@ -19,6 +19,8 @@
     box-sizing: border-box;
     resize: vertical;
   }
+  #editor { white-space: pre-wrap; overflow-y: auto; }
+  #editor:empty:before { content: attr(data-placeholder); color: #999; }
 </style>
 </head>
 <body>
@@ -29,5 +31,13 @@
     extension activates on. Click into it to focus, then paste.
   </p>
   <textarea id="t" autofocus spellcheck="true" placeholder="Test document goes here…"></textarea>
+
+  <h1 style="margin-top:36px;">Rich-editor field — for tools that need it (ProWritingAid, Wordtune, QuillBot).</h1>
+  <p>
+    ProWritingAid, Wordtune, and QuillBot attach to rich editors (like Gmail or Google Docs),
+    not plain textareas. This box is a <code>contenteditable</code> rich editor — still local,
+    still no third-party scripts. Click into it and paste to test those tools.
+  </p>
+  <div id="editor" contenteditable="true" spellcheck="true" data-placeholder="Paste the test document here…"></div>
 </body>
 </html>
