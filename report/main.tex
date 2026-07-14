@@ -119,9 +119,14 @@ decade. \citet{starov2017extended} were among the first to systematically measur
 ``privacy diffusion'' enabled by extensions, showing that many leak identifying
 information far beyond what their function requires. \citet{weissbacher2017exray}
 built Ex-Ray to detect history-leaking extensions, and \citet{aggarwal2018ispy}
-analysed and detected ``spying'' extensions that exfiltrate browsing behaviour. These
-works established that extension data collection is widespread and frequently
-undisclosed.
+analysed and detected ``spying'' extensions that exfiltrate browsing behaviour.
+\citet{chen2018mystique} scaled dynamic taint tracking to 181{,}683 extensions,
+flagging thousands that leak privacy-sensitive information. These works established
+that extension data collection is widespread and frequently undisclosed, and they
+introduced the complementary detection methods --- differential string search,
+content-agnostic network analysis, and taint tracking --- that the field still relies
+on; static data-flow analysis (e.g.\ DoubleX~\citep{fass2021doublex}) later added
+scale on the code side.
 
 More recent large-scale studies have moved from browsing metadata to \emph{page
 content}. \citet{nayak2024experimental} experimentally analysed sensitive-data access
@@ -142,7 +147,11 @@ grammar checker running by default), using a planted-canary methodology that mak
 each leak individually and unambiguously attributable. Where prior large-scale work
 answers ``how many extensions leak,'' we answer ``exactly how much of a specific
 confidential document leaves, and which sensitive tokens, for two representative
-tools, with what reproducibility.''
+tools, with what reproducibility.'' In short, ours is the writing-assistant,
+canary-proven complement to \citeauthor{vekaria2025bighelp}'s assistant-focused audit:
+the same interception principle, narrowed to a single reproducible threat model and
+strengthened with unique planted tokens so that every individual leak is provable, not
+merely observed in aggregate.
 
 \section{Methodology}
 \label{sec:method}
