@@ -1,6 +1,6 @@
 # Supervisor Meeting Notes — 23 July 2026
 
-**Supervisor:** Prof. Marco Aiello · **Format:** in person · **Duration:** ~20 min (12:57–13:17)
+**Supervisor:** Prof. Marco Aiello · **Format:** in person · **When:** 23 July 2026 (held during the morning working session)
 
 ## Outcome in one line
 Methodology **approved**. Encouraged to **broaden the study where feasible** — including testing tools on the **desktop, not only in Firefox** — with partial additions welcome (not everything required). Report format is **free**.
