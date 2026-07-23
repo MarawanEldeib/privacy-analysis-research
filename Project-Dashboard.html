@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Privacy Analysis — Project Dashboard</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1"></script>
+<!-- charts drawn with plain CSS, no external dependency -->
 <style>
 :root{
   --bg:#0b1220; --bg2:#111a2e; --page:#eef1f7; --card:#ffffff;
@@ -156,11 +156,11 @@ footer{margin-top:26px;padding:16px 6px;color:var(--muted);font-size:12.5px;disp
     <p class="lede">How much of a confidential document is silently transmitted to a writing-assistant's servers
       when its browser extension is running by default — even after the user is told <em>not</em> to share the file with AI tools.</p>
     <div class="hero-meta">
-      <span class="chip"><span class="dot live"></span> <b>Data collection in progress</b></span>
+      <span class="chip"><span class="dot live"></span> <b>Data collection complete · report drafting</b></span>
       <span class="chip">Researcher: <b>Marawan&nbsp;Eldeib</b></span>
       <span class="chip">Deadline: <b>10&nbsp;Oct&nbsp;2026</b></span>
       <span class="chip">Environment: <b>Kali&nbsp;·&nbsp;mitmproxy&nbsp;·&nbsp;Firefox</b></span>
-      <span class="chip">Effort logged: <b>16h&nbsp;25m+</b></span>
+      <span class="chip">Effort logged: <b>31h&nbsp;25m</b></span>
     </div>
   </header>
 
@@ -228,7 +228,7 @@ footer{margin-top:26px;padding:16px 6px;color:var(--muted);font-size:12.5px;disp
           <button id="tg-exp" class="on" onclick="setMetric('exp')">Document exposure (%)</button>
           <button id="tg-sec" onclick="setMetric('sec')">Secrets sent (of 12)</button>
         </div>
-        <div class="chart-box"><canvas id="cmp"></canvas></div>
+        <div id="cmp" style="display:flex;flex-direction:column;gap:20px;height:290px;justify-content:center;padding:0 4px"></div>
         <div class="legend">
           <span><i style="background:var(--danger)"></i>Leaked (measured)</span>
           <span><i style="background:var(--safe)"></i>Control (no leak)</span>
@@ -237,7 +237,16 @@ footer{margin-top:26px;padding:16px 6px;color:var(--muted);font-size:12.5px;disp
       <div class="card">
         <h3>Where the data went</h3>
         <p class="hint">Both grammar checkers shipped the document to their own servers.</p>
-        <div class="chart-box" style="height:230px"><canvas id="don"></canvas></div>
+        <div style="position:relative;width:190px;height:190px;margin:14px auto 8px;border-radius:50%;background:conic-gradient(var(--danger) 0 95.5%,#e6ebf3 95.5% 100%)">
+          <div style="position:absolute;inset:28px;background:#fff;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center">
+            <div style="font-size:30px;font-weight:800;color:var(--danger);line-height:1">95.5%</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">avg transmitted</div>
+          </div>
+        </div>
+        <div class="legend" style="justify-content:center">
+          <span><i style="background:var(--danger)"></i>Transmitted</span>
+          <span><i style="background:#e6ebf3"></i>Not transmitted</span>
+        </div>
         <div class="note">Destinations: <b>capi.grammarly.com</b> (WebSocket <code>/freews</code>) and <b>api.languagetool.org</b> (<code>POST /v2/check</code>). 100% of intercepted events used HTTPS; 0 TLS-handshake failures — nothing hidden by certificate pinning.</div>
       </div>
     </div>
@@ -289,6 +298,25 @@ footer{margin-top:26px;padding:16px 6px;color:var(--muted);font-size:12.5px;disp
     <div class="secrets" id="secrets"></div>
   </section>
 
+  <!-- TOOL POLICIES -->
+  <section>
+    <div class="sec-head"><h2>What each tool says about your data</h2><span>The vendors&rsquo; own stated policies — read July 2026</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px"><div class="card" style="padding:15px"><div style="font-weight:800;font-size:15px;color:var(--ink);margin-bottom:8px">Grammarly</div><div style="font-size:12.5px;line-height:1.65;color:var(--muted)"><div><b style="color:var(--danger)">Keeps it:</b> yes — up to ~1&nbsp;year; Editor docs until you delete them.</div><div><b style="color:var(--danger)">Trains on it:</b> yes, by default (individual accounts; opt-out available).</div></div></div><div class="card" style="padding:15px"><div style="font-weight:800;font-size:15px;color:var(--ink);margin-bottom:8px">LanguageTool</div><div style="font-size:12.5px;line-height:1.65;color:var(--muted)"><div><b style="color:var(--safe)">Keeps it:</b> no — states it does not store submitted text.</div><div><b style="color:var(--safe)">Trains on it:</b> no — does not train on user input.</div><div style="margin-top:6px;color:var(--accent);font-weight:700">Self-hostable → text can stay offline.</div></div></div><div class="card" style="padding:15px"><div style="font-weight:800;font-size:15px;color:var(--ink);margin-bottom:8px">QuillBot</div><div style="font-size:12.5px;line-height:1.65;color:var(--muted)"><div><b style="color:var(--danger)">Keeps it:</b> yes — stores inputs by default (since Nov&nbsp;2025).</div><div><b style="color:var(--danger)">Trains on it:</b> yes, by default (opt-out; Team plan excluded).</div></div></div><div class="card" style="padding:15px"><div style="font-weight:800;font-size:15px;color:var(--ink);margin-bottom:8px">ProWritingAid</div><div style="font-size:12.5px;line-height:1.65;color:var(--muted)"><div><b style="color:var(--safe)">Keeps it:</b> no — deletes text right after processing.</div><div><b style="color:var(--safe)">Trains on it:</b> not stated to train on user text.</div></div></div><div class="card" style="padding:15px"><div style="font-weight:800;font-size:15px;color:var(--ink);margin-bottom:8px">Wordtune</div><div style="font-size:12.5px;line-height:1.65;color:var(--muted)"><div><b style="color:var(--danger)">Keeps it:</b> cloud processing; uses Google&nbsp;Analytics.</div><div><b style="color:var(--danger)">Trains on it:</b> limited public detail — cloud AI rewrite.</div></div></div></div>
+    <div class="note" style="margin-top:14px"><b>Caveat:</b> these are the vendors&rsquo; own claims. My measurement proves the text <b>leaves the machine</b>; whether they keep or train on it happens on their servers and cannot be verified from the network.</div>
+  </section>
+
+  <!-- RELATED RESEARCH -->
+  <section>
+    <div class="sec-head"><h2>Related research</h2><span>Prior work this project builds on — quick reference</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px"><div class="card" style="padding:15px"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><div style="font-weight:800;font-size:13.5px;color:var(--ink)">Starov &amp; Nikiforakis</div><div style="font-size:11px;color:var(--muted);white-space:nowrap">WWW 2017</div></div><div style="font-size:12px;color:var(--accent);font-weight:700;margin:3px 0 6px">Extended Tracking Powers</div><div style="font-size:12.3px;line-height:1.55;color:var(--muted)">First large-scale measurement of extension privacy leakage. 618 of the top 10k extensions leaked browsing/search history — often accidentally via the HTTP Referer header. <b>Method:</b> dynamic analysis + string search.</div><div style="font-size:11.5px;color:var(--ink);margin-top:7px;padding-top:7px;border-top:1px solid #e9edf3"><b>Relates:</b> the seminal browsing-history line; my work measures document <em>content</em>.</div></div><div class="card" style="padding:15px"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><div style="font-weight:800;font-size:13.5px;color:var(--ink)">Weissbacher et al.</div><div style="font-size:11px;color:var(--muted);white-space:nowrap">ACSAC 2017</div></div><div style="font-size:12px;color:var(--accent);font-weight:700;margin:3px 0 6px">Ex-Ray</div><div style="font-size:12.3px;line-height:1.55;color:var(--muted)">Detects history-leaking extensions even when the leak is <b>encrypted/obfuscated</b> — 184 confirmed of 10,691. <b>Method:</b> network counterfactual analysis + ML.</div><div style="font-size:11.5px;color:var(--ink);margin-top:7px;padding-top:7px;border-top:1px solid #e9edf3"><b>Relates:</b> shows leaks hide inside encryption — exactly why I decrypt with mitmproxy.</div></div><div class="card" style="padding:15px"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><div style="font-weight:800;font-size:13.5px;color:var(--ink)">Aggarwal et al.</div><div style="font-size:11px;color:var(--muted);white-space:nowrap">EuroS&amp;P 2018</div></div><div style="font-size:12px;color:var(--accent);font-weight:700;margin:3px 0 6px">I Spy with My Little Eye</div><div style="font-size:12.3px;line-height:1.55;color:var(--muted)">Found 218 &ldquo;spying&rdquo; extensions across the entire Chrome Web Store (history, tokens, geolocation). <b>Method:</b> an RNN over browser API-call sequences.</div><div style="font-size:11.5px;color:var(--ink);margin-top:7px;padding-top:7px;border-top:1px solid #e9edf3"><b>Relates:</b> whole-store detection; I go deep on specific tools with proof.</div></div><div class="card" style="padding:15px"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><div style="font-weight:800;font-size:13.5px;color:var(--ink)">Chen &amp; Kapravelos</div><div style="font-size:11px;color:var(--muted);white-space:nowrap">CCS 2018</div></div><div style="font-size:12px;color:var(--accent);font-weight:700;margin:3px 0 6px">Mystique</div><div style="font-size:12.3px;line-height:1.55;color:var(--muted)">Dynamic taint tracking at scale: 181,683 extensions, 3,868 (2.1%) leaking; top leakers &gt;60M users. <b>Method:</b> in-browser taint tracking.</div><div style="font-size:11.5px;color:var(--ink);margin-top:7px;padding-top:7px;border-top:1px solid #e9edf3"><b>Relates:</b> the heavyweight alternative to my mitmproxy + canary approach.</div></div><div class="card" style="padding:15px"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><div style="font-weight:800;font-size:13.5px;color:var(--ink)">Nayak et al.</div><div style="font-size:11px;color:var(--muted);white-space:nowrap">WWW 2024</div></div><div style="font-size:12px;color:var(--accent);font-weight:700;margin:3px 0 6px">Sensitive Data Access by Extensions</div><div style="font-size:12.3px;line-height:1.55;color:var(--muted)">A malicious proof-of-concept passed Chrome Web Store review; all top-10k login-page passwords are JS-accessible; ~1k sites store passwords in plaintext. <b>Method:</b> PoC + corpus analysis.</div><div style="font-size:11.5px;color:var(--ink);margin-top:7px;padding-top:7px;border-top:1px solid #e9edf3"><b>Relates:</b> credential-field risk — adjacent to document-content leakage.</div></div><div class="card" style="padding:15px"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><div style="font-weight:800;font-size:13.5px;color:var(--ink)">Xie et al.</div><div style="font-size:11px;color:var(--muted);white-space:nowrap">USENIX 2024</div></div><div style="font-size:12px;color:var(--accent);font-weight:700;margin:3px 0 6px">Arcanum</div><div style="font-size:12.3px;line-height:1.55;color:var(--muted)">3,028 extensions collect sensitive on-page content (up to <b>144M users</b>); 202 exfiltrate actual page content. <b>Method:</b> dynamic taint tracking on instrumented Chromium.</div><div style="font-size:11.5px;color:var(--ink);margin-top:7px;padding-top:7px;border-top:1px solid #e9edf3"><b>Relates:</b> closest large-scale &lsquo;content&rsquo; study; I quantify a specific document with per-secret proof.</div></div><div class="card" style="padding:15px"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><div style="font-weight:800;font-size:13.5px;color:var(--ink)">Vekaria et al.</div><div style="font-size:11px;color:var(--muted);white-space:nowrap">USENIX 2025</div></div><div style="font-size:12px;color:var(--accent);font-weight:700;margin:3px 0 6px">Big Help or Big Brother?</div><div style="font-size:12.3px;line-height:1.55;color:var(--muted)">Audited GenAI browser assistants: several send the <b>full HTML DOM + form inputs</b> to their servers (Merlin leaked an SSN). <b>Method:</b> MITM TLS decryption.</div><div style="font-size:11.5px;color:var(--ink);margin-top:7px;padding-top:7px;border-top:1px solid #e9edf3"><b>Relates:</b> the <b>same method</b> as mine, on AI assistants — mine is the writing-assistant, canary-proven complement.</div></div></div>
+  </section>
+
+  <!-- QUESTIONS -->
+  <section>
+    <div class="sec-head"><h2>Questions for the supervisor</h2><span>To resolve at the next meeting</span></div>
+    <div class="card"><div style="display:flex;flex-direction:column;gap:15px"><div style="display:flex;gap:12px;align-items:flex-start"><span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center">?</span><div style="font-size:13.5px;line-height:1.5;color:var(--ink)"><b>Is the methodology sound as it stands</b> — anything to add or change in how it was measured?</div></div><div style="display:flex;gap:12px;align-items:flex-start"><span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center">?</span><div style="font-size:13.5px;line-height:1.5;color:var(--ink)"><b>Is this the scope you expected</b> — or did you have other tools or directions in mind (a desktop app or an AI-assistant extension)?</div></div><div style="display:flex;gap:12px;align-items:flex-start"><span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center">?</span><div style="font-size:13.5px;line-height:1.5;color:var(--ink)"><b>Is there a required report template or format</b> — length, structure, citation style — and do you need the standard declaration of originality?</div></div></div></div>
+  </section>
+
   <!-- ROADMAP -->
   <section>
     <div class="sec-head"><h2>What we did &amp; what's next</h2><span>Project roadmap</span></div>
@@ -335,7 +363,8 @@ const ROAD=[
   {s:'done',b:'LanguageTool — 5 runs (independent replication)',p:'91.9% and 12/12 every run, POSTed to api.languagetool.org. A second, unrelated grammar checker confirms the finding.'},
   {s:'done',b:'Baseline — 3 runs complete',p:'0.0% / 0-of-12 with no extension. Proves the leak is the tool, not the browser.'},
   {s:'done',b:'Scoped to automatic/background leakers',p:'Verified the finding on two independent grammar checkers; on-demand and non-Firefox tools fall outside this scope and are noted as limitations.'},
-  {s:'todo',b:'Analysis, comparison charts & final report',p:'Per-tool means ± 95% CI, the two-checker replication, and the written report + code release.'},
+  {s:'done',b:'Analysis, charts & progress presentation',p:'Per-tool means ± 95% CI, comparison chart, this dashboard, and a supervisor progress deck.'},
+  {s:'todo',b:'Written report (drafting) + supervisor feedback',p:'LaTeX report under way; awaiting supervisor guidance on scope. Optional: broaden to a different integration type (AI-assistant / desktop app).'},
 ];
 
 /* ---------- HELPERS ---------- */
@@ -398,31 +427,27 @@ let metric='exp';
 const expData=CONDS.map(c=>c.exposure===null?0:c.exposure);
 const secData=CONDS.map(c=>c.secrets===null?0:c.secrets);
 
-const cmp=new Chart($('#cmp'),{
-  type:'bar',
-  data:{labels,datasets:[{data:expData,backgroundColor:cols.map(x=>x+'d9'),borderColor:cols,borderWidth:1.5,borderRadius:7,maxBarThickness:64}]},
-  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
-    tooltip:{callbacks:{label:c=>{const cd=CONDS[c.dataIndex];
-      if(cd.status==='pending')return 'Not testable in Firefox';
-      if(cd.status==='blocked')return 'Did not attach — not measurable';
-      return metric==='exp'?` ${cd.exposure.toFixed(1)}% of document transmitted`:` ${cd.secrets} of 12 secrets sent`;}}}},
-    scales:{y:{beginAtZero:true,max:100,grid:{color:'#eef1f7'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}
-});
-const don=new Chart($('#don'),{
-  type:'doughnut',
-  data:{labels:['Transmitted (avg of both checkers)','Not transmitted'],datasets:[{data:[95.5,4.5],backgroundColor:[C.danger,'#e6ebf3'],borderColor:'#fff',borderWidth:3}]},
-  options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,padding:14,font:{size:12}}},
-    tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed}%`}}}}
-});
+function renderCmp(){
+  const isExp = metric==='exp';
+  document.getElementById('cmp').innerHTML = CONDS.map(function(c){
+    var v = isExp ? c.exposure : c.secrets;
+    var pct = isExp ? v : (v/12*100);
+    var val = isExp ? v.toFixed(1)+'%' : v+' / 12';
+    var col = c.status==='control' ? C.safe : C.danger;
+    return '<div style="display:flex;align-items:center;gap:12px">'
+      + '<div style="width:112px;font-weight:700;font-size:13px;color:var(--ink)">'+c.name+'</div>'
+      + '<div style="flex:1;height:24px;background:var(--slate-soft);border-radius:6px;overflow:hidden"><i style="display:block;height:100%;width:'+pct+'%;background:'+col+';border-radius:6px"></i></div>'
+      + '<div style="width:66px;text-align:right;font-weight:800;font-size:14px;color:'+col+'">'+val+'</div>'
+      + '</div>';
+  }).join('');
+}
 function setMetric(m){
   metric=m;
-  $('#tg-exp').classList.toggle('on',m==='exp');
-  $('#tg-sec').classList.toggle('on',m==='sec');
-  cmp.data.datasets[0].data = m==='exp'?expData:secData;
-  cmp.options.scales.y.max = m==='exp'?100:12;
-  cmp.options.scales.y.ticks.callback = m==='exp'?(v=>v+'%'):(v=>v);
-  cmp.update();
+  document.getElementById('tg-exp').classList.toggle('on',m==='exp');
+  document.getElementById('tg-sec').classList.toggle('on',m==='sec');
+  renderCmp();
 }
+renderCmp();
 window.setMetric=setMetric;
 </script>
 </body>
