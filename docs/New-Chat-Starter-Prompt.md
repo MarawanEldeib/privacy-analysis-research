@@ -35,33 +35,44 @@ environment — this file is not re-dated each session.)
 
 ## Then read
 
-- `docs/QA-Professor.md` — **confirmed decisions** (top) + open questions for the professor
-- `docs/Independent-Critical-Review-2026-05-28.md` — methodology/code review (bugs now fixed; read as history)
-- `docs/Engineering-Architecture-Review-2026-05-28.md` — code-quality review + refactor backlog
+- `docs/Meeting-Notes-2026-07-23.md` — **supervisor feedback + agreed next directions** (most current decisions)
+- `docs/Review-Findings-2026-09-05.md` — QA audit of code/methodology and the fixes applied (H1–H6 + all M/L)
+- `docs/QA-Professor.md` — confirmed decisions (top) + any remaining open questions
+- `docs/Desktop-Capture-Runbook.md` — how to run the desktop / system-level pass on Linux
+- `docs/Tooling-Landscape.md` — tools used vs considered · `docs/Related-Work-Research.md` — ~22 cited papers
+- `docs/Independent-Critical-Review-2026-05-28.md`, `docs/Engineering-Architecture-Review-2026-05-28.md` — early reviews (history)
 - `docs/Operational-Prompts.md` — P5–P9 setup/capture prompts to run on Kali
-- `docs/Capture-Protocol.md`, `docs/Metrics-Definition.md`, `docs/Setup-Guide.md`, `docs/Timeline.md`
+- `docs/Capture-Protocol.md`, `docs/Metrics-Definition.md`, `docs/Timeline.md`, `CHANGELOG.md`
 - `input-data/test-document.txt`, `input-data/test-page.html`, `input-data/README.md`
 - `scripts/capture/capture_addon.py`, `scripts/analysis/analyze.py`, `tests/`
 
-## Confirmed direction (decided 2026-05-28)
+## Confirmed direction
 
-1. **3 test documents** (the memo + a long report + a code/structured snippet).
-2. **Final tool set: Grammarly + LanguageTool** (two independent automatic grammar checkers) vs a no-extension baseline. ProWritingAid / QuillBot / Wordtune dropped and recorded as limitations (see status below).
-3. **Factual framing** — "transmitted to the tool's servers despite a no-share instruction" — **not** "leak".
-4. Main runs on the **local practice page**, **plus 1 run each in Gmail and Google Docs** to confirm representativeness.
-5. **Simple 95%-CI-overlap** comparison now; a formal pairwise test only if the professor asks.
-6. **Exposure counts outbound only** (client→server); server echoes are captured but reported separately.
-7. **Headline = planted-secret count**; exposure % is secondary; the sentence-leak metric is dropped.
+1. **Tool set (browser phase, done): Grammarly + LanguageTool** — two independent automatic grammar checkers — vs a no-extension baseline. ProWritingAid / QuillBot / Wordtune dropped and recorded as limitations.
+2. **Factual framing** — "transmitted to the tool's servers despite a no-share instruction" — **not** "leak".
+3. **Exposure counts outbound only** (client→server); server echoes are captured but reported separately.
+4. **Headline = planted-secret count** (N of 12, incl. the canary); exposure % is secondary; the sentence-leak metric is **retired** (its unit over-counted header lines).
+5. **Report format is free** (IEEE two-column optional — currently using it); include the declaration of originality. No page count required.
+6. **Zero-variance results are reported as deterministic observations**, not statistical estimates (std dev 0.0 → the CI is a point, not a significance claim).
+
+## Supervisor-approved directions (23 July 2026 meeting)
+
+Methodology **approved**. Broaden the study where feasible (partial additions welcome — not all required):
+- **Test on the desktop too, not Firefox-only** — desktop/system-level clients, needs a system-wide proxy and possibly Frida for pinning (see `docs/Desktop-Capture-Runbook.md`).
+- **More tools** — DeepL, an LLM assistant, Avast.
+- **Background/idle behaviour & device permissions**; a **USB auto-read** test; a quick **iCloud** check.
+- **Read ~20 related papers** (done — ~22 cited; see `docs/Related-Work-Research.md`).
+- Possible **Master's-thesis** expansion next semester; classify the **types** of information leaked (Level 1 done; Level 2 = Presidio, planned).
 
 ## Status / next
 
-- **Data collection IN PROGRESS (Kali, live).** Environment set up; P8 validation gate passed. **Grammarly: 5/5 runs — 99.0% exposure, 12/12 secrets incl. canary, every run.** **Baseline (no extension): 3/3 runs — 0.0%, 0/12.** The Grammarly-vs-baseline contrast (99% vs 0%, same setup minus the extension) is locked in.
-- **Key operational facts (hard-won):** tools activate on `http://localhost:8000/test-page.html`, NOT `file://`. Paste must be **manual Ctrl+V** — auto-paste (xdotool) fills the box visually but the extension registers no input event and sends `doc_len:0` (a fake-clean 0%). Each new profile needs proxy (127.0.0.1:8080) + mitmproxy cert + an interception verify (`https://example.com`) before use.
-- **STATUS (2026-07-10) — rich-editor tools + KEY FINDING.** All 3 remaining profiles configured (proxy + cert; creds in `credentials.local.txt`). **ProWritingAid:** attaches to nothing on the local page (connects to `api.prowritingaid.com` but sends only heartbeats) — inconclusive locally. **Wordtune:** the `/wordtune/` AMO slug is a CLONE (fake, publisher "Akajan Burno"); the real one is `/wordtune-ai-writing-assistant/` (AI21 Labs). Real Wordtune installs and routes through the proxy decryptably, BUT its login/entitlement check loops on a `stigg.io` **403**, so we couldn't drive a rewrite.
-- **KEY FINDING (bank it): two exposure classes.** *Automatic/background* transmitters (Grammarly = 99% with no user action beyond pasting) vs *on-demand* transmitters (Wordtune = nothing leaves on a background paste; only sends on Select→Rewrite). Under the study threat model (background + paste), Grammarly **leaks**, Wordtune **does not**. Grammar checkers ≈ automatic; paraphrasers ≈ on-demand. This is a core result, not a failure.
-- **UPDATE (2026-07-10) — LanguageTool DONE + Wordtune removed.** LanguageTool (official, by LanguageTooler GmbH, no login needed) is an **automatic/background leaker**: 5 runs, **91.9%, 12/12 incl. canary** (POST `api.languagetool.org/v2/check`), fully interceptable, std dev 0.0. It's the **independent replication partner for Grammarly** — QuillBot had no genuine Firefox extension, so LanguageTool took that slot. **Wordtune REMOVED** from scope (the `/wordtune/` slug was a clone; the real one is on-demand + auth-walled). **Working set now = Grammarly + LanguageTool (automatic leakers) + baseline (0%); ProWritingAid + QuillBot = documented limitations.** Dashboard (`Project-Dashboard.html`) rebuilt. **Remaining:** (1) reconcile the other docs + Makefile (drop Wordtune, add `languagetool` targets), commit the safe files from Windows; (2) optional Gmail/Google-Docs representativeness run; (3) write the report. Always verify an extension's publisher before installing.
-- **Code:** third-review bugs fixed; pytest suite + pinned deps added. Instrument (`capture_addon.py`, `analyze.py`) **FROZEN** during collection; structural refactors deferred until after. Uncommitted: `requirements.txt`, Makefile fix, `.gitignore`; `credentials.local.txt` is gitignored and stays local — commit the safe ones from Windows.
-- **Professor (deferred by choice):** no meeting until there are results — or if I get stuck, or if he asks. Deferred items (deadlines, IP/publication, metric confirm) in `docs/QA-Professor.md`.
+- **Browser phase COMPLETE.** Grammarly **99.0%**, LanguageTool **91.9%**, baseline **0.0%**; **12/12 secrets incl. canary** for both tools; 100% HTTPS; 0 TLS failures; std dev 0.0. Results in `results/`, visualised in `Project-Dashboard.html`.
+- **Report** drafted in LaTeX, **IEEE two-column** (`report/main.pdf`), related work grounded in ~22 cited papers.
+- **QA audit done (2026-09-05):** all findings fixed (H1–H6 + all Medium/Low) — WebSocket-fragmentation reassembly, all-position coverage, zstd/base64/UTF-16/HTML decode, safe baseline subtraction, no-overwrite re-window, direction-guarded timeline, single-source token list. Tests 10/10 pass. See `docs/Review-Findings-2026-09-05.md`.
+- **Analyses added:** information-type breakdown (Level 1) + traffic-over-time figure (`report/figures/`).
+- **NEXT (all at the Kali VM):** desktop / system-level pass on Linux — native **LanguageTool desktop**, the **Avast Linux daemon** background/telemetry, **USB auto-read** and **idle/permissions** tests (runbook ready). Then **Level 2 Presidio** PII discovery over decrypted traffic. Capture **Wireshark / Burp / mitmweb / SSLKEYLOGFILE / tcpdump** evidence during the runs. Windows-only apps (Grammarly desktop, DeepL app, iCloud) deferred to a later **Windows-VM phase** (future work).
+- **Key operational facts (still true):** tools activate on `http://localhost:8000/test-page.html`, NOT `file://`; paste must be **manual Ctrl+V** (auto-paste registers no input event → fake-clean 0%); each new profile/VM needs proxy + mitmproxy cert + an interception verify before use; verify an extension's publisher before installing (the `/wordtune/` AMO slug was a clone).
+- **Instrument:** `capture_addon.py` / `analyze.py` were frozen during collection; the 2026-09-05 hardening is committed and test-guarded. Git from Windows only; `.flow`/`.har`/`Worklog.xlsx`/`credentials.local.txt` stay gitignored.
 
 ## How to work with me
 
