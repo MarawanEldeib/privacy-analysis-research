@@ -12,6 +12,9 @@ venv/
 Thumbs.db
 .vscode/
 .idea/
+
+# Local backup copies (e.g. main.singlecolumn.tex.bak) — not part of the artifact
+*.bak
 *.swp
 *~
 
@@ -22,6 +25,11 @@ data/raw/*/run_*.log
 # session cookies and auth headers of the logged-in tool accounts. Keep them
 # LOCALLY for offline re-analysis, but NEVER commit them.
 data/raw/*/run_*.flow
+
+# HAR exports of the flows (for viewing in HTTP Toolkit etc.) — same decrypted
+# tokens as the .flow files, so NEVER commit them either. Keep local only.
+data/raw/*/run_*.har
+*.har
 
 # Local pid/tmp files used by the Makefile
 /tmp/privacy_mitm.pid
