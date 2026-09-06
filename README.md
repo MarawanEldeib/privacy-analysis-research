@@ -17,12 +17,28 @@ Concretely: a user receives a confidential file, is told not to share it with AI
 | `docs/` | Walkthroughs (reproduction / narrative / technical), capture protocol, metrics, environment, professor Q&A — start at `docs/WALKTHROUGH.md` |
 | `input-data/` | Synthetic test document with 12 planted identifiers, controlled test HTML page |
 | `scripts/capture/` | mitmproxy addon that captures and scores outbound traffic |
-| `scripts/analysis/` | Analyzer (per-tool stats, 95% CIs, sentence-leak count, comparison chart) |
+| `scripts/analysis/` | Analyzer (per-tool stats, 95% CIs, info-type breakdown, traffic timeline, comparison chart) |
 | `skills/privacy-analysis-project/` | Project knowledge for Claude sessions (auto-loaded) |
 | `Makefile` | One-line commands for the capture/analysis cycle |
 | `data/raw/` | Capture outputs per tool (one folder per tool) |
-| `results/` | Analyzer outputs: per-tool summaries, comparison table, chart PNG/SVG |
+| `results/` | Analyzer outputs: per-tool summaries, comparison table, info-type breakdown, chart PNG/SVG |
+| `report/` | LaTeX research report (`main.tex` → IEEE two-column PDF) + figures + `refs.bib` |
+| `presentation/` | Supervisor progress deck (`build_deck.js` → `Progress-Review.pptx/.pdf`) |
+| `tests/` | Pytest regression tests (matching, analysis, token-list-in-sync) |
 | `Project-Dashboard.html` | Self-contained results & progress dashboard (open in any browser) |
+
+## Results at a glance
+
+| Condition | Runs | Document exposure | Secrets sent | Canary? | HTTPS | TLS failures |
+|---|---|---|---|---|---|---|
+| **Grammarly** | 5 | **99.0%** (σ 0.0pp) | **12 / 12** | yes | 100% | 0 |
+| **LanguageTool** | 5 | **91.9%** (σ 0.0pp) | **12 / 12** | yes | 100% | 0 |
+| Baseline (no extension) | 3 | 0.0% | 0 / 12 | no | — | 0 |
+
+Both writing assistants transmitted essentially the whole document — and every planted
+secret, including the unique canary — to their servers on a single paste, perfectly
+reproducibly, while the no-extension baseline transmitted nothing. The gap between 99.0%
+and 91.9% is formatting/whitespace only; both sent 100% of the sensitive content.
 
 ## Documentation
 
@@ -31,6 +47,16 @@ Three focused walkthroughs (index at [`docs/WALKTHROUGH.md`](docs/WALKTHROUGH.md
 - [`docs/Reproduction-Guide.md`](docs/Reproduction-Guide.md) — run the whole study from scratch (exact commands + verified links).
 - [`docs/Narrative-Walkthrough.md`](docs/Narrative-Walkthrough.md) — the project story: goal, method, dead ends, findings.
 - [`docs/Technical-Walkthrough.md`](docs/Technical-Walkthrough.md) — how the pipeline, capture add-on, and analyzer are built.
+
+Supporting references:
+
+- [`docs/Metrics-Definition.md`](docs/Metrics-Definition.md) · [`docs/Capture-Protocol.md`](docs/Capture-Protocol.md) · [`docs/ENVIRONMENT.md`](docs/ENVIRONMENT.md) — locked definitions, protocol, and version manifest.
+- [`docs/Related-Work-Research.md`](docs/Related-Work-Research.md) — digest of ~22 cited related papers (feeds the report).
+- [`docs/Tooling-Landscape.md`](docs/Tooling-Landscape.md) — tools used vs considered (mitmproxy, Wireshark, Burp, Frida, Presidio, …).
+- [`docs/Desktop-Capture-Runbook.md`](docs/Desktop-Capture-Runbook.md) — how to extend beyond the browser to desktop/system-level capture (Linux).
+- [`docs/Review-Findings-2026-09-05.md`](docs/Review-Findings-2026-09-05.md) — QA audit of the code/methodology and the fixes applied.
+- [`docs/Meeting-Notes-2026-07-23.md`](docs/Meeting-Notes-2026-07-23.md) — supervisor feedback and agreed next directions.
+- [`CHANGELOG.md`](CHANGELOG.md) — dated log of research milestones.
 
 ## Quick start
 
@@ -63,9 +89,12 @@ The test document is a synthetic confidential memo (`input-data/test-document.tx
 1. **Exposure %** — fraction of document characters whose 20-char window appears in captured traffic.
 2. **Reproducibility** — std dev of exposure % across 5 runs (High <3pp / Medium 3-10pp / Low >10pp).
 3. **Traffic visibility** — HTTPS event share + TLS handshake failure count (two separate numbers, never multiplied into a composite).
-4. **Sensitive token detection** — N of 12 planted tokens found.
+4. **Sensitive token detection** — N of 12 planted tokens found (the headline metric).
 
-Plus 95% confidence intervals on the mean exposure and a sentence-level leak count as a more interpretable secondary metric.
+Plus 95% confidence intervals on the mean exposure, an **information-type breakdown**
+(the 12 secrets grouped into categories — names, contacts, IDs, financial, legal, etc.),
+and a **traffic-over-time** view (the paste spike vs. background transmission). Figures
+live in `report/figures/`.
 
 ## Project status
 
@@ -73,7 +102,9 @@ Data collection is **complete for the final tool set**: **Grammarly** and **Lang
 
 ProWritingAid, QuillBot, and Wordtune were evaluated but dropped and are recorded as limitations (ProWritingAid didn't attach to the controlled field; QuillBot has no official Firefox extension; the `/wordtune/` Firefox listing was a clone and the genuine tool is on-demand). See `docs/QA-Professor.md` for the reasoning.
 
-Remaining: an optional real-field (Gmail / Google Docs) representativeness run, and the written report. See `docs/Timeline.md` for milestones.
+The methodology was **approved by the supervisor** (23 July 2026 meeting), who encouraged broadening the study where feasible. The written report is drafted in LaTeX (IEEE two-column, `report/main.pdf`), the related-work section is grounded in ~22 cited papers, and the analysis code has been through a full QA audit (`docs/Review-Findings-2026-09-05.md`).
+
+**Next:** a desktop / system-level capture pass on Linux (native LanguageTool desktop, the Avast Linux daemon's background behaviour, and a USB auto-read test — see `docs/Desktop-Capture-Runbook.md`); automatic PII discovery over the decrypted traffic with Microsoft Presidio (beyond the 12 planted secrets); and a later Windows-VM phase for Windows-only desktop apps (Grammarly desktop, DeepL, iCloud). See `docs/Timeline.md` for milestones.
 
 ## Note on the test document
 

@@ -206,10 +206,11 @@ planted-secret count** (with a special note when the canary is among them),
 exposure % second. The result is written to `results/<tool>_summary.json`.
 
 > A note on the sentence-level metric: `sentences_fully_leaked()` (a sentence
-> counts as leaked at ≥ 90 % character coverage) is still computed and printed in
-> the comparison table, but the reporting decision (QA §7) made the secret count
-> the headline because the sentence unit had over-counted short header/label
-> lines. Treat it as a secondary, interpretability figure.
+> counts as leaked at ≥ 90 % character coverage) is still **computed** in code for
+> backward compatibility, but it is **no longer reported** — it was removed from the
+> comparison table on 2026-09-05 because its unit over-counted short header/label
+> lines (see `docs/Review-Findings-2026-09-05.md`, M6). The headline is the
+> planted-secret count, with character-level exposure % second.
 
 ### 4.5 Presentation
 

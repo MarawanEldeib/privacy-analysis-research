@@ -1,7 +1,0 @@
-create a file for logbook for 3 months
-
-Maker file ready to be used??
-
-We can change capture logic
-
-pyahocorasick what this for 

@@ -93,10 +93,17 @@ different kinds of uncertainty and produces a figure with no clear interpretatio
 
 ---
 
-## 5. Sentence-Level Exposure (secondary, easier to interpret)
+## 5. Sentence-Level Exposure (RETIRED — no longer reported)
+
+> **Retired 2026-09-05.** This secondary metric is no longer reported. Its unit
+> incorrectly counted document header/label lines as "sentences," making the number
+> misleading, and the headline (planted-secret count) plus character-level exposure %
+> already cover the finding. The code still computes the fields for backward
+> compatibility but the comparison table and report omit them. See
+> `docs/Review-Findings-2026-09-05.md` (M6). The description below is kept for the record.
 
 The exposure % above is character-level. As a more interpretable supplementary
-metric, we also report **how many full sentences were leaked**.
+metric, we also reported **how many full sentences were leaked**.
 
 The test document is parsed into "sentence-like" units (≥ 25 characters, split
 at `. ! ?` or hard line breaks). A sentence is considered **fully leaked** in
