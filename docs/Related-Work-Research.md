@@ -185,3 +185,108 @@ tool-agnostic, and definitive per-secret proof.
 - Kolide, "Is Grammarly a Keylogger?" — https://www.kolide.com/blog/is-grammarly-a-keylogger-what-can-you-do-about-it
 - DoubleX, CCS 2021 — https://publications.cispa.saarland/3464/ · Fakeium — https://arxiv.org/abs/2410.20862 · EmPoWeb, S&P 2019 — https://arxiv.org/abs/1901.03397
 - mitmproxy — https://docs.mitmproxy.org/ · Frida — https://frida.re/ · OWASP MASTG interception — https://mas.owasp.org/MASTG/techniques/generic/MASTG-TECH-0120/
+
+---
+
+## Part C — Expanded related work (2026-09-05 pass · 12 additions)
+
+Twelve additional citations gathered to deepen the related-work grounding (professor's
+~20-paper request). All venues/years were verified against publisher pages + dblp; BibTeX
+keys added to `report/refs.bib`. Confidence flags noted where relevant.
+
+### C.1 Extension security architecture, permissions & malicious-extension detection
+
+**Carlini, Felt & Wagner, "An Evaluation of the Google Chrome Extension Security
+Architecture," USENIX Security 2012.** `carlini2012chrome` — Manual security review of 100
+extensions found 70 vulnerabilities in 40 of them; concludes Chrome's privilege
+separation / isolated worlds / permissions limit severity, but developers over-request
+permissions and mandatory CSP would kill ~94% of severe bugs. *Relates:* the foundational
+permission/isolation model whose over-broad host permissions let writing assistants read
+and send full document contents — the exposure we measure.
+
+**Kapravelos et al., "Hulk: Eliciting Malicious Behavior in Browser Extensions," USENIX
+Security 2014.** `kapravelos2014hulk` — Dynamic analysis using "HoneyPages" + an
+event-handler fuzzer over ~48k extensions; detected ad injection, affiliate fraud and data
+exfiltration (one extension hit 5.5M users). *Relates:* monitoring extension network
+activity to reveal exfiltration is a direct ancestor of our mitmproxy interception.
+
+**Somé, "EmPoWeb: Empowering Web Applications with Browser Extensions," IEEE S&P 2019.**
+`some2019empoweb` — Extension↔page message interfaces let arbitrary web pages invoke
+privileged extension capabilities (bypass SOP, read cookies/history, cross-origin
+requests); 197 exploitable extensions across Chrome/Firefox/Opera. *Relates:* extensions
+as a privilege-escalation channel to sensitive data — motivates measuring what an
+installed writing extension can access and transmit.
+
+**Pantelaios, Nikiforakis & Kapravelos, "You've Changed: Detecting Malicious Browser
+Extensions through their Update Deltas," ACM CCS 2020.** `pantelaios2020changed` — Analyzed
+922,684 extension versions over six years; a two-stage system finds extensions that turn
+malicious via updates by isolating the code added between versions. *Relates:* an
+extension's behaviour is not static — supports runtime network measurement over trusting a
+single reviewed snapshot.
+
+### C.2 Web/network privacy-measurement methodology, PII-in-traffic & interception validity
+
+**Englehardt & Narayanan, "Online Tracking: A 1-Million-Site Measurement and Analysis,"
+ACM CCS 2016** (the **OpenWPM** paper). `englehardt2016openwpm` — Instrumented full-browser
+crawl of the top 1M sites; quantified stateful + stateless (fingerprinting) tracking and
+cookie syncing, surfacing new fingerprinting methods. *Relates:* the canonical
+browser-instrumentation measurement methodology our study extends from third-party
+trackers to first-party document exfiltration by the extension itself.
+
+**Ren, Rao, Lindorfer, Legout & Choffnes, "ReCon: Revealing and Controlling PII Leaks in
+Mobile Network Traffic," MobiSys 2016.** `ren2016recon` — No-root system that inspects
+mobile traffic and uses ML to detect PII leaks, letting users block/substitute values;
+validated on the top-100 apps per platform + a 92-user study. *Relates:* the closest
+precedent for our detection step — flagging sensitive strings/PII inside intercepted flows
+— applied to extensions instead of mobile apps.
+
+**Razaghpanah et al., "Apps, Trackers, Privacy, and Regulators: A Global Study of the
+Mobile Tracking Ecosystem," NDSS 2018** (the **Lumen/Haystack** study).
+`razaghpanah2018apps` — Crowdsourced on-device traffic interception (no root) over 11k+
+users / 8.5M+ flows identified 2,121 tracker services (233 unknown to blocklists) and
+mapped cross-border flows + GDPR implications. *Relates:* legitimises crowdsourced
+on-device interception as measurement, and its tracker-classification approach informs
+attributing intercepted traffic to first- vs third-party endpoints.
+
+**Durumeric et al., "The Security Impact of HTTPS Interception," NDSS 2017.**
+`durumeric2017https` — Server-side heuristics detect middlebox/AV interception; found it
+far more prevalent than expected and that substitute TLS stacks frequently *degrade*
+security. *Relates:* frames the validity and threat-model limits of our own deliberate
+mitmproxy interception (how interception can alter/weaken the traffic being measured).
+
+### C.3 LLM / AI-assistant privacy, and the PII-detection tool for Level 2
+
+**Carlini et al., "Extracting Training Data from Large Language Models," USENIX Security
+2021.** `carlini2021extracting` — LLMs memorise and can regurgitate verbatim training
+examples (names, phone numbers, emails), even single-occurrence data; larger models
+memorise more. *Relates:* establishes that text handed to an LLM can leak identifiable
+personal data — motivating measuring what writing assistants actually transmit.
+
+**Staab, Vero, Balunović & Vechev, "Beyond Memorization: Violating Privacy via Inference
+with LLMs," ICLR 2024.** `staab2024beyond` (arXiv:2310.07298; preprint dated 2023 — some
+sources key it `staab2023beyond`) — Off-the-shelf LLMs infer sensitive attributes
+(location, income, age, sex) from ordinary text at up to 85% top-1 accuracy. *Relates:*
+even innocuous prose sent to a writing assistant can be mined for sensitive attributes,
+raising the stakes of any exfiltrated content.
+
+**Mireshghallah et al., "Can LLMs Keep a Secret? Testing Privacy Implications via
+Contextual Integrity Theory," ICLR 2024 (Spotlight).** `mireshghallah2024cansecret`
+(arXiv:2310.17884) — ConfAIde benchmark shows GPT-4/ChatGPT reveal private info to
+inappropriate recipients 39%/57% of the time. *Relates:* LLM-integrated assistants route
+user content into unintended contexts, reinforcing why measuring exactly what is
+transmitted, and to whom, matters. *(Chosen over a second network-audit paper to avoid
+duplicating the already-cited Vekaria USENIX'25.)*
+
+**Microsoft Presidio — PII detection & anonymization framework (software).**
+`microsoft2018presidio` — Open-source detector/anonymiser (NER + regex + rules + context)
+for PII in text/images/structured data; Python lib or REST API; docs caution detection is
+not exhaustive. *Relates:* the tool planned for **Level 2** — turning raw mitmproxy
+captures into a measurable count of exposed PII beyond the 12 planted secrets. *(Release
+year 2018 is commonly cited but not authoritatively confirmed.)*
+
+### C.4 Where these leave the novelty gap (unchanged)
+The additions strengthen four framings — extension permission model (C.1), measurement
+methodology and interception validity (C.2), and LLM-content privacy (C.3) — but none
+performs independent **network-level measurement quantifying how much document text a
+specific writing-assistant extension transmits, with per-secret canary proof**. That
+remains this project's contribution.

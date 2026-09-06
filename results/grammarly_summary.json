@@ -1,7 +1,7 @@
 {
   "tool": "grammarly",
   "num_runs": 5,
-  "baseline_subtracted": false,
+  "baseline_subtracted": true,
   "analysis_window_override": null,
   "analysis_sentence_threshold": 0.9,
   "exposures_per_run": [
@@ -66,6 +66,7 @@
   ],
   "avg_https_event_pct": 100.0,
   "total_tls_handshake_failures": 0,
+  "total_body_read_failures": 0,
   "any_exposure": true,
   "sensitive_tokens_detected": {
     "Helena Voss": 5,
@@ -134,6 +135,7 @@
       ],
       "https_event_pct": 100.0,
       "tls_handshake_failures": 0,
+      "body_read_failures": 0,
       "sensitive_tokens_found": {
         "Helena Voss": true,
         "HV-2026-391847": true,
@@ -153,7 +155,7 @@
       "unique_domains": 2,
       "total_request_bytes": 5266,
       "websocket_messages": 3,
-      "baseline_subtracted": false
+      "baseline_subtracted": true
     },
     {
       "run_id": "2",
@@ -201,6 +203,7 @@
       ],
       "https_event_pct": 100.0,
       "tls_handshake_failures": 0,
+      "body_read_failures": 0,
       "sensitive_tokens_found": {
         "Helena Voss": true,
         "HV-2026-391847": true,
@@ -220,7 +223,7 @@
       "unique_domains": 2,
       "total_request_bytes": 5377,
       "websocket_messages": 3,
-      "baseline_subtracted": false
+      "baseline_subtracted": true
     },
     {
       "run_id": "3",
@@ -268,6 +271,7 @@
       ],
       "https_event_pct": 100.0,
       "tls_handshake_failures": 0,
+      "body_read_failures": 0,
       "sensitive_tokens_found": {
         "Helena Voss": true,
         "HV-2026-391847": true,
@@ -287,7 +291,7 @@
       "unique_domains": 3,
       "total_request_bytes": 5729,
       "websocket_messages": 3,
-      "baseline_subtracted": false
+      "baseline_subtracted": true
     },
     {
       "run_id": "4",
@@ -335,6 +339,7 @@
       ],
       "https_event_pct": 100.0,
       "tls_handshake_failures": 0,
+      "body_read_failures": 0,
       "sensitive_tokens_found": {
         "Helena Voss": true,
         "HV-2026-391847": true,
@@ -354,7 +359,7 @@
       "unique_domains": 2,
       "total_request_bytes": 5368,
       "websocket_messages": 4,
-      "baseline_subtracted": false
+      "baseline_subtracted": true
     },
     {
       "run_id": "5",
@@ -402,6 +407,7 @@
       ],
       "https_event_pct": 100.0,
       "tls_handshake_failures": 0,
+      "body_read_failures": 0,
       "sensitive_tokens_found": {
         "Helena Voss": true,
         "HV-2026-391847": true,
@@ -421,7 +427,7 @@
       "unique_domains": 1,
       "total_request_bytes": 8435,
       "websocket_messages": 5,
-      "baseline_subtracted": false
+      "baseline_subtracted": true
     }
   ],
   "conclusion": "Grammarly transmitted 12 of 12 planted sensitive identifiers to external servers during default-configuration use (including the unique canary token). Overall, approximately 99.0% of the document's characters were transmitted (median across 5 runs; std dev 0.0pp; mean 99.0% 95% CI [99.0%, 99.0%]; reproducibility High). Of intercepted events, 100.0% used HTTPS."

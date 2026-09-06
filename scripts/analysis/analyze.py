@@ -171,13 +171,14 @@ def union_exposure_from_run(run_data: dict, baseline_domains: set[str] | None = 
         union.update(ev.get("covered_positions", []))
     # Cross-event ("transcript") coverage: windows that span two outbound frames
     # are invisible to per-event matching. The addon stores per-host transcript
-    # coverage computed over FULL client->server bodies; fold it in here, skipping
-    # any host that also appears in the baseline (same rule as per-event events).
+    # coverage computed over FULL client->server bodies; fold it in here. We do NOT
+    # skip baseline hosts: transcript coverage is *document* content, and the
+    # no-extension baseline never legitimately carries the planted document, so any
+    # such coverage on a shared host is real signal, not background. Dropping it
+    # would erase a genuine leak. See Review-Findings (H4).
     summary = run_data.get("summary", {}) or {}
     by_host = summary.get("transcript_covered_by_host", {}) or {}
     for host, positions in by_host.items():
-        if baseline_domains and host in baseline_domains:
-            continue
         union.update(positions)
     pct = round(len(union) / TOTAL_CHARS * 100, 2) if TOTAL_CHARS else 0.0
     return union, pct
@@ -245,14 +246,33 @@ def analyze_run(run_path, baseline_domains=None,
         run_data = json.load(f)
 
     if baseline_domains:
-        run_data["requests"] = [
-            e for e in run_data.get("requests", [])
-            if e.get("host", "") not in baseline_domains
-        ]
-        run_data["ws_messages"] = [
-            e for e in run_data.get("ws_messages", [])
-            if e.get("host", "") not in baseline_domains
-        ]
+        # Baseline subtraction, done SAFELY. The old rule dropped every event on a
+        # host seen in the baseline — which would erase a genuine leak if a tool
+        # and plain Firefox happen to share a host (a CDN, analytics, fonts). We
+        # instead drop only *pure-background* events: on a baseline host AND
+        # carrying no document coverage and no secret. Such events contribute 0 to
+        # exposure anyway, so this removes the noise without ever discarding real
+        # signal. See docs/Review-Findings-2026-09-05.md (H4).
+        def _is_background(e):
+            return (e.get("host", "") in baseline_domains
+                    and not e.get("covered_positions")
+                    and not e.get("tokens_found"))
+
+        kept_leaks_on_shared_hosts = 0
+        for key in ("requests", "ws_messages"):
+            kept = []
+            for e in run_data.get(key, []):
+                if _is_background(e):
+                    continue
+                kept.append(e)
+                if (e.get("host", "") in baseline_domains
+                        and (e.get("covered_positions") or e.get("tokens_found"))):
+                    kept_leaks_on_shared_hosts += 1
+            run_data[key] = kept
+        if kept_leaks_on_shared_hosts:
+            print(f"[INFO] baseline subtraction: kept {kept_leaks_on_shared_hosts} "
+                  f"leaking event(s) on host(s) shared with the baseline "
+                  f"(not discarded) — {Path(run_path).name}", file=sys.stderr)
 
     if window_override is not None and window_override > 0:
         union_covered = rederive_covered_positions_from_previews(run_data, window_override)
@@ -285,6 +305,10 @@ def analyze_run(run_path, baseline_domains=None,
         "sentences_leaked_texts":   [t for _, t in leaked_sentences],
         "https_event_pct":     https_pct,
         "tls_handshake_failures": tls_failures,
+        # Bodies the capture addon could not read (undecodable encoding). Surfaced
+        # so a run with unreadable bodies is not presented as if it were clean.
+        # See docs/Review-Findings-2026-09-05.md (M3).
+        "body_read_failures":  int(s.get("body_read_failures", 0)),
         "sensitive_tokens_found": {k: v for k, v in sensitive_found.items() if v},
         "total_events":        len(all_events),
         "exposed_events":      sum(
@@ -325,7 +349,9 @@ def analyze_tool(tool_name, subtract_baseline=True,
         print(f"[INFO] Subtracting {len(baseline_domains)} baseline domains from {tool_name} runs")
     if window_override:
         print(f"[INFO] Re-deriving coverage with window={window_override} from body_preview "
-              f"(best-effort; capped at 4 KB per event)")
+              f"(best-effort; capped at 4 KB per event, and WITHOUT the URL/JSON/base64/"
+              f"HTML transforms applied at capture time). Treat this as a STRICT LOWER "
+              f"BOUND, not a like-for-like re-measurement. See Review-Findings (M2).")
     if sentence_threshold != 0.9:
         print(f"[INFO] Sentence-leak threshold = {sentence_threshold}")
 
@@ -347,7 +373,9 @@ def analyze_tool(tool_name, subtract_baseline=True,
     _, ci_low_raw, ci_high_raw = confidence_interval_95(exposures)
     ci_low  = max(0.0, round(ci_low_raw, 2))
     ci_high = min(100.0, round(ci_high_raw, 2))
-    ci_half_width = round((ci_high - ci_low) / 2, 2)
+    # Half-width from the RAW (unclamped) bounds, so clamping to [0,100] does not
+    # distort the reported precision. See Review-Findings (L5).
+    ci_half_width = round((ci_high_raw - ci_low_raw) / 2, 2)
 
     median_sentences_leaked = statistics.median(sent_leaks) if sent_leaks else 0
 
@@ -357,8 +385,12 @@ def analyze_tool(tool_name, subtract_baseline=True,
 
     avg_https_pct  = round(statistics.mean(https_pcts), 2)
     total_tls_fail = sum(tls_fails)
+    total_read_fail = sum(r.get("body_read_failures", 0) for r in runs)
 
-    if stdev_exp < 3:
+    # A single run has no variance to speak of; don't label it "High".
+    if n < 2:
+        repro_label = "n/a (single run)"
+    elif stdev_exp < 3:
         repro_label = "High"
     elif stdev_exp < 10:
         repro_label = "Medium"
@@ -377,6 +409,11 @@ def analyze_tool(tool_name, subtract_baseline=True,
         f" {total_tls_fail} TLS handshakes could not be intercepted (cert pinning) "
         f"- content for those connections is unknown."
         if total_tls_fail > 0 else ""
+    )
+    read_note = (
+        f" {total_read_fail} response/request bodies could not be read "
+        f"(undecodable encoding); reported exposure is a lower bound."
+        if total_read_fail > 0 else ""
     )
     ci_phrase = (
         f"95% CI [{ci_low:.1f}%, {ci_high:.1f}%]"
@@ -400,7 +437,7 @@ def analyze_tool(tool_name, subtract_baseline=True,
         + f" Overall, approximately {median_exp:.1f}% of the document's characters were transmitted "
         f"(median across {n} runs; std dev {stdev_exp:.1f}pp; mean {mean_exp:.1f}% {ci_phrase}; "
         f"reproducibility {repro_label}). "
-        f"Of intercepted events, {avg_https_pct:.1f}% used HTTPS.{tls_note}"
+        f"Of intercepted events, {avg_https_pct:.1f}% used HTTPS.{tls_note}{read_note}"
     )
 
     summary = {
@@ -425,6 +462,7 @@ def analyze_tool(tool_name, subtract_baseline=True,
         "unique_sentences_leaked_any_run": sorted(union_sentences),
         "avg_https_event_pct": avg_https_pct,
         "total_tls_handshake_failures": total_tls_fail,
+        "total_body_read_failures": total_read_fail,
         "any_exposure":        any_exp,
         "sensitive_tokens_detected": all_sensitive,
         "sensitive_token_detection_rate": f"{tok_count}/{len(SENSITIVE_TOKENS)}",
@@ -467,6 +505,7 @@ def print_tool_table(s):
     print(f"  {sub}")
     print(f"  HTTPS event share:      {s['avg_https_event_pct']:.1f}% of intercepted events")
     print(f"  TLS handshake failures: {s['total_tls_handshake_failures']}  (missed traffic, if any)")
+    print(f"  Body read failures:     {s.get('total_body_read_failures', 0)}  (unreadable bodies, if any)")
     print(f"  {sub}")
     print(f"  Sensitive tokens found: {s['sensitive_token_detection_rate']}")
     if s["sensitive_tokens_detected"]:
@@ -474,10 +513,10 @@ def print_tool_table(s):
             print(f"    [!]  '{tok}' - found in {count}/{s['num_runs']} runs")
     print(f"  {sub}")
     print(f"  Avg outbound events:    {s['avg_events']}")
-    print(f"  Avg exposed events:     {s['avg_exposed_events']}")
+    print(f"  Avg exposed events:     {s['avg_exposed_events']}  (incl. response echoes)")
     print(f"  Avg WS messages:        {s['avg_ws_messages']}")
     print(f"  Avg unique domains:     {s['avg_unique_domains']}")
-    print(f"  Avg request bytes:      {s['avg_request_bytes']:,}")
+    print(f"  Avg outbound bytes:     {s['avg_request_bytes']:,}  (on-the-wire, compressed)")
     print(f"  {sub}")
     print(f"  CONCLUSION:")
     print(f"  {s['conclusion']}")
@@ -491,40 +530,48 @@ def print_comparison_table(summaries):
     print(f"\n{sep}")
     print("  COMPARISON TABLE  (all values after baseline subtraction)")
     print(sep)
+    # Note: the old "Sent leak" (sentences-leaked) column was removed — its unit
+    # incorrectly counted header/label lines and the team no longer reports it.
+    # See docs/Review-Findings-2026-09-05.md (M6).
     hdr = (
         "  " + "Tool".ljust(18) + "  " +
         "Median%".rjust(9) + "  " +
         "Mean% (95% CI)".rjust(22) + "  " +
         "Std Dev".rjust(9) + "  " +
-        "Sent leak".rjust(11) + "  " +
         "Tokens".rjust(8)
     )
     print(hdr)
     print("  " + ("-" * 98))
     for s in summaries:
         ci = f"{s['mean_exposure_pct']:.1f} [{s['ci95_low_pct']:.1f}, {s['ci95_high_pct']:.1f}]"
-        sent = f"{int(s['median_sentences_leaked'])}/{s['total_sentences_in_document']}"
         row = (
             "  " + str(s['tool']).ljust(18) + "  " +
             f"{s['median_exposure_pct']:8.1f}%".rjust(9) + "  " +
             ci.rjust(22) + "  " +
             f"{s['stdev_exposure_pct']:8.1f}pp".rjust(9) + "  " +
-            sent.rjust(11) + "  " +
             str(s['sensitive_token_detection_rate']).rjust(8)
         )
         print(row)
 
     if len(summaries) >= 2:
         print("")
-        print("  Pairwise 95% CI overlap (non-overlapping CIs suggest a real difference):")
+        print("  Pairwise comparison of per-run exposure:")
         for i, a in enumerate(summaries):
             for b in summaries[i+1:]:
                 overlap = not (a["ci95_high_pct"] < b["ci95_low_pct"]
                                or b["ci95_high_pct"] < a["ci95_low_pct"])
+                # When both tools have zero variance (every run identical), the
+                # "CI" is a single point. Non-overlap then reflects that the two
+                # deterministic values simply differ — NOT a sampling-based
+                # inference. Report it as such rather than claiming statistical
+                # significance from a zero-width interval. See Review-Findings (M7).
+                deterministic = a["stdev_exposure_pct"] == 0 and b["stdev_exposure_pct"] == 0
                 if overlap:
-                    tag = "overlap (no clear difference)"
+                    tag = "ranges overlap"
+                elif deterministic:
+                    tag = "values differ (both deterministic across runs)"
                 else:
-                    tag = "DISJOINT (clear difference)"
+                    tag = "95% CIs do not overlap"
                 print("    " + str(a['tool']).ljust(15) + " vs " +
                       str(b['tool']).ljust(15) + "  " + tag)
     print(f"{sep}\n")
@@ -565,7 +612,7 @@ def make_comparison_chart(summaries, out_dir):
 
     ax.set_ylabel("Exposure (% of document characters)")
     ax.set_title("Default-configuration exposure per tool\n"
-                 "(error bars: 95% confidence interval over 5 runs)")
+                 "(error bars: 95% confidence interval)")
     ax.set_ylim(bottom=0)
     ax.grid(axis="y", linestyle=":", alpha=0.5)
     fig.tight_layout()

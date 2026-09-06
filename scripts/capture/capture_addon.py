@@ -13,14 +13,21 @@ Usage (offline re-analysis of a .flow file with a different window):
         mitmdump -nr data/raw/grammarly/run_1.flow -s scripts/capture/capture_addon.py
 
 Saves to:
-    data/raw/<TOOL_NAME>/run_<RUN_ID>.json   - summarized capture
-    data/raw/<TOOL_NAME>/run_<RUN_ID>.flow   - full raw mitmproxy archive
+    data/raw/<TOOL_NAME>/run_<RUN_ID>.json         - summarized live capture
+    data/raw/<TOOL_NAME>/run_<RUN_ID>.w<N>.json    - re-window output (when
+                                               WINDOW_SIZE != 20); written to a
+                                               distinct file so a `-nr` replay
+                                               never overwrites the live capture
+                                               or blanks its TLS/read-failure records
+    data/raw/<TOOL_NAME>/run_<RUN_ID>.flow         - full raw mitmproxy archive
                                                (via run_capture.sh --save-stream-file)
 """
 
 from __future__ import annotations
 
+import base64
 import gzip
+import html
 import json
 import os
 import re
@@ -46,6 +53,15 @@ try:
 except ImportError:
     HAS_BROTLI = False
 
+# Optional zstandard (zstd). Firefox advertises zstd in Accept-Encoding; without
+# this a zstd-compressed body would be read as scrambled bytes and scored "clean"
+# (a false-negative). See docs/Review-Findings-2026-09-05.md (H3).
+try:
+    import zstandard
+    HAS_ZSTD = True
+except ImportError:
+    HAS_ZSTD = False
+
 # Configuration
 
 PROJECT_ROOT  = Path(__file__).resolve().parent.parent.parent
@@ -58,7 +74,8 @@ RUN_ID    = os.environ.get("RUN_ID", "1")
 # 20 chars avoids false positives from common short words.
 # Override via env var to re-analyze a .flow file with a different window:
 #   WINDOW_SIZE=12 mitmdump -nr data/raw/grammarly/run_1.flow -s scripts/capture/capture_addon.py
-WINDOW_SIZE = int(os.environ.get("WINDOW_SIZE", "20"))
+DEFAULT_WINDOW = 20
+WINDOW_SIZE = int(os.environ.get("WINDOW_SIZE", str(DEFAULT_WINDOW)))
 
 # Per-event body preview cap (bytes of text saved for human inspection).
 BODY_PREVIEW_BYTES = 4096
@@ -124,20 +141,25 @@ TEST_LOWER   = TEST_CONTENT.lower()
 print(f"[INFO] Test document loaded: {TOTAL_CHARS} chars")
 print(f"[INFO] Tool: {TOOL_NAME}  |  Run ID: {RUN_ID}  |  Window: {WINDOW_SIZE}")
 print(f"[INFO] brotli support:        {HAS_BROTLI}")
+print(f"[INFO] zstd support:          {HAS_ZSTD}")
 print(f"[INFO] Aho-Corasick fast path: {HAS_AHOCORASICK}")
 
 # Build window automaton (fast path)
 
 if HAS_AHOCORASICK:
     WINDOW_AUTO = ahocorasick.Automaton()
-    _seen = {}
+    # Map each unique window -> ALL document positions where it occurs. A window
+    # that repeats in the document (e.g. a run of blank lines) must mark every one
+    # of its positions as covered when it is seen in traffic, otherwise coverage
+    # can never reach 100% and the fast path diverges from the slow path.
+    # See docs/Review-Findings-2026-09-05.md (H2).
+    _positions: dict[str, list[int]] = {}
     for i in range(TOTAL_CHARS - WINDOW_SIZE + 1):
-        w = TEST_LOWER[i:i + WINDOW_SIZE]
-        if w not in _seen:
-            _seen[w] = i
-            WINDOW_AUTO.add_word(w, i)
+        _positions.setdefault(TEST_LOWER[i:i + WINDOW_SIZE], []).append(i)
+    for w, idxs in _positions.items():
+        WINDOW_AUTO.add_word(w, idxs)      # value = list of all doc positions
     WINDOW_AUTO.make_automaton()
-    print(f"[INFO] Aho-Corasick automaton built ({len(_seen)} unique windows)")
+    print(f"[INFO] Aho-Corasick automaton built ({len(_positions)} unique windows)")
 else:
     WINDOW_AUTO = None
     print("[INFO] Using slow O(n*m) window scan - install pyahocorasick for speed")
@@ -189,12 +211,23 @@ def decompress(data, encoding):
                 return zlib.decompress(data, -zlib.MAX_WBITS)
         if enc in ("br", "brotli") and HAS_BROTLI:
             return brotli.decompress(data)
+        if enc in ("zstd", "zst") and HAS_ZSTD:
+            # decompressobj handles frames that omit the content size.
+            return zstandard.ZstdDecompressor().decompressobj().decompress(data)
     except Exception:
         pass
     return data
 
 
 def bytes_to_text(data):
+    # Honour a UTF-16 byte-order mark first; otherwise latin-1 would decode the
+    # bytes into NUL-interleaved text that never matches. A NUL-stripped variant
+    # is also added in build_search_corpus as a backstop. See Review-Findings (M5).
+    if data[:2] in (b"\xff\xfe", b"\xfe\xff"):
+        try:
+            return data.decode("utf-16")
+        except UnicodeDecodeError:
+            pass
     for enc in ("utf-8", "latin-1"):
         try:
             return data.decode(enc)
@@ -211,6 +244,8 @@ def bytes_to_text(data):
 _JSON_UXXXX  = re.compile(r'\\u([0-9a-fA-F]{4})')
 _JSON_SIMPLE = (('\\n', '\n'), ('\\t', '\t'), ('\\r', '\r'),
                 ('\\"', '"'), ('\\/', '/'))
+# Long base64-looking runs — a plausible way to transmit a document body.
+_B64_RUN = re.compile(r'[A-Za-z0-9+/]{40,}={0,2}')
 
 
 def _json_string_values(obj, out):
@@ -273,6 +308,24 @@ def build_search_corpus(raw_text: str) -> list[str]:
         add(_json_unescape(raw_text))
     except Exception:
         pass
+    # HTML-entity transmission (&amp; &#8212; …) — unescape in place (L2).
+    try:
+        add(html.unescape(raw_text))
+    except Exception:
+        pass
+    # UTF-16 mis-decoded as latin-1 leaves interleaved NULs; strip them (M5).
+    if "\x00" in raw_text:
+        add(raw_text.replace("\x00", ""))
+    # base64-encoded transmission (M4): decode long base64-looking runs and add
+    # the decoded text. Additive, so a spurious decode can only ever add coverage.
+    for m in _B64_RUN.findall(raw_text):
+        try:
+            dec = base64.b64decode(m + "=" * (-len(m) % 4), validate=False)
+            txt = dec.decode("utf-8", "ignore")
+            if len(txt) >= WINDOW_SIZE:
+                add(txt)
+        except Exception:
+            pass
     return variants
 
 
@@ -281,8 +334,9 @@ def find_covered_positions(text: str) -> set[int]:
     for variant in build_search_corpus(text):
         variant_lower = variant.lower()
         if WINDOW_AUTO is not None:
-            for _, start_idx in WINDOW_AUTO.iter(variant_lower):
-                covered.update(range(start_idx, start_idx + WINDOW_SIZE))
+            for _, idxs in WINDOW_AUTO.iter(variant_lower):
+                for start_idx in idxs:
+                    covered.update(range(start_idx, start_idx + WINDOW_SIZE))
         else:
             for i in range(TOTAL_CHARS - WINDOW_SIZE + 1):
                 window = TEST_LOWER[i:i + WINDOW_SIZE]
@@ -517,12 +571,19 @@ class ExposureTracker:
         for host, parts in PER_HOST_BODIES.items():
             if should_ignore(host):
                 continue
-            joined   = "\n".join(parts)
-            host_cov = find_covered_positions(joined)
+            # Join with BOTH a newline and an empty separator, then union the
+            # coverage. The empty join catches a secret/window split across two
+            # frames (a newline injected into the seam would break the match);
+            # the newline join keeps logically-separate lines apart. Unioning is
+            # safe because coverage can only grow. See Review-Findings (H1).
+            host_cov = set()
+            for sep in ("\n", ""):
+                joined = sep.join(parts)
+                host_cov |= find_covered_positions(joined)
+                transcript_tokens.update(find_tokens_in_text(joined))
             if host_cov:
                 transcript_cov_by_host[host] = sorted(host_cov)
             transcript_covered.update(host_cov)
-            transcript_tokens.update(find_tokens_in_text(joined))
 
         total_covered = union_covered | transcript_covered
         total_tokens  = union_tokens  | transcript_tokens
@@ -559,7 +620,15 @@ class ExposureTracker:
 
         out_dir  = PROJECT_ROOT / "data" / "raw" / TOOL_NAME
         out_dir.mkdir(parents=True, exist_ok=True)
-        out_path = out_dir / f"run_{RUN_ID}.json"
+        # A non-default window means this is an offline re-analysis (re-window)
+        # of a saved .flow. TLS/read-failure hooks do NOT fire on `-nr` replay,
+        # so writing to run_<id>.json would overwrite the live capture and blank
+        # out its failure records. Write re-window output to a distinct file so
+        # the original is never clobbered. See Review-Findings (H5).
+        if WINDOW_SIZE != DEFAULT_WINDOW:
+            out_path = out_dir / f"run_{RUN_ID}.w{WINDOW_SIZE}.json"
+        else:
+            out_path = out_dir / f"run_{RUN_ID}.json"
 
         with open(out_path, "w", encoding="utf-8") as f:
             json.dump(session, f, indent=2, ensure_ascii=False)

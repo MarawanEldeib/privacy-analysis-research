@@ -1,0 +1,195 @@
+{
+  "taxonomy": {
+    "Names (direct identifiers)": [
+      {
+        "secret": "Helena Voss",
+        "description": "Author / compliance officer name"
+      },
+      {
+        "secret": "Theodora Baumgartner-Klein",
+        "description": "External legal counsel name"
+      }
+    ],
+    "Contact details": [
+      {
+        "secret": "theodora.baumgartner@priv-research-demo.invalid",
+        "description": "Email address"
+      },
+      {
+        "secret": "+49 30 4827-9153",
+        "description": "Phone number"
+      }
+    ],
+    "Official / ID numbers": [
+      {
+        "secret": "HV-2026-391847",
+        "description": "Employee ID"
+      },
+      {
+        "secret": "DE-291-847-3309",
+        "description": "Tax registration number"
+      }
+    ],
+    "Financial identifiers": [
+      {
+        "secret": "XREF-291-ALPHA",
+        "description": "Q1 expenditure reference"
+      },
+      {
+        "secret": "NHK3-RES-7741",
+        "description": "Reserve fund code"
+      },
+      {
+        "secret": "AC-2026-00293-DELTA",
+        "description": "Budget approval code"
+      }
+    ],
+    "Legal / contractual references": [
+      {
+        "secret": "2026-LGL-00847",
+        "description": "Contract / matter number"
+      }
+    ],
+    "Confidential project identifiers": [
+      {
+        "secret": "Project Nighthawk-3",
+        "description": "Project codename"
+      }
+    ],
+    "Canary proof-token": [
+      {
+        "secret": "CANARY-BC267061-67DC-485B-8E51-6F5494765CAB",
+        "description": "Unique leak-proof marker"
+      }
+    ]
+  },
+  "per_tool": {
+    "grammarly": {
+      "num_runs": 5,
+      "by_type": {
+        "Names (direct identifiers)": {
+          "items_total": 2,
+          "items_exposed": 2,
+          "pct": 100.0
+        },
+        "Contact details": {
+          "items_total": 2,
+          "items_exposed": 2,
+          "pct": 100.0
+        },
+        "Official / ID numbers": {
+          "items_total": 2,
+          "items_exposed": 2,
+          "pct": 100.0
+        },
+        "Financial identifiers": {
+          "items_total": 3,
+          "items_exposed": 3,
+          "pct": 100.0
+        },
+        "Legal / contractual references": {
+          "items_total": 1,
+          "items_exposed": 1,
+          "pct": 100.0
+        },
+        "Confidential project identifiers": {
+          "items_total": 1,
+          "items_exposed": 1,
+          "pct": 100.0
+        },
+        "Canary proof-token": {
+          "items_total": 1,
+          "items_exposed": 1,
+          "pct": 100.0
+        }
+      },
+      "overall_exposed": 12,
+      "overall_total": 12
+    },
+    "languagetool": {
+      "num_runs": 5,
+      "by_type": {
+        "Names (direct identifiers)": {
+          "items_total": 2,
+          "items_exposed": 2,
+          "pct": 100.0
+        },
+        "Contact details": {
+          "items_total": 2,
+          "items_exposed": 2,
+          "pct": 100.0
+        },
+        "Official / ID numbers": {
+          "items_total": 2,
+          "items_exposed": 2,
+          "pct": 100.0
+        },
+        "Financial identifiers": {
+          "items_total": 3,
+          "items_exposed": 3,
+          "pct": 100.0
+        },
+        "Legal / contractual references": {
+          "items_total": 1,
+          "items_exposed": 1,
+          "pct": 100.0
+        },
+        "Confidential project identifiers": {
+          "items_total": 1,
+          "items_exposed": 1,
+          "pct": 100.0
+        },
+        "Canary proof-token": {
+          "items_total": 1,
+          "items_exposed": 1,
+          "pct": 100.0
+        }
+      },
+      "overall_exposed": 12,
+      "overall_total": 12
+    },
+    "baseline": {
+      "num_runs": 3,
+      "by_type": {
+        "Names (direct identifiers)": {
+          "items_total": 2,
+          "items_exposed": 0,
+          "pct": 0.0
+        },
+        "Contact details": {
+          "items_total": 2,
+          "items_exposed": 0,
+          "pct": 0.0
+        },
+        "Official / ID numbers": {
+          "items_total": 2,
+          "items_exposed": 0,
+          "pct": 0.0
+        },
+        "Financial identifiers": {
+          "items_total": 3,
+          "items_exposed": 0,
+          "pct": 0.0
+        },
+        "Legal / contractual references": {
+          "items_total": 1,
+          "items_exposed": 0,
+          "pct": 0.0
+        },
+        "Confidential project identifiers": {
+          "items_total": 1,
+          "items_exposed": 0,
+          "pct": 0.0
+        },
+        "Canary proof-token": {
+          "items_total": 1,
+          "items_exposed": 0,
+          "pct": 0.0
+        }
+      },
+      "overall_exposed": 0,
+      "overall_total": 12
+    }
+  },
+  "note": "An information type counts as exposed for a tool if at least one of its planted items appeared in that tool's outbound traffic in >=1 run. Detection data is reused from results/<tool>_summary.json."
+}
