@@ -8,15 +8,20 @@
 
 ---
 
-## ✅ Status update (2026-07-10)
+## ✅ Status update (2026-09-06)
 
-Data collection is **complete for the final tool set**: **Grammarly** and
-**LanguageTool** (two independent automatic grammar checkers) plus a no-extension
-baseline. Both transmitted ~the whole document and all 12 planted secrets;
-baseline 0%. ProWritingAid, QuillBot, and Wordtune were evaluated and dropped
-(recorded as limitations — see `docs/QA-Professor.md`). The phase plan below is the
-**original May-23 schedule**, kept for the record; tool-specific rows have been
-updated to the final scope. Current entry point for everything: `docs/WALKTHROUGH.md`.
+**Browser phase complete and analysed; report drafted; QA done.** Grammarly **99.0%**,
+LanguageTool **91.9%**, baseline **0.0%**; **12/12 secrets incl. canary** for both tools;
+std dev 0.0. The methodology was **approved by the supervisor (23 July 2026)**, who asked
+to broaden the study where feasible (desktop/system-level, more tools, background
+behaviour). Since then: LaTeX report drafted (IEEE two-column), related work grounded in
+~22 cited papers, information-type + traffic-over-time figures added, and a full QA audit
+completed with all findings fixed (`docs/Review-Findings-2026-09-05.md`).
+
+**Now entering the desktop / system-level phase (Linux first)** — see
+`docs/Desktop-Capture-Runbook.md`. Windows-only apps deferred to a later Windows-VM phase.
+The original May-23 schedule is kept below for the record. Entry point for everything:
+`docs/WALKTHROUGH.md`; dated log in `CHANGELOG.md`.
 
 ---
 
@@ -68,33 +73,40 @@ deferred by decision — see `docs/QA-Professor.md`).
 
 ---
 
-### Phase 3 — Analysis (Jul 14 – Aug 10)
-- [ ] Python parser for mitmproxy JSON output
-- [ ] Exposure % calculation (character-level substring match)
-- [ ] Reproducibility (std dev) + traffic visibility as TWO separate numbers (the old multiplicative "confidence %" was rejected — see `docs/Metrics-Definition.md`)
-- [ ] Per-tool result tables and comparison charts
-- [ ] Per-tool summary statements
-
-📋 **Professor update due: ~Jul 20** — Preliminary results  
-📋 **Professor update due: ~Aug 3** — Full analysis complete
-
----
-
-### Phase 4 — Report Writing (Aug 11 – Sep 14)
-- [ ] Introduction and background
-- [ ] Methodology section
-- [ ] Results section (per tool + comparison)
-- [ ] Discussion and limitations
-- [ ] Conclusion
-
-📋 **Professor update due: ~Aug 17** — Methodology + intro draft  
-📋 **Professor update due: ~Aug 31** — Full draft  
-📋 **Professor update due: ~Sep 14** — Revised draft
+### Phase 3 — Analysis (Jul 14 – Aug 10) ✅
+- [x] Python parser for mitmproxy JSON output
+- [x] Exposure % calculation (character-level substring match)
+- [x] Reproducibility (std dev) + traffic visibility as TWO separate numbers (the old multiplicative "confidence %" was rejected — see `docs/Metrics-Definition.md`)
+- [x] Per-tool result tables and comparison charts
+- [x] Per-tool summary statements
+- [x] Information-type breakdown (Level 1) + traffic-over-time figure (added 2026-09-05)
+- [x] Full QA audit of code + methodology; all findings fixed (2026-09-05)
 
 ---
 
-### Phase 5 — Final Polish (Sep 15 – Oct 10)
-- [ ] Address final professor feedback
+### Phase 3b — Desktop / system-level pass (Sep 2026) ⏳ CURRENT
+- [ ] Linux native **LanguageTool desktop** capture (Java truststore + proxy)
+- [ ] **Avast Linux daemon** — background/telemetry behaviour (no user action)
+- [ ] **USB auto-read** test + **idle/permissions** checks
+- [ ] Level 2 — **Presidio** PII discovery over decrypted traffic
+- [ ] Wireshark / Burp / mitmweb / SSLKEYLOGFILE / tcpdump evidence during runs
+- [ ] (Later) Windows-VM phase: Grammarly desktop, DeepL app, iCloud
+
+---
+
+### Phase 4 — Report Writing (Aug 11 – Sep 14) — draft complete, iterating
+- [x] Introduction and background
+- [x] Methodology section
+- [x] Results section (per tool + comparison)
+- [x] Discussion and limitations
+- [x] Conclusion
+- [x] Related work (~22 cited papers) + IEEE two-column layout
+- [ ] Fold in desktop-phase results when available; title page + declaration of originality
+
+---
+
+### Phase 5 — Final Polish (Sep 15 – Oct 10) ⏳
+- [ ] Address final supervisor feedback
 - [ ] Final proofreading
 - [ ] Package code + data for submission
 - [ ] Submit
@@ -122,14 +134,16 @@ Until all three hold, the GitHub repo stays **private**. This gate is not option
 
 ---
 
-## What needs to happen THIS WEEK (May 23–Jun 1)
+## What needs to happen next (from 2026-09-06)
 
-1. Answer 2 setup questions (browser choice + mitmproxy status)
-2. Set up mitmproxy on Kali with SSL interception
-3. Create synthetic test document
-4. Run first Grammarly capture
-5. Have something to show professor immediately after
+1. Desktop / system-level pass on the Kali VM — start with the **Avast Linux daemon
+   idle/background capture** and the **USB auto-read** test (highest-value, no Windows
+   needed); then **LanguageTool desktop**. Follow `docs/Desktop-Capture-Runbook.md`.
+2. Run **Level 2 (Presidio)** over the decrypted captures for unplanted PII.
+3. Fold desktop results into the report; add the title page + declaration of originality.
+4. (Optional, time permitting) Windows-VM phase for Grammarly desktop / DeepL / iCloud.
+5. Keep `CHANGELOG.md`, `README.md`, and this timeline updated as milestones land.
 
 ---
 
-*Last updated: 2026-05-23*
+*Last updated: 2026-09-06*
