@@ -1,0 +1,22 @@
+{
+  "representative_run": "run_1",
+  "per_tool": {
+    "grammarly": {
+      "document_spike_at_s": 74.45,
+      "outbound_bytes": 2307,
+      "exposure_chars": 2045,
+      "host": "capi.grammarly.com"
+    },
+    "languagetool": {
+      "document_spike_at_s": 5.87,
+      "outbound_bytes": 2924,
+      "exposure_chars": 1898,
+      "host": "api.languagetool.org"
+    },
+    "baseline": {
+      "document_spike_at_s": null,
+      "outbound_bytes": 0,
+      "exposure_chars": 0
+    }
+  }
+}

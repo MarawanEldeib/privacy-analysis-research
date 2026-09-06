@@ -1,8 +1,7 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,conference,a4paper]{IEEEtran}
 
-\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[margin=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{amsmath}
@@ -16,9 +15,9 @@
 \definecolor{leakred}{HTML}{B23A48}
 \newcommand{\canary}{\texttt{CANARY-BC267061-\allowbreak 67DC-485B-8E51-6F5494765CAB}}
 
-\title{\vspace{-1.0cm}\textbf{Measuring Data Exposure in\\ LLM-Integrated Productivity Tools}}
-\author{Marawan Eldeib \\ \small Matrikelnummer: 3764796}
-\date{July 2026}
+\title{Measuring Data Exposure in\\ LLM-Integrated Productivity Tools}
+\author{\IEEEauthorblockN{Marawan Eldeib}
+\IEEEauthorblockA{Matrikelnummer: 3764796\\ University of Stuttgart}}
 
 \begin{document}
 \maketitle
@@ -126,7 +125,15 @@ that extension data collection is widespread and frequently undisclosed, and the
 introduced the complementary detection methods --- differential string search,
 content-agnostic network analysis, and taint tracking --- that the field still relies
 on; static data-flow analysis (e.g.\ DoubleX~\citep{fass2021doublex}) later added
-scale on the code side.
+scale on the code side. This line of work rests on a longer study of the extension
+security model itself: \citet{carlini2012chrome} evaluated Chrome's permission and
+isolation architecture and showed that over-broad host permissions undercut its
+guarantees, \citet{kapravelos2014hulk} dynamically elicited malicious behaviour
+(including exfiltration) at scale, \citet{some2019empoweb} demonstrated that extensions
+can expose their privileges to arbitrary web pages, and \citet{pantelaios2020changed}
+showed that benign extensions can turn malicious through later updates --- which is why
+a runtime, network-level measurement of what a tool \emph{actually} transmits is more
+reliable than trusting a single reviewed snapshot.
 
 More recent large-scale studies have moved from browsing metadata to \emph{page
 content}. \citet{nayak2024experimental} experimentally analysed sensitive-data access
@@ -135,7 +142,13 @@ Store. \citet{xie2024arcanum} built Arcanum, a dynamic taint-tracking system, an
 found that thousands of extensions --- used by an estimated 144 million people ---
 collect sensitive on-page content such as email bodies, social-media activity, and
 banking information, often without accurate disclosure. From the tracking side,
-\citet{dambra2022sally} measured web tracking from the user's perspective.
+\citet{dambra2022sally} measured web tracking from the user's perspective, building on
+the browser-instrumentation measurement paradigm established by OpenWPM
+\citep{englehardt2016openwpm}. Methodologically, our detection step --- searching
+intercepted flows for known sensitive strings --- follows network-level PII-leak
+measurement developed for mobile traffic, notably ReCon \citep{ren2016recon} and the
+crowdsourced Lumen study \citep{razaghpanah2018apps}, here applied to writing-assistant
+extensions rather than mobile apps.
 
 Closest to the present work, \citet{vekaria2025bighelp} audited nine generative-AI
 browser assistants and, using traffic decryption, showed that several forward full
@@ -152,6 +165,17 @@ canary-proven complement to \citeauthor{vekaria2025bighelp}'s assistant-focused 
 the same interception principle, narrowed to a single reproducible threat model and
 strengthened with unique planted tokens so that every individual leak is provable, not
 merely observed in aggregate.
+
+Finally, why the transmitted \emph{content} matters is underscored by a parallel line
+of work on the privacy risks of large language models, which increasingly sit behind
+these assistants. \citet{carlini2021extracting} showed that language models memorise and
+can regurgitate verbatim personal data from their training set;
+\citet{staab2024beyond} showed that models can \emph{infer} sensitive attributes
+(location, age, income) from ordinary prose; and \citet{mireshghallah2024cansecret}
+showed that LLM-integrated applications routinely disclose information to contextually
+inappropriate recipients. Text sent to a writing assistant is therefore not inert once
+it leaves the machine --- which is precisely what makes quantifying how much of it
+leaves, and to whom, worthwhile.
 
 \section{Methodology}
 \label{sec:method}
@@ -263,7 +287,7 @@ The no-extension baseline transmitted \textbf{0.0\%} and none of the secrets. Al
 transmission used HTTPS, and there were \emph{zero} un-interceptable TLS handshakes ---
 so the reported figures are complete, not lower bounds.
 
-\begin{table}[h]
+\begin{table*}[t]
 \centering
 \caption{Default-configuration exposure per condition. Exposure is the median across
 runs; secrets are the number of the twelve planted identifiers detected in outbound
@@ -280,27 +304,52 @@ LanguageTool & 5 & \textbf{91.9\%} & 0.0 pp & \textbf{12/12} & yes & 100\% & 0 \
 Baseline     & 3 & 0.0\%           & 0.0 pp & 0/12           & no  & ---  & 0 \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
-\begin{figure}[h]
+\begin{figure}[t]
 \centering
-\includegraphics[width=0.72\linewidth]{figures/exposure_chart.pdf}
+\includegraphics[width=0.85\linewidth]{figures/exposure_chart.pdf}
 \caption{Share of the confidential document transmitted to each tool's servers by
 default. Both grammar checkers transmit essentially the whole document and all twelve
 planted secrets; the no-extension baseline transmits nothing.}
 \label{fig:exposure}
 \end{figure}
 
+\subsection{Information types transmitted}
+\label{sec:infotypes}
+
+Grouping the twelve planted secrets by \emph{type} shows that the leak is not confined
+to any single class of data. Both tools transmitted every information type present in
+the document --- personal names, contact details, official identification numbers,
+financial codes, a legal contract reference, the confidential project codename, and the
+unique canary --- while the no-extension baseline transmitted none of them
+(Figure~\ref{fig:infotypes}). Structured identifiers and regulated personal data are
+therefore exfiltrated just as readily as free-text prose; nothing about being a formatted
+ID number affords any protection.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.72\linewidth]{figures/info_type_breakdown.pdf}
+\caption{Information types transmitted to each tool's servers, grouped from the twelve
+planted secrets (planted items exposed / items in type, over $\geq$1 run). Both writing
+assistants expose every type; the no-extension baseline exposes none.}
+\label{fig:infotypes}
+\end{figure*}
+
 \subsection{Perfect reproducibility}
 
 Both tools produced \emph{identical} exposure on every run: the standard deviation was
-0.0 percentage points, and the 95\% confidence interval collapses to a point
-(Grammarly $[99.0, 99.0]$; LanguageTool $[91.9, 91.9]$). This is a stronger result
-than mere ``High reproducibility'': the behaviour is deterministic. Pasting the
-document reliably causes the same near-complete transmission every time, which is
-consistent with the transmission being a fixed part of the tools' normal operation
-rather than an occasional or sampled event. The two tools' intervals are disjoint from
-each other and from the baseline, so the differences are unambiguous.
+0.0 percentage points. We therefore report this as a \emph{deterministic observation}
+rather than a statistical estimate. With zero variance the 95\% confidence interval has
+zero width (Grammarly $[99.0, 99.0]$; LanguageTool $[91.9, 91.9]$); we do not read this
+as a tight sampling estimate or use it to make a significance claim, since a zero-width
+interval reflects that every repeated measurement was the same, not that a population
+parameter was estimated precisely. The practical meaning is simply that pasting the
+document reliably causes the same near-complete transmission every time --- consistent
+with the transmission being a fixed part of the tools' normal operation rather than an
+occasional or sampled event. Because each tool's per-run value is constant, the two
+observed values (99.0\% and 91.9\%) and the baseline (0.0\%) are simply different
+constants, not overlapping estimates.
 
 \subsection{What was transmitted, and how}
 
@@ -312,6 +361,26 @@ including the canary, were recovered from the decrypted outbound traffic. The
 $\sim$8~percentage-point gap between the two tools reflects how much surrounding
 boilerplate each includes rather than any difference in whether the sensitive content
 leaves: both transmitted \emph{all} of the sensitive tokens.
+
+Viewed over time (Figure~\ref{fig:timeline}), the transmission appears as a single
+outbound burst at the moment the document is pasted, after which the connection falls
+quiet. The no-extension baseline is instructive: it generates \emph{more} total traffic
+than either tool run --- megabytes of browser and OS background activity --- yet none of
+it carries document content. This is the same reason a baseline condition is required at
+all: it isolates the environment's own chatter so that document-bearing traffic can be
+attributed unambiguously to the installed tool rather than to the browser or operating
+system.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{figures/traffic_timeline.pdf}
+\caption{Traffic over time for a representative run. Both writing assistants transmit the
+document in a single outbound burst at the moment of paste (blue); the no-extension
+baseline produces only background traffic (grey) and never transmits document content.
+Paste timing differs between runs because it was triggered manually --- the salient
+feature is the shape (a single document-bearing spike vs.\ none), not the absolute time.}
+\label{fig:timeline}
+\end{figure*}
 
 \subsection{Two exposure classes}
 
@@ -382,7 +451,27 @@ Firefox method, and recording why is part of the methodology.
         behaviour at capture time (each run is timestamped).
   \item \textbf{Scope of interception.} Certificate pinning can hide traffic; here the
         count of un-interceptable handshakes was zero, so this did not affect the
-        result, but in general the exposure figure is a lower bound.
+        result, but in general the exposure figure is a lower bound. TLS interception
+        can itself alter or weaken the connection it observes~\citep{durumeric2017https};
+        our proxy CA is trusted only in the isolated test profile, and we report the
+        raw exposure without relying on any modification of the traffic.
+  \item \textbf{Single environment.} All runs used one operating system and one browser
+        (Firefox on a controlled Linux VM). Behaviour could differ on other browsers or
+        on the tools' desktop applications; extending to the desktop and other browsers
+        is planned as future work.
+  \item \textbf{Manual trigger timing.} The paste that triggers transmission was
+        performed by hand, so the absolute time of the transmission varies between runs.
+        This affects only \emph{when} the spike occurs, not \emph{whether} it does, nor
+        the measured exposure.
+  \item \textbf{Unequal run counts.} Five runs per tool and three baseline runs. Because
+        every run of a given condition was identical (zero variance), additional runs
+        would not change the reported values, but the asymmetry is noted for
+        completeness.
+  \item \textbf{Detection method.} Sensitive tokens are detected by case-insensitive
+        substring match and document coverage by a 20-character sliding window. Because
+        the planted identifiers are long and synthetically unique, the risk of a
+        coincidental (false-positive) match in unrelated traffic is negligible; the
+        20-character window likewise avoids matches on common short strings.
 \end{itemize}
 
 \section{Ethics and Responsible Disclosure}
@@ -407,6 +496,14 @@ distinguishes the automatic transmitters that leak passively from on-demand tool
 do not. Future work includes a small set of real-field (Gmail, Google Docs)
 confirmation runs, extension to additional tools and multiple documents, and
 measurement of whether disabling or configuring the tools changes the default outcome.
+It also includes moving beyond the browser to the tools' \emph{desktop and
+system-level} clients --- which requires a system-wide proxy and, where certificate
+pinning is used, dynamic instrumentation (e.g.\ Frida) to observe the traffic --- and
+testing background/idle behaviour and requested device permissions, in line with the
+broadened scope agreed with the supervisor. Beyond the twelve planted secrets, an
+automated PII detector such as Microsoft Presidio~\citep{microsoft2018presidio} can be
+run over the decrypted traffic to discover and classify \emph{unplanted} personal data,
+turning the raw captures into a per-category count of exposed information.
 
 \bibliographystyle{plainnat}
 \bibliography{refs}

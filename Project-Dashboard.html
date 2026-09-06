@@ -156,11 +156,11 @@ footer{margin-top:26px;padding:16px 6px;color:var(--muted);font-size:12.5px;disp
     <p class="lede">How much of a confidential document is silently transmitted to a writing-assistant's servers
       when its browser extension is running by default — even after the user is told <em>not</em> to share the file with AI tools.</p>
     <div class="hero-meta">
-      <span class="chip"><span class="dot live"></span> <b>Data collection complete · report drafting</b></span>
+      <span class="chip"><span class="dot live"></span> <b>Phase 1 complete · report drafting · expanding to desktop + more tools</b></span>
       <span class="chip">Researcher: <b>Marawan&nbsp;Eldeib</b></span>
       <span class="chip">Deadline: <b>10&nbsp;Oct&nbsp;2026</b></span>
-      <span class="chip">Environment: <b>Kali&nbsp;·&nbsp;mitmproxy&nbsp;·&nbsp;Firefox</b></span>
-      <span class="chip">Effort logged: <b>31h&nbsp;25m</b></span>
+      <span class="chip">Environment: <b>Kali&nbsp;·&nbsp;mitmproxy&nbsp;·&nbsp;Firefox&nbsp;&rarr;&nbsp;desktop next</b></span>
+      <span class="chip">Effort logged: <b>34h&nbsp;17m</b></span>
     </div>
   </header>
 
@@ -252,6 +252,23 @@ footer{margin-top:26px;padding:16px 6px;color:var(--muted);font-size:12.5px;disp
     </div>
   </section>
 
+  <!-- EVIDENCE FIGURES -->
+  <section>
+    <div class="sec-head"><h2>Evidence figures</h2><span>Generated from the captured runs · compared against a no-extension baseline</span></div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>What types of information leaked</h3>
+        <p class="hint">The 12 planted secrets grouped by type. Both tools transmit every type; the baseline transmits none.</p>
+        <img src="report/figures/info_type_breakdown.png" alt="Information types transmitted, by tool" style="width:100%;height:auto;border-radius:8px;margin-top:6px">
+      </div>
+      <div class="card">
+        <h3>Traffic over time — the paste spike</h3>
+        <p class="hint">The document leaves in a single burst at paste. The baseline is busier overall (Firefox background) yet leaks nothing — which is why a baseline is needed to attribute the leak to the tool.</p>
+        <img src="report/figures/traffic_timeline.png" alt="Traffic over time: paste spike vs background" style="width:100%;height:auto;border-radius:8px;margin-top:6px">
+      </div>
+    </div>
+  </section>
+
   <!-- METHODOLOGY -->
   <section>
     <div class="sec-head"><h2>How the measurement works</h2><span>Threat model: a user pastes a received confidential file into a normal text field</span></div>
@@ -276,7 +293,7 @@ footer{margin-top:26px;padding:16px 6px;color:var(--muted);font-size:12.5px;disp
 
   <!-- PER-RUN TABLE -->
   <section>
-    <div class="sec-head"><h2>Per-run results</h2><span>Click a column to sort · 13 captures</span></div>
+    <div class="sec-head"><h2>Per-run results</h2><span>Click a column to sort · 13 captures (excludes a separate live-demo run)</span></div>
     <div class="card" style="overflow-x:auto">
       <table id="runtab">
         <thead><tr>
@@ -313,8 +330,8 @@ footer{margin-top:26px;padding:16px 6px;color:var(--muted);font-size:12.5px;disp
 
   <!-- QUESTIONS -->
   <section>
-    <div class="sec-head"><h2>Questions for the supervisor</h2><span>To resolve at the next meeting</span></div>
-    <div class="card"><div style="display:flex;flex-direction:column;gap:15px"><div style="display:flex;gap:12px;align-items:flex-start"><span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center">?</span><div style="font-size:13.5px;line-height:1.5;color:var(--ink)"><b>Is the methodology sound as it stands</b> — anything to add or change in how it was measured?</div></div><div style="display:flex;gap:12px;align-items:flex-start"><span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center">?</span><div style="font-size:13.5px;line-height:1.5;color:var(--ink)"><b>Is this the scope you expected</b> — or did you have other tools or directions in mind (a desktop app or an AI-assistant extension)?</div></div><div style="display:flex;gap:12px;align-items:flex-start"><span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center">?</span><div style="font-size:13.5px;line-height:1.5;color:var(--ink)"><b>Is there a required report template or format</b> — length, structure, citation style — and do you need the standard declaration of originality?</div></div></div></div>
+    <div class="sec-head"><h2>Supervisor feedback</h2><span>Resolved at the face-to-face meeting · 23 July 2026</span></div>
+    <div class="card"><div style="display:flex;flex-direction:column;gap:15px"><div style="display:flex;gap:12px;align-items:flex-start"><span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--safe);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center">&check;</span><div style="font-size:13.5px;line-height:1.5;color:var(--ink)"><b>Methodology approved</b> — the current approach is fine as it stands.</div></div><div style="display:flex;gap:12px;align-items:flex-start"><span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--safe);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center">&check;</span><div style="font-size:13.5px;line-height:1.5;color:var(--ink)"><b>Report format is free</b> — any format; IEEE optional. Standard declaration of originality to be included.</div></div><div style="display:flex;gap:12px;align-items:flex-start"><span style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center">&rarr;</span><div style="font-size:13.5px;line-height:1.5;color:var(--ink)"><b>Broaden the study where feasible</b> — test tools on the <b>desktop</b> too (not Firefox-only), add more tools (DeepL, an LLM assistant, Avast), measure background/idle traffic &amp; device permissions, a USB auto-read test, a quick iCloud check, and read ~20 more related papers. Partial additions welcome — not all required.</div></div></div></div>
   </section>
 
   <!-- ROADMAP -->
@@ -362,9 +379,15 @@ const ROAD=[
   {s:'done',b:'Grammarly — 5 runs (automatic leaker)',p:'99.0% exposure and 12/12 secrets every run (std dev 0.0pp), streamed over a WebSocket to capi.grammarly.com.'},
   {s:'done',b:'LanguageTool — 5 runs (independent replication)',p:'91.9% and 12/12 every run, POSTed to api.languagetool.org. A second, unrelated grammar checker confirms the finding.'},
   {s:'done',b:'Baseline — 3 runs complete',p:'0.0% / 0-of-12 with no extension. Proves the leak is the tool, not the browser.'},
-  {s:'done',b:'Scoped to automatic/background leakers',p:'Verified the finding on two independent grammar checkers; on-demand and non-Firefox tools fall outside this scope and are noted as limitations.'},
   {s:'done',b:'Analysis, charts & progress presentation',p:'Per-tool means ± 95% CI, comparison chart, this dashboard, and a supervisor progress deck.'},
-  {s:'todo',b:'Written report (drafting) + supervisor feedback',p:'LaTeX report under way; awaiting supervisor guidance on scope. Optional: broaden to a different integration type (AI-assistant / desktop app).'},
+  {s:'done',b:'Supervisor meeting — 23 July 2026',p:'Methodology approved; report format free. Agreed to broaden the study where feasible (desktop, more tools, background behaviour).'},
+  {s:'done',b:'Information-type breakdown (Level 1) + traffic-over-time figure',p:'Grouped the 12 secrets by type (all types leaked by both tools, none by baseline) and plotted the paste-spike vs. background traffic.'},
+  {s:'doing',b:'Written report (LaTeX drafting)',p:'Full first draft under way; format is free (IEEE optional) with the declaration of originality.'},
+  {s:'todo',b:'Broaden to desktop / system level',p:'Test the tools&rsquo; desktop apps, not just Firefox — needs a system-wide proxy and likely Frida/Objection for certificate pinning. Wireshark for packet-level evidence.'},
+  {s:'todo',b:'Add more tools',p:'DeepL (translator), an LLM-based assistant, and Avast — on both browser and desktop.'},
+  {s:'todo',b:'Background behaviour, permissions & USB',p:'Measure idle/no-action traffic and device-permission use (mic, etc.); USB auto-read test with PDFs; a quick iCloud exposure check.'},
+  {s:'todo',b:'Level 2 — automatic PII discovery',p:'Run Presidio over the decrypted traffic to find unplanted personal data beyond the 12 planted secrets (needs manual review).'},
+  {s:'todo',b:'Read ~20 related papers',p:'Deepen the related-work grounding for the report.'},
 ];
 
 /* ---------- HELPERS ---------- */
