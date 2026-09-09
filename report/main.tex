@@ -141,14 +141,29 @@ by extensions, including access to credentials on login pages, across the Chrome
 Store. \citet{xie2024arcanum} built Arcanum, a dynamic taint-tracking system, and
 found that thousands of extensions --- used by an estimated 144 million people ---
 collect sensitive on-page content such as email bodies, social-media activity, and
-banking information, often without accurate disclosure. From the tracking side,
-\citet{dambra2022sally} measured web tracking from the user's perspective, building on
-the browser-instrumentation measurement paradigm established by OpenWPM
-\citep{englehardt2016openwpm}. Methodologically, our detection step --- searching
-intercepted flows for known sensitive strings --- follows network-level PII-leak
-measurement developed for mobile traffic, notably ReCon \citep{ren2016recon} and the
-crowdsourced Lumen study \citep{razaghpanah2018apps}, here applied to writing-assistant
-extensions rather than mobile apps.
+banking information, often without accurate disclosure. Closer to our own design,
+\citet{bui2023extpriva} intercepted the network traffic of roughly 47{,}000 extensions
+and compared the observed outbound data flows against each extension's stated privacy
+practices, finding hundreds whose transmissions contradicted their disclosures. From the
+tracking side, \citet{dambra2022sally} measured web tracking from the user's perspective,
+building on the browser-instrumentation measurement paradigm established by OpenWPM
+\citep{englehardt2016openwpm}.
+
+The most behaviourally similar precedent is ``read-before-submit'' exfiltration:
+\citet{senol2022leakyforms} showed that email addresses and even passwords are sent to
+third parties \emph{as the user types}, before any form is submitted, and
+\citet{starov2016contactforms} earlier quantified PII leaking from website contact forms.
+We extend that ``transmitted before the user acts'' framing from trackers to
+writing-assistant extensions. Methodologically, our detection step --- searching
+intercepted flows for known sensitive strings --- follows a mature network-level
+PII-measurement lineage: dynamic taint tracking (TaintDroid~\citep{enck2010taintdroid}),
+ML classification over decrypted mobile flows (ReCon~\citep{ren2016recon}), crowdsourced
+on-device capture (Lumen~\citep{razaghpanah2018apps}), permission-circumvention analysis
+\citep{reardon2019fiftyways}, and longitudinal traffic auditing across app versions
+\citep{ren2018piileaks}. Because outbound payloads can be encoded or obfuscated, we adopt
+unique planted canaries in the spirit of the black-box \emph{differential} leak detection
+introduced by AGRIGENTO~\citep{continella2017agrigento}, so that any transmitted fragment
+is unambiguously attributable to our input.
 
 Closest to the present work, \citet{vekaria2025bighelp} audited nine generative-AI
 browser assistants and, using traffic decryption, showed that several forward full
@@ -169,13 +184,16 @@ merely observed in aggregate.
 Finally, why the transmitted \emph{content} matters is underscored by a parallel line
 of work on the privacy risks of large language models, which increasingly sit behind
 these assistants. \citet{carlini2021extracting} showed that language models memorise and
-can regurgitate verbatim personal data from their training set;
-\citet{staab2024beyond} showed that models can \emph{infer} sensitive attributes
-(location, age, income) from ordinary prose; and \citet{mireshghallah2024cansecret}
-showed that LLM-integrated applications routinely disclose information to contextually
-inappropriate recipients. Text sent to a writing assistant is therefore not inert once
-it leaves the machine --- which is precisely what makes quantifying how much of it
-leaves, and to whom, worthwhile.
+can regurgitate verbatim personal data from their training set, and
+\citet{nasr2025scalable} extended such extraction to aligned, production models,
+recovering training examples from deployed systems such as ChatGPT;
+\citet{lukas2023pii} quantified PII leakage from language models and showed that scrubbing
+and differential privacy leave residual exposure. \citet{staab2024beyond} showed that
+models can \emph{infer} sensitive attributes (location, age, income) from ordinary prose;
+and \citet{mireshghallah2024cansecret} showed that LLM-integrated applications routinely
+disclose information to contextually inappropriate recipients. Text sent to a writing
+assistant is therefore not inert once it leaves the machine --- which is precisely what
+makes quantifying how much of it leaves, and to whom, worthwhile.
 
 \section{Methodology}
 \label{sec:method}
@@ -446,9 +464,10 @@ Firefox method, and recording why is part of the methodology.
   \item \textbf{Controlled field.} A bare local page isolates the signal but is not a
         real website; a small number of Gmail/Google-Docs confirmation runs would test
         representativeness (planned as future work).
-  \item \textbf{Tool drift.} These are cloud products that auto-update. The
-        \emph{pipeline} reproduces exactly; the specific percentages reflect tool
-        behaviour at capture time (each run is timestamped).
+  \item \textbf{Tool drift.} These are cloud products that auto-update, and prior
+        longitudinal work shows extension/app privacy behaviour shifts across versions
+        \citep{ren2018piileaks}. The \emph{pipeline} reproduces exactly; the specific
+        percentages reflect tool behaviour at capture time (each run is timestamped).
   \item \textbf{Scope of interception.} Certificate pinning can hide traffic; here the
         count of un-interceptable handshakes was zero, so this did not affect the
         result, but in general the exposure figure is a lower bound. TLS interception
