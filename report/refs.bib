@@ -176,3 +176,87 @@
   note = {Open-source software; docs at \url{https://microsoft.github.io/presidio/}},
   year = 2018
 }
+
+% ===================================================================
+% Added 2026-09-09 — related-work expansion (cross-checked against
+% independent literature surveys; venues/pages verified via publisher
+% pages + dblp). See docs/Related-Work-Research.md Part D.
+% ===================================================================
+
+% --- Read-before-submit / form exfiltration (closest behavioural precedent) ---
+@inproceedings{senol2022leakyforms,
+  title = {Leaky Forms: {{A}} Study of Email and Password Exfiltration Before Form Submission},
+  booktitle = {Proceedings of the 31st {{USENIX}} Security Symposium},
+  author = {Senol, Asuman and Acar, Gunes and Humbert, Mathias and {Zuiderveen Borgesius}, Frederik},
+  year = 2022,
+  pages = {1813--1830}
+}
+
+% --- Extension traffic vs. stated privacy practices (closest methodological cousin) ---
+@inproceedings{bui2023extpriva,
+  title = {Detection of Inconsistencies in Privacy Practices of Browser Extensions},
+  booktitle = {Proceedings of the 2023 {{IEEE}} Symposium on Security and Privacy ({{S}}\&{{P}})},
+  author = {Bui, Duc and Tang, Brian and Shin, Kang G.},
+  year = 2023,
+  pages = {2780--2798},
+  doi = {10.1109/SP46215.2023.10179338}
+}
+
+% --- Differential/black-box leak detection (precedent for our canary/differential logic) ---
+@inproceedings{continella2017agrigento,
+  title = {Obfuscation-Resilient Privacy Leak Detection for Mobile Apps through Differential Analysis},
+  booktitle = {Proceedings of the Network and Distributed System Security Symposium ({{NDSS}})},
+  author = {Continella, Andrea and Fratantonio, Yanick and Lindorfer, Martina and Puccetti, Alessandro and Zand, Ali and Kruegel, Christopher and Vigna, Giovanni},
+  year = 2017,
+  doi = {10.14722/ndss.2017.23465}
+}
+
+% --- Foundational taint tracking + traffic-based PII methodology ---
+@inproceedings{enck2010taintdroid,
+  title = {{{TaintDroid}}: {{An}} Information-Flow Tracking System for Realtime Privacy Monitoring on Smartphones},
+  booktitle = {9th {{USENIX}} Symposium on Operating Systems Design and Implementation ({{OSDI}})},
+  author = {Enck, William and Gilbert, Peter and Chun, Byung-Gon and Cox, Landon P. and Jung, Jaeyeon and McDaniel, Patrick and Sheth, Anmol N.},
+  year = 2010
+}
+
+@inproceedings{reardon2019fiftyways,
+  title = {50 Ways to Leak Your Data: {{An}} Exploration of Apps' Circumvention of the {{Android}} Permissions System},
+  booktitle = {Proceedings of the 28th {{USENIX}} Security Symposium},
+  author = {Reardon, Joel and Feal, {\'A}lvaro and Wijesekera, Primal and {Elazari Bar On}, Amit and {Vallina-Rodriguez}, Narseo and Egelman, Serge},
+  year = 2019,
+  pages = {603--620}
+}
+
+@inproceedings{ren2018piileaks,
+  title = {Bug Fixes, Improvements, and Privacy Leaks: {{A}} Longitudinal Study of {{PII}} Leaks across {{Android}} App Versions},
+  booktitle = {Proceedings of the Network and Distributed System Security Symposium ({{NDSS}})},
+  author = {Ren, Jingjing and Lindorfer, Martina and Dubois, Daniel J. and Rao, Ashwin and Choffnes, David and {Vallina-Rodriguez}, Narseo},
+  year = 2018,
+  doi = {10.14722/ndss.2018.23143}
+}
+
+@inproceedings{starov2016contactforms,
+  title = {Are You Sure You Want to Contact Us? {{Quantifying}} the Leakage of {{PII}} via Website Contact Forms},
+  booktitle = {Proceedings on Privacy Enhancing Technologies ({{PoPETs}})},
+  author = {Starov, Oleksii and Gill, Phillipa and Nikiforakis, Nick},
+  year = 2016,
+  pages = {20--33},
+  doi = {10.1515/popets-2015-0028}
+}
+
+% --- LLM privacy: PII leakage from models + extraction from aligned production models ---
+@inproceedings{lukas2023pii,
+  title = {Analyzing Leakage of Personally Identifiable Information in Language Models},
+  booktitle = {Proceedings of the 2023 {{IEEE}} Symposium on Security and Privacy ({{S}}\&{{P}})},
+  author = {Lukas, Nils and Salem, Ahmed and Sim, Robert and Tople, Shruti and Wutschitz, Lukas and {Zanella-B{\'e}guelin}, Santiago},
+  year = 2023,
+  pages = {346--363}
+}
+
+@inproceedings{nasr2025scalable,
+  title = {Scalable Extraction of Training Data from Aligned, Production Language Models},
+  booktitle = {The Thirteenth International Conference on Learning Representations ({{ICLR}})},
+  author = {Nasr, Milad and Rando, Javier and Carlini, Nicholas and Hayase, Jonathan and Jagielski, Matthew and Cooper, A. Feder and Ippolito, Daphne and Choquette-Choo, Christopher A. and Tram{\`e}r, Florian and Lee, Katherine},
+  year = 2025,
+  note = {arXiv:2311.17035}
+}

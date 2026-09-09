@@ -290,3 +290,49 @@ methodology and interception validity (C.2), and LLM-content privacy (C.3) — b
 performs independent **network-level measurement quantifying how much document text a
 specific writing-assistant extension transmits, with per-secret canary proof**. That
 remains this project's contribution.
+
+---
+
+## Part D — Cross-check against independent AI literature surveys (2026-09-09 pass)
+
+Three independent large models (Fable 5.1, MiniMax, ChatGPT) were each given a blind
+research prompt (no mention of this project's method or findings) to survey the same
+topic. **All three — plus this project's own prior analysis — independently concluded
+that no peer-reviewed, independent, network-level measurement of mainstream AI writing
+assistants (Grammarly / LanguageTool / QuillBot) exists as of mid-2026.** This
+quadruple-blind convergence is strong external support for the novelty claim and is worth
+stating in the contribution and defending with in the viva.
+
+Their outputs were verified against publisher pages / dblp before use. **Nine new,
+verified papers were added to `refs.bib` and woven into the report** (2026-09-09):
+
+- **Senol et al., "Leaky Forms," USENIX Sec 2022** (`senol2022leakyforms`) — email/password
+  exfiltration *before* form submission; the closest behavioural precedent ("transmitted
+  before the user acts"), extended here from trackers to writing assistants.
+- **Bui, Tang & Shin, "ExtPrivA," IEEE S&P 2023** (`bui2023extpriva`) — MITM-intercepts
+  ~47k extensions' traffic and compares to their privacy statements; the closest
+  methodological cousin.
+- **Continella et al., "AGRIGENTO," NDSS 2017** (`continella2017agrigento`) — black-box
+  *differential* leak detection; the published precedent for our canary/differential logic.
+- **Enck et al., "TaintDroid," OSDI 2010** (`enck2010taintdroid`) — foundational taint tracking.
+- **Reardon et al., "50 Ways to Leak Your Data," USENIX Sec 2019** (`reardon2019fiftyways`).
+- **Ren et al., longitudinal PII leaks, NDSS 2018** (`ren2018piileaks`) — supports the
+  tool-drift limitation.
+- **Starov, Gill & Nikiforakis, contact-form PII, PoPETs 2016** (`starov2016contactforms`).
+- **Lukas et al., PII leakage in LMs, IEEE S&P 2023** (`lukas2023pii`).
+- **Nasr et al., extraction from aligned production LMs, ICLR 2025** (`nasr2025scalable`).
+
+### D.1 Verification flags (do NOT cite without checking — models were wrong here)
+- **Lukas 2023 DOI:** the models gave *three different, conflicting* DOIs. Cited by
+  verified venue + pages (IEEE S&P 2023, pp. 346–363); DOI omitted to avoid a wrong one.
+- **Jazlan et al. 2026, "Tracking Conversations" (arXiv:2604.27438):** malformed arXiv ID;
+  **unverified / likely hallucinated** — excluded.
+- **Han & Shon 2026 (forensic analysis of AI-assistant extensions):** could not confirm it
+  exists; a real *2024* paper ("Conversational AI forensics," FSI:DI) is adjacent —
+  **excluded pending a resolvable DOI.**
+- **Excluded pending verification** (plausible but unconfirmed, several very recent):
+  AXECC (2026), MINDAEXT (2024), CodeX/CODASPY (2025), FV8 (2024), Marvin (2024),
+  Kim & Lee (2023), Eriksson (2022), Ling "Toeing the Line" (2022).
+- **Excluded as off-topic / low-value:** Carlini diffusion-models 2023 (images);
+  arXiv-only PII classifiers. Vendor blogs (Incogni, Microsoft Defender, Unit 42) may be
+  used as gray-literature colour in the intro only, clearly labelled non-peer-reviewed.
