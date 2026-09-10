@@ -279,8 +279,10 @@ report, in order of importance:
         seen in the baseline. A 20-character window is long enough to avoid false
         matches from common words and short enough to catch fragmented sends; a
         per-host concatenated-transcript pass additionally catches content split
-        across multiple frames. Matching is performed over plain, URL-decoded, and
-        JSON-unescaped variants so that encoded transmission is still detected.
+        across multiple frames. Matching is performed over plain, URL-decoded,
+        JSON-unescaped, HTML-entity, base64-decoded, and UTF-16 variants so that encoded
+        transmission is still detected, and compressed bodies (gzip, brotli, zstd) are
+        decoded before matching.
   \item[Reproducibility.] The standard deviation of exposure \% across a tool's runs,
         labelled High ($<3$~pp), Medium ($3$--$10$~pp), or Low ($>10$~pp).
   \item[Traffic visibility.] Reported as \emph{two} separate numbers --- the share of
