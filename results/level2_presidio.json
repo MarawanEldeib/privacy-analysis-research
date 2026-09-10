@@ -1,5 +1,5 @@
 {
-  "note": "Presidio (en_core_web_sm) over outbound bodies. UNPLANTED hits are candidates requiring manual review, not confirmed leaks.",
+  "note": "Presidio (en_core_web_lg) over outbound bodies. UNPLANTED hits are candidates requiring manual review, not confirmed leaks.",
   "planted_secret_count": 12,
   "per_tool": {
     "grammarly": {
@@ -7,17 +7,7 @@
       "planted_hits": [
         {
           "type": "ORGANIZATION",
-          "text": "PROJECT NIGHTHAWK-3 INTERNAL REVIEW\\nClassification:",
-          "score": 0.85
-        },
-        {
-          "type": "ORGANIZATION",
-          "text": "Helena Voss",
-          "score": 0.85
-        },
-        {
-          "type": "ORGANIZATION",
-          "text": "CANARY-BC267061-67DC-485B-8E51-6F5494765CAB\\n\\nDear",
+          "text": "CANARY-BC267061-67DC-485B-8E51-6F5494765CAB\\n\\nDear Marcus,\\n\\nPlease",
           "score": 0.85
         },
         {
@@ -37,7 +27,12 @@
         },
         {
           "type": "ORGANIZATION",
-          "text": "PROJECT NIGHTHAWK-3 INTERNAL REVIEW\\nClassification: STRICTLY INTERNAL",
+          "text": "Project Nighthawk-3\\nEmployee ID",
+          "score": 0.85
+        },
+        {
+          "type": "PERSON",
+          "text": "Helena Voss",
           "score": 0.85
         },
         {
@@ -94,37 +89,37 @@
         },
         {
           "type": "DATE_TIME",
+          "text": "4372-45c2-b756-1affdd2e7723",
+          "score": 0.85
+        },
+        {
+          "type": "LOCATION",
           "text": "Q3",
           "score": 0.85
         },
         {
           "type": "ORGANIZATION",
-          "text": "219,880.00\\n  Reserve",
+          "text": "Q2",
           "score": 0.85
         },
         {
           "type": "ORGANIZATION",
-          "text": "Non-Disclosure and",
+          "text": "Allocated",
           "score": 0.85
         },
         {
           "type": "ORGANIZATION",
-          "text": "Data Handling\\n  Tax",
+          "text": "Non-Disclosure",
           "score": 0.85
         },
         {
-          "type": "PERSON",
-          "text": "EUR 312,450.00",
+          "type": "ORGANIZATION",
+          "text": "BDSG",
           "score": 0.85
         },
         {
-          "type": "PERSON",
-          "text": "mUvQxWLBoQlXYgit.",
-          "score": 0.85
-        },
-        {
-          "type": "PERSON",
-          "text": "Lij4SyOvoPp3C9yapIh7PDa-tormXQB6FyMrPzVw6ucaRYN5e",
+          "type": "ORGANIZATION",
+          "text": "writingExpert\",\"globalPart\",\"globalPartPlaceholder\",\"hideHighlights\",\"highlightAlert\",\"horizontalRule\",\"icon\",\"image\",\"inlineCard\",\"interactPopover\",\"lensesSwitchPanel\",\"list\",\"longFormCard\",\"nativeFeedbackModal\",\"nativeInlineCardContent\",\"nativeLearnMoreModal\",\"nativeSettingsModal\",\"nativeToneInsightsModal\",\"nextCard\",\"notify\",\"openCreateSnippetModal\",\"openFeedback\",\"openGrammarlyGo\",\"openLearnMore\",\"openLink\",\"openSettings\",\"openToneDetector\",\"overlay\",\"popAssistantFeed\",\"popoverStack\",\"prevCard\",\"progressBar\",\"pushAssistantFeed\",\"removeAlerts\",\"removeRoot\",\"row\",\"scroll\",\"selectAlternative\",\"selectableDropDownMenu\",\"showHighlights\",\"slider\",\"sticker\",\"strongAlertRef\",\"switchView\",\"text\",\"tooltip\",\"transition\",\"upgradeToPremium\",\"viewStack\"],\"supportedForms\":[\"long\",\"inline\"],\"dslSchema\":\"4.56.3\"}}},\"text_actions\":{\"version\":\"4.3.0\"},\"vbar_feedback\":{\"version\":\"2.3.1\"},\"vbars_lockedui\":{\"version\":\"2.0.0\"},\"trusted_rewrite\":{\"version\":\"1.0.9\"},\"pushed_content\":{\"version\":\"25.0.1\"}},\"firefoxOptoutTracking\":true,\"editorId\":\"1cf89ccb-bf74-40ee-a1ed-05a52671c792\",\"containerId\":\"gijpaske70dj03g2",
           "score": 0.85
         },
         {
@@ -253,6 +248,11 @@
           "type": "DATE_TIME",
           "text": "2026-05-23",
           "score": 0.95
+        },
+        {
+          "type": "ORGANIZATION",
+          "text": "true&level=picky&language",
+          "score": 0.85
         },
         {
           "type": "URL",
