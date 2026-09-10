@@ -418,6 +418,20 @@ automatic class leaks and the on-demand class does not. Grammar checkers trend t
 the automatic class; paraphrasers toward the on-demand class. This is a meaningful
 distinction for users and policy, not a measurement artefact.
 
+\subsection{Delivery channel: browser extension vs.\ desktop client}
+
+A preliminary desktop probe reinforces that the exposure is a property of the
+\emph{browser-extension} delivery rather than of grammar checking itself. LanguageTool's
+official standalone desktop application (version~6.6, obtained from the vendor's own
+site) was run through the identical interception setup and given the same document: it
+performed the check entirely on-device and transmitted \textbf{nothing} --- 0\% of the
+document and 0 of 12 secrets --- whereas the same vendor's browser extension transmitted
+91.9\% and all twelve secrets to \texttt{api.languagetool.org}. The desktop client
+exposes no option to use a remote server, so the on-device path is not merely available
+but the only one. This is a single-run probe on one desktop client, reported as an
+indication rather than a headline result; a fuller desktop and system-level study
+(including Windows-only clients) is future work.
+
 \section{Discussion}
 \label{sec:discussion}
 
