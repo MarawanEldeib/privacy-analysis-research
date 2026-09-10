@@ -30,8 +30,17 @@ OUTBOUND = {"http_request", "websocket_client"}
 from presidio_analyzer import AnalyzerEngine                     # noqa: E402
 from presidio_analyzer.nlp_engine import NlpEngineProvider       # noqa: E402
 
+import spacy  # noqa: E402
+# Use whichever spaCy English model is installed (lg preferred for better recall, sm as
+# a lighter fallback), so this runs on any machine that has one of them.
+_MODEL = next((m for m in ("en_core_web_lg", "en_core_web_md", "en_core_web_sm")
+               if spacy.util.is_package(m)), None)
+if _MODEL is None:
+    raise SystemExit("No spaCy English model found. Install one, e.g.: "
+                     "python3 -m spacy download en_core_web_lg")
+print(f"[INFO] Presidio using spaCy model: {_MODEL}")
 _cfg = {"nlp_engine_name": "spacy",
-        "models": [{"lang_code": "en", "model_name": "en_core_web_sm"}]}
+        "models": [{"lang_code": "en", "model_name": _MODEL}]}
 ANALYZER = AnalyzerEngine(nlp_engine=NlpEngineProvider(nlp_configuration=_cfg).create_engine())
 
 PLANTED_LC = {s.lower() for s in SENSITIVE_TOKENS}
@@ -75,7 +84,7 @@ def analyze_tool(tool):
 
 
 def main():
-    out = {"note": ("Presidio (en_core_web_sm) over outbound bodies. UNPLANTED hits are "
+    out = {"note": (f"Presidio ({_MODEL}) over outbound bodies. UNPLANTED hits are "
                     "candidates requiring manual review, not confirmed leaks."),
            "planted_secret_count": len(SENSITIVE_TOKENS), "per_tool": {}}
     for t in TOOLS:
