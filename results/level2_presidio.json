@@ -1,0 +1,300 @@
+{
+  "note": "Presidio (en_core_web_sm) over outbound bodies. UNPLANTED hits are candidates requiring manual review, not confirmed leaks.",
+  "planted_secret_count": 12,
+  "per_tool": {
+    "grammarly": {
+      "bodies_scanned": 17,
+      "planted_hits": [
+        {
+          "type": "ORGANIZATION",
+          "text": "PROJECT NIGHTHAWK-3 INTERNAL REVIEW\\nClassification:",
+          "score": 0.85
+        },
+        {
+          "type": "ORGANIZATION",
+          "text": "Helena Voss",
+          "score": 0.85
+        },
+        {
+          "type": "ORGANIZATION",
+          "text": "CANARY-BC267061-67DC-485B-8E51-6F5494765CAB\\n\\nDear",
+          "score": 0.85
+        },
+        {
+          "type": "ORGANIZATION",
+          "text": "Project",
+          "score": 0.85
+        },
+        {
+          "type": "ORGANIZATION",
+          "text": "Helena Voss.\\n\\nKey",
+          "score": 0.85
+        },
+        {
+          "type": "ORGANIZATION",
+          "text": "NHK3-RES-7741",
+          "score": 0.85
+        },
+        {
+          "type": "ORGANIZATION",
+          "text": "PROJECT NIGHTHAWK-3 INTERNAL REVIEW\\nClassification: STRICTLY INTERNAL",
+          "score": 0.85
+        },
+        {
+          "type": "PERSON",
+          "text": "Theodora Baumgartner-Klein\\n  Email",
+          "score": 0.85
+        },
+        {
+          "type": "PERSON",
+          "text": "Theodora Baumgartner-Klein",
+          "score": 0.85
+        },
+        {
+          "type": "PHONE_NUMBER",
+          "text": "+49 30 4827-9153",
+          "score": 0.75
+        },
+        {
+          "type": "PHONE_NUMBER",
+          "text": "2026-391847",
+          "score": 0.4
+        },
+        {
+          "type": "URL",
+          "text": "theodora.ba",
+          "score": 0.5
+        },
+        {
+          "type": "URL",
+          "text": "priv-research-demo.in",
+          "score": 0.5
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "BC267061",
+          "score": 0.3
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "391847",
+          "score": 0.01
+        }
+      ],
+      "unplanted_hits": [
+        {
+          "type": "DATE_TIME",
+          "text": "2026-05-23",
+          "score": 0.95
+        },
+        {
+          "type": "DATE_TIME",
+          "text": "2026-05-23\\nPrepared",
+          "score": 0.85
+        },
+        {
+          "type": "DATE_TIME",
+          "text": "Q3",
+          "score": 0.85
+        },
+        {
+          "type": "ORGANIZATION",
+          "text": "219,880.00\\n  Reserve",
+          "score": 0.85
+        },
+        {
+          "type": "ORGANIZATION",
+          "text": "Non-Disclosure and",
+          "score": 0.85
+        },
+        {
+          "type": "ORGANIZATION",
+          "text": "Data Handling\\n  Tax",
+          "score": 0.85
+        },
+        {
+          "type": "PERSON",
+          "text": "EUR 312,450.00",
+          "score": 0.85
+        },
+        {
+          "type": "PERSON",
+          "text": "mUvQxWLBoQlXYgit.",
+          "score": 0.85
+        },
+        {
+          "type": "PERSON",
+          "text": "Lij4SyOvoPp3C9yapIh7PDa-tormXQB6FyMrPzVw6ucaRYN5e",
+          "score": 0.85
+        },
+        {
+          "type": "URL",
+          "text": "eyJraWQiOiJjMzRkZDk0Zi00NTZlLTRkN2QtYmY4OS03MzE1N2E4YzJjMjIiLCJ0eXAiOiJydCtqd3QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIn0..mUvQxWLBoQlXYgit.Li",
+          "score": 0.5
+        },
+        {
+          "type": "US_BANK_NUMBER",
+          "text": "33894851",
+          "score": 0.4
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "a840",
+          "score": 0.65
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "a265",
+          "score": 0.65
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "33894851",
+          "score": 0.4
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "e615",
+          "score": 0.3
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "Q2",
+          "score": 0.3
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "FY2026",
+          "score": 0.3
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "Q1",
+          "score": 0.3
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "Q3",
+          "score": 0.3
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "b756",
+          "score": 0.3
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "b490",
+          "score": 0.3
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "716766",
+          "score": 0.01
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "1752409",
+          "score": 0.01
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "2435522",
+          "score": 0.01
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "2668809",
+          "score": 0.01
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "2669025",
+          "score": 0.01
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "3125674",
+          "score": 0.01
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "3132918",
+          "score": 0.01
+        }
+      ]
+    },
+    "languagetool": {
+      "bodies_scanned": 4,
+      "planted_hits": [
+        {
+          "type": "URL",
+          "text": "theodora.ba",
+          "score": 0.5
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "C2",
+          "score": 0.65
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "391847",
+          "score": 0.4
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "BC267061",
+          "score": 0.3
+        }
+      ],
+      "unplanted_hits": [
+        {
+          "type": "DATE_TIME",
+          "text": "2026-05-23",
+          "score": 0.95
+        },
+        {
+          "type": "URL",
+          "text": "40priv-research-demo.in",
+          "score": 0.5
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "Q2",
+          "score": 0.65
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "E2",
+          "score": 0.65
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "A742",
+          "score": 0.65
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "Q3",
+          "score": 0.65
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "232026",
+          "score": 0.4
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "FY2026",
+          "score": 0.3
+        },
+        {
+          "type": "US_DRIVER_LICENSE",
+          "text": "Q1",
+          "score": 0.3
+        }
+      ]
+    }
+  }
+}

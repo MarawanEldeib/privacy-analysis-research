@@ -359,6 +359,19 @@ assistants expose every type; the no-extension baseline exposes none.}
 \label{fig:infotypes}
 \end{figure*}
 
+\subsection{Beyond the planted secrets: transmitted credentials}
+
+Applying an automatic PII detector (Microsoft Presidio) to the decrypted outbound bodies
+surfaces data the study did not plant. After manually discarding the detector's false
+positives --- it flags document dates, quarter labels (``Q1'', ``FY2026'') and financial
+figures --- one substantive finding remains: Grammarly's outbound WebSocket carries,
+alongside the document, a \textbf{JSON Web Token} (an authentication credential,
+recognisable from its \texttt{eyJ\ldots} encoding of a \texttt{\{"kid":\ldots\}} header)
+and opaque per-session client identifiers. LanguageTool's payloads contain no such
+artefacts. The browser extension therefore transmits not only the user's text but the
+tool's own credentials and session identifiers. This is a statistical, manual-review
+result over the existing captures and is reported as an indication.
+
 \subsection{Perfect reproducibility}
 
 Both tools produced \emph{identical} exposure on every run: the standard deviation was
