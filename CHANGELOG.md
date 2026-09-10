@@ -7,14 +7,36 @@ rather than software versions.
 
 ## [Unreleased] — in progress
 ### Planned
-- Desktop / system-level capture pass on Linux: native LanguageTool desktop (Java),
-  the Avast Linux daemon's background/telemetry behaviour, and a USB auto-read test
-  (see `docs/Desktop-Capture-Runbook.md`).
-- Level 2 — automatic PII discovery over decrypted traffic with Microsoft Presidio
-  (beyond the 12 planted secrets).
-- Wireshark / Burp / mitmweb / SSLKEYLOGFILE / tcpdump evidence captured during the
-  desktop runs.
-- Later Windows-VM phase for Windows-only desktop apps (Grammarly desktop, DeepL, iCloud).
+- Windows-VM phase: capture harness (mitmproxy + CA via `certutil` + system proxy), then
+  Windows-only desktop clients (Grammarly desktop, DeepL app, iCloud for Windows) and the
+  free consumer Avast, plus the USB auto-read test (which only meaningfully fires on
+  Windows, where an indexer/AV/desktop client is present to auto-read the stick).
+
+## 2026-09-10
+### Added
+- **Independent no-proxy corroboration** of the Grammarly leak: with the proxy removed
+  entirely, a `tcpdump` capture shows the browser resolving `assets.grammarly.com` and
+  uploading the document directly to Grammarly infrastructure (AWS EC2 +
+  `*.fra60.r.cloudfront.net`) on paste — ruling out the "did the proxy change behaviour?"
+  objection. Evidence: `results/evidence/grammarly_noproxy_evidence.md`,
+  `report/figures/evidence/*.png`.
+- **Idle / background-behaviour finding:** 20-min capture, extension loaded, no user
+  action. Grammarly is not dormant (23/27 events to `auth`/`config.extension`/`gateway`/
+  `capi`/`f-log-extension` hosts — userinfo, A/B experimentation, config, telemetry,
+  WebSocket) but transmits **no document content or secrets while idle** (0% / 0-of-12).
+  A Firefox-background positive control (`ads.mozilla.org`) confirms the capture was live.
+  Evidence: `results/evidence/grammarly_idle_finding.md`.
+- Two new Results subsections in `report/main.tex` ("Independent corroboration without a
+  proxy", "Background behaviour when idle"); report now 10 pages, compiles clean.
+- `scripts/capture/device_permissions.sh` — device/permissions snapshot helper.
+### Notes
+- Firefox ESR on Kali does **not** honour `SSLKEYLOGFILE` (verified: curl writes keys,
+  Firefox does not), so independent TLS-key decryption is not possible on this browser;
+  the no-proxy corroboration relies on destination + timing instead. Recorded as a
+  methodology limitation.
+- Avast Linux is a paid Business product with a currently-unavailable package repo, so the
+  Avast "security-tool background behaviour" probe is deferred to the Windows phase (free
+  consumer Avast, one-click install).
 
 ## 2026-09-06
 ### Added

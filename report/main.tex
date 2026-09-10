@@ -418,6 +418,23 @@ feature is the shape (a single document-bearing spike vs.\ none), not the absolu
 \label{fig:timeline}
 \end{figure*}
 
+\subsection{Independent corroboration without a proxy}
+
+A natural objection to any man-in-the-middle measurement is whether the proxy itself
+induced or altered the transmission. We addressed this with an independent capture that
+removed the proxy entirely: Grammarly's browser profile was switched to a direct
+connection --- no interception of any kind --- and the same document pasted while a
+packet capture (\texttt{tcpdump}) recorded the machine's traffic, with encrypted-SNI
+disabled so that destination host names remained visible. The capture showed the browser
+resolving \texttt{assets.grammarly.com} and uploading several kilobytes directly to
+Grammarly-owned infrastructure --- an AWS EC2 backend
+(\texttt{ec2-44-213-83-95.compute-1.\allowbreak amazonaws.com}) and three CloudFront edges
+(\texttt{*.fra60.r.cloudfront.net}) --- within the paste window. The payload is opaque in
+this mode (the browser build does not export TLS session keys, so direct traffic cannot be
+decrypted without the proxy), but the destination and timing confirm that the upload occurs
+with nothing intercepting it. The proxy is therefore an observation instrument, not the
+cause of the transmission.
+
 \subsection{Two exposure classes}
 
 The excluded-tool investigation (Section~\ref{sec:limitations}) surfaced a distinction
@@ -430,6 +447,25 @@ invoked by selecting text and clicking ``rewrite''). Under the study's exact sce
 automatic class leaks and the on-demand class does not. Grammar checkers trend toward
 the automatic class; paraphrasers toward the on-demand class. This is a meaningful
 distinction for users and policy, not a measurement artefact.
+
+\subsection{Background behaviour when idle}
+
+To separate content transmission from mere background activity, we ran a twenty-minute
+capture with the Grammarly extension loaded on the test page and \emph{no user action at
+all} --- no paste, no typing, no clicks. The capture path was confirmed live by the
+presence of the browser's own background traffic (e.g.\ \texttt{ads.mozilla.org}) as a
+positive control, without which a quiet result could not be distinguished from a broken
+capture. Grammarly was not dormant: twenty-three of twenty-seven captured events reached
+five Grammarly backend hosts --- \texttt{auth.grammarly.com},
+\texttt{config.extension.grammarly.com}, \texttt{gateway.grammarly.com},
+\texttt{capi.grammarly.com}, and a logging endpoint \texttt{f-log-extension.grammarly.io}
+(\texttt{POST /logv2}) --- consistent with authentication, configuration polling, session
+upkeep, and telemetry. Crucially, however, \textbf{none of this idle traffic carried
+document content or any planted secret} (0\% exposure, 0 of 12). The extension thus
+maintains a continuous background relationship with the vendor simply by being installed
+and loaded, while the document itself leaves only once the user supplies text. Both facts
+matter for the threat model: the tool is always connected, but content exposure is
+input-triggered.
 
 \subsection{Delivery channel: browser extension vs.\ desktop client}
 

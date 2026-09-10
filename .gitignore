@@ -60,3 +60,4 @@ report/log*.txt
 # DO NOT ignore data/raw/*/run_*.json — those ARE the experimental results
 # DO NOT ignore results/ — final per-tool summaries and charts
 # (.flow archives are intentionally ignored above — they hold decrypted auth tokens.)
+_scratch/

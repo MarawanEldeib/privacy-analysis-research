@@ -156,7 +156,7 @@ footer{margin-top:26px;padding:16px 6px;color:var(--muted);font-size:12.5px;disp
     <p class="lede">How much of a confidential document is silently transmitted to a writing-assistant's servers
       when its browser extension is running by default — even after the user is told <em>not</em> to share the file with AI tools.</p>
     <div class="hero-meta">
-      <span class="chip"><span class="dot live"></span> <b>Phase 1 complete · report drafting · expanding to desktop + more tools</b></span>
+      <span class="chip"><span class="dot live"></span> <b>Phase 1 complete · report submission-ready · desktop + idle findings done · Windows phase next</b></span>
       <span class="chip">Researcher: <b>Marawan&nbsp;Eldeib</b></span>
       <span class="chip">Deadline: <b>10&nbsp;Oct&nbsp;2026</b></span>
       <span class="chip">Environment: <b>Kali&nbsp;·&nbsp;mitmproxy&nbsp;·&nbsp;Firefox&nbsp;&rarr;&nbsp;desktop next</b></span>
@@ -382,12 +382,12 @@ const ROAD=[
   {s:'done',b:'Analysis, charts & progress presentation',p:'Per-tool means ± 95% CI, comparison chart, this dashboard, and a supervisor progress deck.'},
   {s:'done',b:'Supervisor meeting — 23 July 2026',p:'Methodology approved; report format free. Agreed to broaden the study where feasible (desktop, more tools, background behaviour).'},
   {s:'done',b:'Information-type breakdown (Level 1) + traffic-over-time figure',p:'Grouped the 12 secrets by type (all types leaked by both tools, none by baseline) and plotted the paste-spike vs. background traffic.'},
-  {s:'doing',b:'Written report (LaTeX drafting)',p:'Full first draft under way; format is free (IEEE optional) with the declaration of originality.'},
-  {s:'todo',b:'Broaden to desktop / system level',p:'Test the tools&rsquo; desktop apps, not just Firefox — needs a system-wide proxy and likely Frida/Objection for certificate pinning. Wireshark for packet-level evidence.'},
-  {s:'todo',b:'Add more tools',p:'DeepL (translator), an LLM-based assistant, and Avast — on both browser and desktop.'},
-  {s:'todo',b:'Background behaviour, permissions & USB',p:'Measure idle/no-action traffic and device-permission use (mic, etc.); USB auto-read test with PDFs; a quick iCloud exposure check.'},
-  {s:'todo',b:'Level 2 — automatic PII discovery',p:'Run Presidio over the decrypted traffic to find unplanted personal data beyond the 12 planted secrets (needs manual review).'},
-  {s:'todo',b:'Read ~20 related papers',p:'Deepen the related-work grounding for the report.'},
+  {s:'done',b:'Written report (LaTeX, IEEE two-column)',p:'Submission-ready: 10 pages, title page + declaration of originality, 31 cited references, compiles clean. Includes the desktop, idle, and independent-evidence findings.'},
+  {s:'done',b:'Desktop probe + independent no-proxy evidence',p:'LanguageTool desktop checks on-device and sends nothing (0%). An independent tcpdump capture with NO proxy confirms Grammarly uploads the document straight to its AWS/CloudFront servers — ruling out proxy-induced behaviour.'},
+  {s:'done',b:'Idle / background behaviour',p:'20-min no-action capture: Grammarly stays continuously connected (auth, config, A/B experimentation, telemetry, WebSocket) but sends NO document content or secrets while idle. Content exposure is input-triggered; a Firefox-background positive control proves the capture was live.'},
+  {s:'done',b:'Level 2 — automatic PII discovery (Presidio)',p:'Presidio over the decrypted traffic surfaced additional transmitted identifiers (e.g. a Grammarly auth token + session IDs) beyond the 12 planted secrets.'},
+  {s:'done',b:'Related-work grounding',p:'Related-work section grounded in 31 cited references.'},
+  {s:'todo',b:'Windows-VM phase (optional)',p:'Windows-only desktop apps (Grammarly desktop, DeepL, iCloud, free consumer Avast) + USB auto-read test, under a Windows mitmproxy harness. Optional per supervisor; time-permitting before 10 Oct.'},
 ];
 
 /* ---------- HELPERS ---------- */

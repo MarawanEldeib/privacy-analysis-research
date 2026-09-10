@@ -104,7 +104,19 @@ ProWritingAid, QuillBot, and Wordtune were evaluated but dropped and are recorde
 
 The methodology was **approved by the supervisor** (23 July 2026 meeting), who encouraged broadening the study where feasible. The written report is drafted in LaTeX (IEEE two-column, `report/main.pdf`), the related-work section is grounded in ~22 cited papers, and the analysis code has been through a full QA audit (`docs/Review-Findings-2026-09-05.md`).
 
-**Next:** a desktop / system-level capture pass on Linux (native LanguageTool desktop, the Avast Linux daemon's background behaviour, and a USB auto-read test — see `docs/Desktop-Capture-Runbook.md`); automatic PII discovery over the decrypted traffic with Microsoft Presidio (beyond the 12 planted secrets); and a later Windows-VM phase for Windows-only desktop apps (Grammarly desktop, DeepL, iCloud). See `docs/Timeline.md` for milestones.
+The Linux desktop / system-level pass is largely complete: native **LanguageTool desktop**
+checks on-device and transmits nothing (0%); **Level 2 (Presidio)** PII discovery over the
+decrypted traffic surfaced additional transmitted identifiers (e.g. a Grammarly auth token +
+session IDs) beyond the 12 planted secrets; an **independent no-proxy capture** confirms the
+Grammarly upload goes directly to Grammarly's AWS/CloudFront infrastructure with nothing
+intercepting it (rules out proxy-induced behaviour); and an **idle/background test** shows the
+extension stays continuously connected to Grammarly's servers (auth, config, experimentation,
+telemetry) even with no user action, while transmitting **no document content or secrets**
+until text is supplied. Evidence lives in `results/evidence/`.
+
+**Next:** a Windows-VM phase for Windows-only desktop apps (Grammarly desktop, DeepL, iCloud,
+free consumer Avast) and the USB auto-read test — see `docs/Desktop-Capture-Runbook.md` and
+`docs/Timeline.md`.
 
 ## Note on the test document
 
