@@ -54,6 +54,11 @@ certificate pinning blocks interception the host figures are a lower bound. All 
 synthetic and the methodology is reproducible.
 \end{abstract}
 
+\begin{IEEEkeywords}
+data exposure, LLM-integrated productivity tools, writing assistants, HTTPS
+interception, planted canary, PII leakage, browser extensions, privacy measurement
+\end{IEEEkeywords}
+
 \section*{Abbreviations}
 \begin{description}[leftmargin=4.2em,style=sameline,nosep,font=\normalfont\bfseries]
 \item[LLM] Large language model
@@ -251,6 +256,13 @@ invisibly to conventional data-loss-prevention controls, and that much of the da
 entered into AI tools originates from personal, unmonitored accounts~\citep{csa2026extensions,
 cyberhaven2026}.
 
+\paragraph{Research gap.} Prior work either counts \emph{how many} extensions leak at
+scale or audits AI assistants broadly; what is missing is a controlled, canary-proven,
+per-secret measurement of how much of a \emph{single confidential document} leaves the
+machine, across both the browser extensions and the everyday host applications (Office,
+desktop clients, cloud-AI viewers) a real user actually encounters. This paper fills that
+gap.
+
 \section{Methodology}
 \label{sec:method}
 
@@ -329,7 +341,14 @@ report, in order of importance:
         the servers, verified individually. The canary makes this unambiguous.
   \item[Exposure \%.] The fraction of the document's characters whose 20-character
         sliding window appears anywhere in outbound traffic, after subtracting hosts
-        seen in the baseline. A 20-character window is long enough to avoid false
+        seen in the baseline:
+        \begin{equation}
+          \mathrm{Exposure}\,(\%) = \frac{\bigl|\{\, i : w_{20}(i) \in \mathcal{T} \,\}\bigr|}{N}\times 100,
+        \end{equation}
+        where $w_{20}(i)$ is the 20-character window starting at character position $i$,
+        $N$ is the document length in characters, and $\mathcal{T}$ is the
+        baseline-subtracted outbound traffic matched over all decoded variants.
+        A 20-character window is long enough to avoid false
         matches from common words and short enough to catch fragmented sends; a
         per-host concatenated-transcript pass additionally catches content split
         across multiple frames. Matching is performed over plain, URL-decoded,
