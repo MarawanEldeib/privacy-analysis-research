@@ -604,23 +604,31 @@ at the accessibility layer, still transmitted \textbf{94.2\%} of the document an
 secret to \texttt{capi.grammarly.com}. Protected View thus sandboxes macros and even
 Microsoft's own AI, but not an independent assistant reading the same window.
 
-\paragraph{Passive receipt and non-AI surfaces leak nothing.} Inserting the USB (only the
-Windows indexer and shell probed volume metadata, per Process Monitor), dropping the file
-into iCloud~Drive to sync, opening it in Notepad, Adobe~Acrobat, or Chrome's PDF viewer,
-or opening the PDF in Edge \emph{without} invoking Copilot each transmitted no document
-content (0/12; Edge-passive 1.8\% of incidental boilerplate). iCloud's content channels
-were reachable but carried no cleartext (client-side encrypted or not yet synced), and
-consumer antivirus (\textbf{Avast}) uploaded an unknown \emph{executable} to its cloud
-(CyberCapture) plus reputation/telemetry, but not the document's contents, a different
-threat class from the AI tools. Per-host attribution was essential here: Grammarly,
-running throughout as a background actor, occasionally re-scanned the file and had to be
-attributed away from the tool under test (e.g.\ in the Avast run) rather than mis-credited.
+\paragraph{A file merely stored on a USB or cloud drive is not read by the tools.} A
+distinct question is whether a confidential file leaks simply by being \emph{stored} on a
+removable drive or a synced cloud folder while the writing assistants run in the
+background. It does not. Inserting the USB without opening the file (only the Windows
+indexer and shell probed volume metadata, per Process Monitor) and dropping the file into
+iCloud~Drive to sync each transmitted \textbf{no} document content (0/12), even though
+Grammarly and the other clients were running throughout: the file never entered a surface
+they watch. iCloud's own content channels were reachable but carried no cleartext
+(client-side encrypted or not yet synced). The same held for opening the file in a non-AI
+viewer, Notepad, Adobe~Acrobat, or Chrome's PDF viewer, and for opening the PDF in Edge
+\emph{without} invoking Copilot (0/12; Edge-passive 1.8\% of incidental boilerplate).
+Consumer antivirus (\textbf{Avast}) is a separate class rather than an LLM tool: it
+uploaded an unknown \emph{executable} to its cloud (CyberCapture) plus reputation and
+telemetry, but not the document's contents. Per-host attribution was essential throughout:
+Grammarly, always running as a background actor, occasionally re-scanned the file and had
+to be attributed away from the tool under test (e.g.\ in the antivirus run) rather than
+mis-credited.
 
-\paragraph{Interpretation.} Exposure is \emph{surface-dependent}: passively receiving or
-opening a file transmits nothing unless the surface viewing it has a cloud-AI integration
-watching the content. Content leaves the machine whenever it enters such a surface, whether
-the user pastes into a writing assistant, invokes an assistant, or merely opens the file in
-a cloud-AI-enabled editor.
+\paragraph{Interpretation.} Exposure is \emph{surface-dependent}, not
+\emph{storage-dependent}: a file on a USB stick or in a synced cloud folder is not read by
+the writing tools until its text enters a surface they watch, so passively receiving or
+opening a file transmits nothing unless that surface has a cloud-AI integration watching
+the content. Content leaves the machine whenever it enters such a surface, whether the user
+pastes into a writing assistant, invokes an assistant, or merely opens the file in a
+cloud-AI-enabled editor.
 
 \begin{figure}[t]
   \centering
