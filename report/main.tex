@@ -54,6 +54,27 @@ certificate pinning blocks interception the host figures are a lower bound. All 
 synthetic and the methodology is reproducible.
 \end{abstract}
 
+\section*{Abbreviations}
+\begin{description}[leftmargin=4.2em,style=sameline,nosep,font=\normalfont\bfseries]
+\item[LLM] Large language model
+\item[PII] Personally identifiable information
+\item[HTTPS] Hypertext Transfer Protocol Secure
+\item[TLS] Transport Layer Security
+\item[SNI] Server Name Indication
+\item[WS] WebSocket
+\item[DOM] Document Object Model
+\item[UUID] Universally unique identifier
+\item[JWT] JSON Web Token
+\item[API] Application programming interface
+\item[CA] Certificate authority
+\item[VM] Virtual machine
+\item[OS] Operating system
+\item[DLP] Data-loss prevention
+\item[GDPR] General Data Protection Regulation
+\item[CI] Confidence interval
+\item[augloop] Microsoft Office ``Augmentation Loop'' (Editor/Copilot cloud service)
+\end{description}
+
 \section{Introduction}
 
 Large-language-model (LLM) integrated productivity tools (grammar checkers,
@@ -143,11 +164,10 @@ built Ex-Ray to detect history-leaking extensions, and \citet{aggarwal2018ispy}
 analysed and detected ``spying'' extensions that exfiltrate browsing behaviour.
 \citet{chen2018mystique} scaled dynamic taint tracking to 181{,}683 extensions,
 flagging thousands that leak privacy-sensitive information. These works established
-that extension data collection is widespread and frequently undisclosed, and they
-introduced the complementary detection methods (differential string search,
-content-agnostic network analysis, and taint tracking) that the field still relies
-on; static data-flow analysis (e.g.\ DoubleX~\citep{fass2021doublex}) later added
-scale on the code side. This line of work rests on a longer study of the extension
+that extension data collection is widespread and frequently undisclosed. They also
+introduced the complementary detection methods the field still relies on: differential
+string search, content-agnostic network analysis, and taint tracking. Static data-flow
+analysis (e.g.\ DoubleX~\citep{fass2021doublex}) later added scale on the code side. This line of work rests on a longer study of the extension
 security model itself: \citet{carlini2012chrome} evaluated Chrome's permission and
 isolation architecture and showed that over-broad host permissions undercut its
 guarantees, and \citet{pantelaios2020changed} showed that benign extensions can turn
@@ -400,14 +420,14 @@ with opaque per-session client identifiers. The same channel that exfiltrates th
 confidential text therefore also exposes the tool's own session credential.
 LanguageTool's payloads contain no such artefact. We surfaced this by running an
 automatic PII detector (Microsoft Presidio) over the decrypted bodies and manually
-discarding its false positives (document dates, quarter labels such as ``Q1''/``FY2026'',
-and financial figures); as a manual-review result over the existing captures, it is an
-indication rather than a quantified headline. This widens the attack surface in a way that
-matters beyond privacy: exposed session tokens and API keys are exactly what large-scale
+discarding its false positives (document dates, quarter labels, financial figures).
+Because it is a manual-review result over the existing captures, we report it as an
+indication rather than a quantified headline. The consequence widens the attack surface
+beyond privacy: exposed session tokens and API keys are exactly what large-scale
 credential-harvesting operations mine from client-side code and application
-traffic~\citep{anthropic2026threats}, so a writing assistant that emits its own session
-credential alongside the user's text is leaking a directly abusable secret, not just
-personal data.
+traffic~\citep{anthropic2026threats}. A writing assistant that emits its own session
+credential alongside the user's text is therefore leaking a directly abusable secret, not
+just personal data.
 
 \subsection{Exact reproducibility}
 
