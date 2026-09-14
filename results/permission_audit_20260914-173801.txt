@@ -1,0 +1,508 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260914173801
+Username: REDACTED_HOST\Marawan
+RunAs User: REDACTED_HOST\Marawan
+Configuration Name: 
+Machine: REDACTED_HOST (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+Process ID: 32132
+PSVersion: 5.1.26100.9278
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9278
+BuildVersion: 10.0.26100.9278
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+############ 1. CAPABILITY PERMISSIONS (Windows ConsentStore, ALL categories) ############
+
+--- SENSITIVE capabilities currently ALLOWED (review list) ---
+
+Capability                   App                                                LastUsed
+----------                   ---                                                --------
+appointments                 microsoft.windowscommunicationsapps_8wekyb3d8bbwe
+cellularData                 5E8FC25E.XODODOCS_3v3sf0k6w2rec
+cellularData                 Microsoft.GetHelp_8wekyb3d8bbwe
+cellularData                 microsoft.microsoftskydrive_8wekyb3d8bbwe
+cellularData                 Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe
+cellularData                 Microsoft.People_8wekyb3d8bbwe
+cellularData                 Microsoft.SecHealthUI_8wekyb3d8bbwe
+cellularData                 Microsoft.StorePurchaseApp_8wekyb3d8bbwe
+cellularData                 Microsoft.Todos_8wekyb3d8bbwe
+cellularData                 Microsoft.Windows.NarratorQuickStart_8wekyb3d8bbwe
+cellularData                 Microsoft.WindowsCalculator_8wekyb3d8bbwe
+cellularData                 Microsoft.WindowsCamera_8wekyb3d8bbwe
+cellularData                 Microsoft.WindowsFeedbackHub_8wekyb3d8bbwe
+cellularData                 Microsoft.XboxGamingOverlay_8wekyb3d8bbwe
+cellularData                 Microsoft.XboxIdentityProvider_8wekyb3d8bbwe
+cellularData                 Microsoft.ZuneMusic_8wekyb3d8bbwe
+contacts                     microsoft.windowscommunicationsapps_8wekyb3d8bbwe  8/29/2025 7:06:44 AM
+documentsLibrary             Microsoft.WindowsSoundRecorder_8wekyb3d8bbwe
+email                        microsoft.windowscommunicationsapps_8wekyb3d8bbwe
+graphicsCaptureProgrammatic  MSTeams_8wekyb3d8bbwe
+graphicsCaptureWithoutBorder Microsoft.ScreenSketch_8wekyb3d8bbwe               9/14/2026 4:45:16 PM
+graphicsCaptureWithoutBorder MSTeams_8wekyb3d8bbwe                              3/5/2026 12:01:39 PM
+location                     OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0               9/2/2026 2:52:28 PM
+microphone                   5319275A.51895FA4EA97F_cv1g1gvanyjgm               9/11/2026 3:06:48 PM
+microphone                   Claude_pzs8sxrjxfjjc                               9/14/2026 10:54:00 AM
+microphone                   com.tinyspeck.slackdesktop_8yrtsj140pw4g           5/7/2026 11:18:33 AM
+microphone                   Microsoft.WindowsCamera_8wekyb3d8bbwe              4/15/2026 7:31:23 AM
+microphone                   MSTeams_8wekyb3d8bbwe                              8/26/2026 9:53:01 PM
+microphone                   TelegramMessengerLLP.TelegramDesktop_t4vj0pshhgkwm 4/8/2026 12:53:52 PM
+picturesLibrary              Microsoft.ScreenSketch_8wekyb3d8bbwe
+picturesLibrary              Microsoft.WindowsCamera_8wekyb3d8bbwe
+videosLibrary                Microsoft.WindowsCamera_8wekyb3d8bbwe
+videosLibrary                Microsoft.ZuneMusic_8wekyb3d8bbwe
+videosLibrary                Microsoft.ZuneVideo_8wekyb3d8bbwe
+webcam                       5319275A.51895FA4EA97F_cv1g1gvanyjgm               9/5/2026 1:31:51 AM
+webcam                       7EE7776C.LinkedInforWindows_w1wdnht996qgy
+webcam                       com.tinyspeck.slackdesktop_8yrtsj140pw4g           5/7/2026 11:18:58 AM
+webcam                       E046963F.LenovoCompanion_k1h2ywk1493x8             2/22/2025 11:31:56 PM
+webcam                       Microsoft.GamingApp_8wekyb3d8bbwe
+webcam                       Microsoft.WindowsCamera_8wekyb3d8bbwe              6/26/2026 1:21:24 PM
+webcam                       MSTeams_8wekyb3d8bbwe                              8/26/2026 9:58:53 PM
+webcam                       OpenAI.Codex_2p2nqsd0c76g0
+webcam                       TelegramMessengerLLP.TelegramDesktop_t4vj0pshhgkwm 4/8/2026 12:53:55 PM
+
+
+
+--- broadFileSystemAccess holders (full-disk read) ---
+
+--- FULL capability x app matrix ---
+
+Capability                   Value  App
+----------                   -----  ---
+appointments                 Prompt Microsoft.People_8wekyb3d8bbwe
+appointments                 Allow  microsoft.windowscommunicationsapps_8wekyb3d8bbwe
+bluetooth                    Allow  BluetoothLE\BluetoothLEe0:0a:f6:a2:73:a8-5b:90:f4:7b:59:d0
+bluetooth                    Allow  BluetoothLE\BluetoothLEe0:0a:f6:a2:73:a8-70:80:db:f3:a4:b0
+bluetooth                    Allow  BluetoothLE\BluetoothLEe0:0a:f6:a2:73:a8-c9:74:c0:6c:ed:6c
+bluetooth                    Allow  BluetoothLE\BluetoothLEe0:0a:f6:a2:73:a8-df:80:8e:68:93:1e
+cellularData                 Allow  5E8FC25E.XODODOCS_3v3sf0k6w2rec
+cellularData                 Allow  Microsoft.GetHelp_8wekyb3d8bbwe
+cellularData                 Allow  microsoft.microsoftskydrive_8wekyb3d8bbwe
+cellularData                 Allow  Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe
+cellularData                 Allow  Microsoft.People_8wekyb3d8bbwe
+cellularData                 Allow  Microsoft.SecHealthUI_8wekyb3d8bbwe
+cellularData                 Allow  Microsoft.StorePurchaseApp_8wekyb3d8bbwe
+cellularData                 Allow  Microsoft.Todos_8wekyb3d8bbwe
+cellularData                 Allow  Microsoft.Windows.NarratorQuickStart_8wekyb3d8bbwe
+cellularData                 Allow  Microsoft.WindowsCalculator_8wekyb3d8bbwe
+cellularData                 Allow  Microsoft.WindowsCamera_8wekyb3d8bbwe
+cellularData                 Allow  Microsoft.WindowsFeedbackHub_8wekyb3d8bbwe
+cellularData                 Allow  Microsoft.XboxGamingOverlay_8wekyb3d8bbwe
+cellularData                 Allow  Microsoft.XboxIdentityProvider_8wekyb3d8bbwe
+cellularData                 Allow  Microsoft.ZuneMusic_8wekyb3d8bbwe
+chat                         Prompt Microsoft.People_8wekyb3d8bbwe
+contacts                            C:\Windows\System32\svchost.exe
+contacts                     Deny   Microsoft.People_8wekyb3d8bbwe
+contacts                            Microsoft.Windows.ShellExperienceHost_cw5n1h2txyewy
+contacts                     Allow  microsoft.windowscommunicationsapps_8wekyb3d8bbwe
+contacts                            windows.immersivecontrolpanel_cw5n1h2txyewy
+documentsLibrary             Allow  Microsoft.WindowsSoundRecorder_8wekyb3d8bbwe
+email                        Prompt Microsoft.People_8wekyb3d8bbwe
+email                        Allow  microsoft.windowscommunicationsapps_8wekyb3d8bbwe
+graphicsCaptureProgrammatic         C:\Users\Marawan\AppData\Local\Discord\app-1.0.9244\Discord.exe
+graphicsCaptureProgrammatic  Prompt Microsoft.ScreenSketch_8wekyb3d8bbwe
+graphicsCaptureProgrammatic  Allow  MSTeams_8wekyb3d8bbwe
+graphicsCaptureProgrammatic  Prompt OpenAI.Codex_2p2nqsd0c76g0
+graphicsCaptureWithoutBorder Prompt 5319275A.51895FA4EA97F_cv1g1gvanyjgm
+graphicsCaptureWithoutBorder        C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+graphicsCaptureWithoutBorder        C:\Program Files\Google\Chrome\Application\chrome.exe
+graphicsCaptureWithoutBorder        C:\Users\Marawan\AppData\Local\Discord\app-1.0.9037\Discord.exe
+graphicsCaptureWithoutBorder        C:\Users\Marawan\AppData\Local\Discord\app-1.0.9188\Discord.exe
+graphicsCaptureWithoutBorder        C:\Users\Marawan\AppData\Local\Discord\app-1.0.9190\Discord.exe
+graphicsCaptureWithoutBorder        C:\Users\Marawan\AppData\Local\Discord\app-1.0.9191\Discord.exe
+graphicsCaptureWithoutBorder        C:\Users\Marawan\AppData\Local\Discord\app-1.0.9205\Discord.exe
+graphicsCaptureWithoutBorder        C:\Users\Marawan\AppData\Local\Discord\app-1.0.9244\Discord.exe
+graphicsCaptureWithoutBorder        C:\Users\Marawan\AppData\Local\Perplexity\Comet\Application\comet.exe
+graphicsCaptureWithoutBorder        C:\Windows\System32\svchost.exe
+graphicsCaptureWithoutBorder Allow  Microsoft.ScreenSketch_8wekyb3d8bbwe
+graphicsCaptureWithoutBorder Allow  MSTeams_8wekyb3d8bbwe
+graphicsCaptureWithoutBorder Prompt OpenAI.Codex_2p2nqsd0c76g0
+location                     Prompt 5319275A.51895FA4EA97F_cv1g1gvanyjgm
+location                     Prompt 7EE7776C.LinkedInforWindows_w1wdnht996qgy
+location                            C:\Program Files (x86)\Lenovo\VantageService\4.2511.18.0\LenovoVantage-(Smart...
+location                            C:\Program Files (x86)\Lenovo\VantageService\4.2511.18.0\LenovoVantage-(Vanta...
+location                            C:\Program Files (x86)\Lenovo\VantageService\4.2601.20.0\LenovoVantage-(Smart...
+location                            C:\Program Files (x86)\Lenovo\VantageService\4.2601.20.0\LenovoVantage-(Vanta...
+location                            C:\Program Files (x86)\Lenovo\VantageService\4.2601.21.0\LenovoVantage-(Smart...
+location                            C:\Program Files (x86)\Lenovo\VantageService\4.2601.21.0\LenovoVantage-(Vanta...
+location                            C:\Program Files (x86)\Lenovo\VantageService\4.2601.31.0\LenovoVantage-(Smart...
+location                            C:\Program Files (x86)\Lenovo\VantageService\4.2601.31.0\LenovoVantage-(Vanta...
+location                            C:\Program Files (x86)\Lenovo\VantageService\4.3.50.0\LenovoVantage-(SmartDis...
+location                            C:\Program Files (x86)\Lenovo\VantageService\4.3.50.0\LenovoVantage-(VantageC...
+location                            C:\Program Files (x86)\Lenovo\VantageService\4.3.96.0\LenovoVantage-(SmartDis...
+location                            C:\Program Files (x86)\Lenovo\VantageService\4.3.96.0\LenovoVantage-(VantageC...
+location                            C:\Program Files (x86)\Lenovo\VantageService\5.1.2606.17\LenovoVantage-(Smart...
+location                            C:\Program Files (x86)\Lenovo\VantageService\5.1.2606.17\LenovoVantage-(Vanta...
+location                            C:\Program Files (x86)\Lenovo\VantageService\5.1.2607.5\LenovoVantage-(SmartD...
+location                            C:\Program Files (x86)\Lenovo\VantageService\5.1.2607.5\LenovoVantage-(Vantag...
+location                            C:\Program Files (x86)\Lenovo\VantageService\5.1.2608.14\LenovoVantage-(Smart...
+location                            C:\Program Files (x86)\Lenovo\VantageService\5.1.2608.14\LenovoVantage-(Vanta...
+location                            C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+location                            C:\Program Files (x86)\Microsoft\EdgeWebView\Application\147.0.3912.86\msedge...
+location                            C:\Program Files\Adobe\Acrobat DC\Acrobat\AcroCEF\AcroCEF.exe
+location                            C:\Program Files\Adobe\Acrobat DC\Acrobat\acrocef_1\AcroCEF.exe
+location                            C:\Program Files\Adobe\Acrobat DC\Acrobat\acrocef_2\AcroCEF.exe
+location                            C:\Program Files\Aiseesoft Studio\Aiseesoft Phone Mirror\Aiseesoft Phone Mirr...
+location                            C:\Program Files\Google\Chrome\Application\chrome.exe
+location                            C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE
+location                            C:\Program Files\Proton\VPN\v4.3.11\ProtonVPN.Client.exe
+location                            C:\Program Files\Proton\VPN\v4.4.1\ProtonVPN.Client.exe
+location                            C:\ProgramData\Lenovo\Vantage\Addins\LenovoHardwareScanAddin\4.9.0.16\qt_serv...
+location                            C:\Users\Marawan\AppData\Local\CiscoSparkLauncher\CiscoCollabHost.exe
+location                            C:\Users\Marawan\AppData\Local\Discord\app-1.0.9059\Discord.exe
+location                            C:\Users\Marawan\AppData\Local\Microsoft\Teams\current\Teams.exe
+location                            C:\Users\Marawan\AppData\Local\Perplexity\Comet\Application\comet.exe
+location                            C:\Users\Marawan\AppData\Local\Programs\LNV\Stremio-4\QtWebEngineProcess.exe
+location                            C:\Users\Marawan\AppData\Roaming\Zoom\bin\Zoom.exe
+location                            C:\Windows\System32\dasHost.exe
+location                            C:\Windows\System32\dllhost.exe
+location                            C:\Windows\System32\drivers\lenovo\UDC\Service\UDClientService.exe
+location                            C:\Windows\System32\svchost.exe
+location                     Deny   E046963F.LenovoCompanion_k1h2ywk1493x8
+location                            Executables
+location                            F:\Battle.net\Battle.net.exe
+location                            F:\Epic Games\Launcher\Engine\Binaries\Win64\EpicWebHelper.exe
+location                            F:\Games\Battle.net\Battle.net.exe
+location                            F:\Games\Riot Games\Riot Client\RiotClientElectron\Riot Client.exe
+location                            F:\Games\Riot Games\VALORANT\live\Engine\Binaries\Win64\EpicWebHelper.exe
+location                            F:\New folder\Riot Games\Riot Client\RiotClientElectron\Riot Client.exe
+location                            F:\New folder\Riot Games\VALORANT\live\Engine\Binaries\Win64\EpicWebHelper.exe
+location                            F:\Riot Games\Riot Client\RiotClientElectron\Riot Client.exe
+location                            F:\Riot Games\VALORANT\live\Engine\Binaries\Win64\EpicWebHelper.exe
+location                            F:\Valorant\Riot Games\Riot Client\RiotClientElectron\Riot Client.exe
+location                            F:\Valorant\Riot Games\VALORANT\live\Engine\Binaries\Win64\EpicWebHelper.exe
+location                     Prompt Microsoft.MicrosoftOfficeHub_8wekyb3d8bbwe
+location                     Deny   Microsoft.OutlookForWindows_8wekyb3d8bbwe
+location                     Deny   Microsoft.StartExperiencesApp_8wekyb3d8bbwe
+location                     Deny   Microsoft.WindowsCamera_8wekyb3d8bbwe
+location                     Prompt microsoft.windowscommunicationsapps_8wekyb3d8bbwe
+location                            MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
+location                     Deny   MSTeams_8wekyb3d8bbwe
+location                     Allow  OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0
+location                     Prompt OpenAI.Codex_2p2nqsd0c76g0
+location                            windows.immersivecontrolpanel_cw5n1h2txyewy
+microphone                   Allow  5319275A.51895FA4EA97F_cv1g1gvanyjgm
+microphone                   Prompt 5E8FC25E.XODODOCS_3v3sf0k6w2rec
+microphone                          C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+microphone                          C:\Program Files\Aiseesoft Studio\Aiseesoft Phone Mirror\ScreencastV6.exe
+microphone                          C:\Program Files\Google\Chrome\Application\chrome.exe
+microphone                          C:\Program Files\Microsoft Office\root\Office16\POWERPNT.EXE
+microphone                          C:\Program Files\Mozilla Firefox\firefox.exe
+microphone                          C:\Program Files\NVIDIA Corporation\NvContainer\nvcontainer.exe
+microphone                          C:\Program Files\TeamViewer\TeamViewer.exe
+microphone                          C:\Users\Marawan\AppData\Local\CiscoSparkLauncher\CiscoCollabHost.exe
+microphone                          C:\Users\Marawan\AppData\Local\Discord\app-1.0.9020\Discord.exe
+microphone                          C:\Users\Marawan\AppData\Local\Discord\app-1.0.9026\Discord.exe
+microphone                          C:\Users\Marawan\AppData\Local\Discord\app-1.0.9037\Discord.exe
+microphone                          C:\Users\Marawan\AppData\Local\Discord\app-1.0.9148\Discord.exe
+microphone                          C:\Users\Marawan\AppData\Local\Discord\app-1.0.9188\Discord.exe
+microphone                          C:\Users\Marawan\AppData\Local\Discord\app-1.0.9190\Discord.exe
+microphone                          C:\Users\Marawan\AppData\Local\Discord\app-1.0.9191\Discord.exe
+microphone                          C:\Users\Marawan\AppData\Local\Discord\app-1.0.9192\Discord.exe
+microphone                          C:\Users\Marawan\AppData\Local\Discord\app-1.0.9193\Discord.exe
+microphone                          C:\Users\Marawan\AppData\Local\Discord\app-1.0.9205\Discord.exe
+microphone                          C:\Users\Marawan\AppData\Local\Discord\app-1.0.9244\Discord.exe
+microphone                          C:\Users\Marawan\AppData\Local\hermes\hermes-agent\apps\desktop\release\win-u...
+microphone                          C:\Users\Marawan\AppData\Local\Microsoft\Teams\current\Teams.exe
+microphone                          C:\Users\Marawan\AppData\Local\Perplexity\Comet\Application\comet.exe
+microphone                          C:\Users\Marawan\AppData\Local\Programs\Cisco Spark\CiscoCollabHost.exe
+microphone                          C:\Users\Marawan\AppData\Local\Programs\Python\Python312\python.exe
+microphone                          C:\Users\Marawan\AppData\Local\StreamingVideoProvider\ScreenRec_app\screenrec...
+microphone                          C:\Users\Marawan\AppData\Local\superwhisper\Superwhisper.exe
+microphone                          C:\Users\Marawan\AppData\Local\WebEx\WebEx64\Meetings\atmgr.exe
+microphone                          C:\Users\Marawan\AppData\Roaming\Zoom\bin\Zoom.exe
+microphone                          C:\Windows\System32\rundll32.exe
+microphone                          C:\Windows\System32\Speech\SpeechUX\SpeechUXWiz.exe
+microphone                          C:\Windows\System32\svchost.exe
+microphone                          C:\Windows\System32\svchost.exe
+microphone                          C:\Windows\System32\VoiceAccess.exe
+microphone                   Allow  Claude_pzs8sxrjxfjjc
+microphone                   Allow  com.tinyspeck.slackdesktop_8yrtsj140pw4g
+microphone                          D:\Fortnite\FortniteGame\Binaries\Win64\FortniteClient-Win64-Shipping.exe
+microphone                          D:\Grand Theft Auto V\GTA5.exe
+microphone                          D:\rocketleague\Binaries\Win64\RocketLeague.exe
+microphone                   Deny   E046963F.LenovoCompanion_k1h2ywk1493x8
+microphone                          F:\Games\Riot Games\VALORANT\live\ShooterGame\Binaries\Win64\VALORANT-Win64-S...
+microphone                          F:\Grand Theft Auto V Enhanced\GTA5_Enhanced.exe
+microphone                          F:\New folder\Riot Games\VALORANT\live\ShooterGame\Binaries\Win64\VALORANT-Wi...
+microphone                          F:\obs-studio\bin\64bit\obs64.exe
+microphone                          F:\Overwatch\_retail_\Overwatch.exe
+microphone                          F:\python\python.exe
+microphone                          F:\python\pythonw.exe
+microphone                          F:\Riot Games\Riot Client\RiotClientServices.exe
+microphone                          F:\Riot Games\VALORANT\live\ShooterGame\Binaries\Win64\VALORANT-Win64-Shippin...
+microphone                          F:\Riot\Riot Games\VALORANT\live\ShooterGame\Binaries\Win64\VALORANT-Win64-Sh...
+microphone                          F:\steam\bin\cef\cef.win7x64\steamwebhelper.exe
+microphone                          F:\steam\steam.exe
+microphone                          F:\steam\steamapps\common\Apex Legends\r5apex.exe
+microphone                          F:\Steam\steamapps\common\Counter-Strike Global Offensive\game\bin\win64\cs2.exe
+microphone                          F:\steam\steamapps\common\MarvelRivals\MarvelGame\Marvel\Binaries\Win64\Marve...
+microphone                          F:\steam\steamapps\common\The Finals\Discovery\Binaries\Win64\Discovery.exe
+microphone                          F:\steam\steamapps\common\The Timeless Child\The Timeless Child Prologue.exe
+microphone                          F:\SteamLibrary\steamapps\common\Apex Legends\r5apex_dx12.exe
+microphone                          F:\SteamLibrary\steamapps\common\Deadlock\game\bin\win64\deadlock.exe
+microphone                          F:\val\Riot Games\VALORANT\live\ShooterGame\Binaries\Win64\VALORANT-Win64-Shi...
+microphone                          F:\Valorant\Riot Games\VALORANT\live\ShooterGame\Binaries\Win64\VALORANT-Win6...
+microphone                   Deny   Microsoft.Copilot_8wekyb3d8bbwe
+microphone                   Deny   Microsoft.GamingApp_8wekyb3d8bbwe
+microphone                   Deny   Microsoft.MicrosoftOfficeHub_8wekyb3d8bbwe
+microphone                   Prompt Microsoft.OutlookForWindows_8wekyb3d8bbwe
+microphone                   Deny   Microsoft.ScreenSketch_8wekyb3d8bbwe
+microphone                   Allow  Microsoft.WindowsCamera_8wekyb3d8bbwe
+microphone                   Prompt Microsoft.WindowsSoundRecorder_8wekyb3d8bbwe
+microphone                          Microsoft.XboxGamingOverlay_8wekyb3d8bbwe
+microphone                   Allow  MSTeams_8wekyb3d8bbwe
+microphone                   Prompt OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0
+microphone                   Prompt OpenAI.Codex_2p2nqsd0c76g0
+microphone                   Allow  TelegramMessengerLLP.TelegramDesktop_t4vj0pshhgkwm
+microphone                          windows.immersivecontrolpanel_cw5n1h2txyewy
+musicLibrary                 Allow  Microsoft.ZuneMusic_8wekyb3d8bbwe
+passkeys                     Allow  amazon.de
+passkeys                            C:\Program Files\Google\Chrome\Application\chrome.exe
+passkeys                            C:\Users\Marawan\AppData\Local\Discord\app-1.0.9244\Discord.exe
+passkeys                            C:\Users\Marawan\AppData\Local\Discord\app-1.0.9255\Discord.exe
+passkeys                            C:\Users\Marawan\AppData\Local\Perplexity\Comet\Application\comet.exe
+passkeys                     Allow  claude.ai
+passkeys                            Claude_pzs8sxrjxfjjc
+passkeys                     Allow  discord.com
+passkeys                     Allow  ebay.de
+passkeys                     Allow  github.com
+passkeys                     Allow  google.com
+passkeys                     Allow  login.microsoft.com
+passkeys                     Allow  login.nvgs.nvidia.com
+passkeys                     Allow  luma.com
+passkeys                            OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0
+passkeys                     Allow  openai.com
+passkeys                     Allow  telegram.org
+passkeys                            TelegramMessengerLLP.TelegramDesktop_t4vj0pshhgkwm
+passkeys                     Allow  vercel.com
+passkeys                     Allow  www.canva.com
+passkeys                     Allow  www.paypal.com
+passkeysEnumeration          Allow  accounts.meta.com
+passkeysEnumeration          Allow  adobe.com
+passkeysEnumeration          Allow  All Passkeys
+passkeysEnumeration          Allow  amazon.de
+passkeysEnumeration          Allow  apple.com
+passkeysEnumeration                 C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+passkeysEnumeration                 C:\Program Files (x86)\Microsoft\EdgeWebView\Application\152.0.4191.66\msedge...
+passkeysEnumeration                 C:\Program Files\Google\Chrome\Application\chrome.exe
+passkeysEnumeration                 C:\Users\Marawan\AppData\Local\Discord\app-1.0.9244\Discord.exe
+passkeysEnumeration                 C:\Users\Marawan\AppData\Local\Discord\app-1.0.9255\Discord.exe
+passkeysEnumeration                 C:\Users\Marawan\AppData\Local\Perplexity\Comet\Application\comet.exe
+passkeysEnumeration          Allow  claude.ai
+passkeysEnumeration                 Claude_pzs8sxrjxfjjc
+passkeysEnumeration          Allow  context7.com
+passkeysEnumeration          Allow  discord.com
+passkeysEnumeration          Allow  github.com
+passkeysEnumeration          Allow  google.com
+passkeysEnumeration          Allow  login.microsoft.com
+passkeysEnumeration          Allow  luma.com
+passkeysEnumeration                 OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0
+passkeysEnumeration          Allow  openai.com
+passkeysEnumeration          Allow  openrouter.ai
+passkeysEnumeration          Allow  vercel.com
+passkeysEnumeration          Allow  www.dropbox.com
+passkeysEnumeration          Allow  www.linkedin.com
+passkeysEnumeration          Allow  www.paypal.com
+passkeysEnumeration          Allow  x.com
+phoneCall                    Prompt Microsoft.People_8wekyb3d8bbwe
+phoneCallHistory             Prompt Microsoft.People_8wekyb3d8bbwe
+picturesLibrary              Allow  Microsoft.ScreenSketch_8wekyb3d8bbwe
+picturesLibrary              Allow  Microsoft.WindowsCamera_8wekyb3d8bbwe
+radios                       Prompt Microsoft.GetHelp_8wekyb3d8bbwe
+systemAIModels               Allow  5319275A.51895FA4EA97F_cv1g1gvanyjgm
+systemAIModels               Allow  aimgr_8wekyb3d8bbwe
+systemAIModels               Allow  Microsoft.GamingApp_8wekyb3d8bbwe
+systemAIModels               Allow  Microsoft.OutlookForWindows_8wekyb3d8bbwe
+systemAIModels               Allow  Microsoft.ScreenSketch_8wekyb3d8bbwe
+systemAIModels               Allow  Microsoft.Windows.Photos_8wekyb3d8bbwe
+systemAIModels               Allow  Microsoft.WindowsNotepad_8wekyb3d8bbwe
+videosLibrary                Allow  Microsoft.WindowsCamera_8wekyb3d8bbwe
+videosLibrary                Allow  Microsoft.ZuneMusic_8wekyb3d8bbwe
+videosLibrary                Allow  Microsoft.ZuneVideo_8wekyb3d8bbwe
+webcam                       Allow  5319275A.51895FA4EA97F_cv1g1gvanyjgm
+webcam                       Allow  7EE7776C.LinkedInforWindows_w1wdnht996qgy
+webcam                              C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+webcam                              C:\Program Files\Google\Chrome\Application\chrome.exe
+webcam                              C:\Program Files\Microsoft Office\root\Office16\POWERPNT.EXE
+webcam                              C:\Program Files\Mozilla Firefox\firefox.exe
+webcam                              C:\Program Files\NVIDIA Corporation\NvContainer\nvcontainer.exe
+webcam                              C:\Program Files\scilab-2024.0.0\bin\WScilex.exe
+webcam                              C:\Users\Marawan\AppData\Local\CiscoSparkLauncher\CiscoCollabHost.exe
+webcam                              C:\Users\Marawan\AppData\Local\Discord\app-1.0.9188\Discord.exe
+webcam                              C:\Users\Marawan\AppData\Local\Discord\app-1.0.9190\Discord.exe
+webcam                              C:\Users\Marawan\AppData\Local\Discord\app-1.0.9191\Discord.exe
+webcam                              C:\Users\Marawan\AppData\Local\Discord\app-1.0.9192\Discord.exe
+webcam                              C:\Users\Marawan\AppData\Local\Discord\app-1.0.9193\Discord.exe
+webcam                              C:\Users\Marawan\AppData\Local\Discord\app-1.0.9205\Discord.exe
+webcam                              C:\Users\Marawan\AppData\Local\Discord\app-1.0.9244\Discord.exe
+webcam                              C:\Users\Marawan\AppData\Local\Microsoft\Teams\current\Teams.exe
+webcam                              C:\Users\Marawan\AppData\Local\Perplexity\Comet\Application\comet.exe
+webcam                              C:\Users\Marawan\AppData\Local\Programs\Python\Python310\python.exe
+webcam                              C:\Users\Marawan\AppData\Local\WebEx\WebEx64\Meetings\atmgr.exe
+webcam                              C:\Users\Marawan\AppData\Roaming\Zoom\bin\Zoom.exe
+webcam                       Deny   Claude_pzs8sxrjxfjjc
+webcam                       Allow  com.tinyspeck.slackdesktop_8yrtsj140pw4g
+webcam                       Allow  E046963F.LenovoCompanion_k1h2ywk1493x8
+webcam                              F:\python\python.exe
+webcam                              F:\python\pythonw.exe
+webcam                       Allow  Microsoft.GamingApp_8wekyb3d8bbwe
+webcam                       Prompt Microsoft.MicrosoftOfficeHub_8wekyb3d8bbwe
+webcam                       Prompt Microsoft.OutlookForWindows_8wekyb3d8bbwe
+webcam                       Allow  Microsoft.WindowsCamera_8wekyb3d8bbwe
+webcam                       Prompt Microsoft.XboxGamingOverlay_8wekyb3d8bbwe
+webcam                       Allow  MSTeams_8wekyb3d8bbwe
+webcam                       Prompt OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0
+webcam                       Allow  OpenAI.Codex_2p2nqsd0c76g0
+webcam                       Allow  TelegramMessengerLLP.TelegramDesktop_t4vj0pshhgkwm
+webcam                              windows.immersivecontrolpanel_cw5n1h2txyewy
+wifiData                     Allow  5E8FC25E.XODODOCS_3v3sf0k6w2rec
+wifiData                     Allow  Microsoft.GetHelp_8wekyb3d8bbwe
+wifiData                     Allow  microsoft.microsoftskydrive_8wekyb3d8bbwe
+wifiData                     Allow  Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe
+wifiData                     Allow  Microsoft.People_8wekyb3d8bbwe
+wifiData                     Allow  Microsoft.SecHealthUI_8wekyb3d8bbwe
+wifiData                     Allow  Microsoft.StorePurchaseApp_8wekyb3d8bbwe
+wifiData                     Allow  Microsoft.Todos_8wekyb3d8bbwe
+wifiData                     Allow  Microsoft.Windows.NarratorQuickStart_8wekyb3d8bbwe
+wifiData                     Allow  Microsoft.WindowsCalculator_8wekyb3d8bbwe
+wifiData                     Allow  Microsoft.WindowsCamera_8wekyb3d8bbwe
+wifiData                     Allow  Microsoft.WindowsFeedbackHub_8wekyb3d8bbwe
+wifiData                     Allow  Microsoft.XboxGamingOverlay_8wekyb3d8bbwe
+wifiData                     Allow  Microsoft.XboxIdentityProvider_8wekyb3d8bbwe
+wifiData                     Allow  Microsoft.ZuneMusic_8wekyb3d8bbwe
+
+
+
+############ 2. AUTOSTART / PERSISTENCE (what runs in the background) ############
+
+--- Run / RunOnce registry keys ---
+  [HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run]
+    RiotClient = F:\Riot Games\Riot Client\RiotClientServices.exe --launch-background-mode
+    com.todesktop.25020447d4kq915 = C:\Users\Marawan\AppData\Local\Programs\Perplexity\Perplexity.exe
+    Adobe Acrobat Synchronizer = "C:\Program Files\Adobe\Acrobat DC\Acrobat\AdobeCollabSync.exe"
+    CiscoMeetingDaemon = "C:\Users\Marawan\AppData\Local\WebEx\WebexHost.exe" /daemon /runFrom=autorun
+    CiscoSpark = "C:\Users\Marawan\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Webex\Webex.lnk" /minimized /autostartedWithWindows=true
+    CometUpdaterTaskUser145.2.7632.4583 = "C:\Users\Marawan\AppData\Local\Perplexity\CometUpdater\145.2.7632.4583\updater.exe" --wake
+    Warp = "C:\Program Files\Warp\warp.exe"
+    Discord = "C:\Users\Marawan\AppData\Local\Discord\Update.exe" --processStart Discord.exe --process-start-args "--start-inactive"
+    AMDNoiseSuppression = "C:\WINDOWS\system32\AMD\ANR\AMDNoiseSuppression.exe"
+    GoogleChromeAutoLaunch_A7492F992DEC477417B9175DDEDD7804 = "C:\Users\Marawan\AppData\Local\Chromium\Application\chrome.exe" --startup-foreground-launch
+    Steam = "C:\Program Files (x86)\Steam\steam.exe" -silent
+    Docker Desktop = C:\Program Files\Docker\Docker\Docker Desktop.exe
+    com.minimax.agent = "C:\Users\Marawan\AppData\Local\Programs\MiniMax Code\MiniMax Code.exe"
+    Grammarly = "C:\Users\Marawan\AppData\Local\Grammarly\DesktopIntegrations\Grammarly.Desktop.exe" --autostart
+    iCloudServices = "C:\Program Files (x86)\Common Files\Apple\Internet Services\iCloudServices.exe"
+    ApplePhotoStreams = C:\Program Files (x86)\Common Files\Apple\Internet Services\ApplePhotoStreams.exe
+    iCloudDrive = C:\Program Files (x86)\Common Files\Apple\Internet Services\iCloudDrive.exe
+    iCloudPhotos = C:\Program Files (x86)\Common Files\Apple\Internet Services\iCloudPhotos.exe
+    MicrosoftEdgeAutoLaunch_BA9BF9A0409237660460DF20C7D6DD92 = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --no-startup-window --win-session-start
+  [HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run]
+    SecurityHealth = C:\WINDOWS\system32\SecurityHealthSystray.exe
+    RtkAudUService = "C:\WINDOWS\System32\DriverStore\FileRepository\realtekservice.inf_amd64_5d66730f577c60c7\RtkAudUService64.exe" -background
+    Riot Vanguard = "C:\Program Files\Riot Vanguard\vgtray.exe"
+  [HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Run]
+    SunJavaUpdateSched = "C:\Program Files (x86)\Common Files\Java\Java Update\jusched.exe"
+    Cisco Secure Client = "C:\Program Files (x86)\Cisco\Cisco Secure Client\UI\csc_ui.exe" -minimized
+  [HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce]
+  [HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce]
+
+--- Startup folders ---
+    C:\Users\Marawan\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\Comet.lnk
+    C:\Users\Marawan\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\DeepL auto-start.lnk
+    C:\Users\Marawan\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\Ollama.lnk
+
+--- Enabled scheduled tasks (non-Microsoft) ---
+
+Task                                                                      Path
+----                                                                      ----
+Adobe Acrobat Update Task                                                 \
+AMDInstallLauncher                                                        \
+AMDRyzenMasterSDKTask                                                     \
+AMDScoSupportTypeUpdate                                                   \
+Apple Diagnostics                                                         \
+BraveSoftwareUpdateTaskMachineCore{F098F54D-1FDC-4C54-B91F-8F393A1C4218}  \
+BraveSoftwareUpdateTaskMachineUA{0B792676-35D8-4CDC-8214-39A2578EAC9F}    \
+cua-driver-serve                                                          \
+Launch Adobe CCXProcess                                                   \
+MARKReminder_20260614_0250                                                \
+MARKReminder_20260615_0000                                                \
+MicrosoftEdgeUpdateTaskMachineCore                                        \
+MicrosoftEdgeUpdateTaskMachineUA                                          \
+ModifyLinkUpdate                                                          \
+NVIDIA App SelfUpdate_{B2FE1952-0186-46C3-BAEC-A80AA35AC5B8}              \
+StartCN                                                                   \
+StartDVR                                                                  \
+AppleSoftwareUpdate                                                       \Apple\
+GoogleUpdaterTaskSystem132.0.6833.0{61277635-3530-434D-8FE3-E48C17FC8B38} \GoogleSystem\GoogleUpdater\
+LenovoNowLauncher                                                         \Lenovo\
+LenovoNowQuarterlyLaunch                                                  \Lenovo\
+LenovoNowTask                                                             \Lenovo\
+Lenovo iM Controller Monitor                                              \Lenovo\ImController\
+Lenovo iM Controller Scheduled Maintenance                                \Lenovo\ImController\
+90959348-dc1e-4528-8335-8e0e4e79e8db                                      \Lenovo\ImController\TimeBasedEvents\
+9dab2b5c-8ac3-4740-b8e3-88a3e5a80874                                      \Lenovo\ImController\TimeBasedEvents\
+cf499a3b-43c3-42af-beb2-8506a68cd13a                                      \Lenovo\ImController\TimeBasedEvents\
+S-1-5-21-4064314708-498679389-132253050-1002                              \Lenovo\Lenovo Service Bridge\
+Lenovo UDC Lazy Deployment                                                \Lenovo\UDC\
+Lenovo UDC Maintainance Task                                              \Lenovo\UDC\
+Lenovo UDC Monitor                                                        \Lenovo\UDC\
+Lenovo.Vantage.ServiceMaintainance                                        \Lenovo\Vantage\
+StartupFixPlan                                                            \Lenovo\Vantage\
+BatteryGaugeAddinDailyScheduleTask                                        \Lenovo\Vantage\Schedule\
+ConsumerAddinDailyScheduleTask                                            \Lenovo\Vantage\Schedule\
+DailyTelemetryTransmission                                                \Lenovo\Vantage\Schedule\
+GenericMessagingAddin                                                     \Lenovo\Vantage\Schedule\
+GenericMessagingAddin_Pulsation                                           \Lenovo\Vantage\Schedule\
+HeartbeatAddinDailyScheduleTask                                           \Lenovo\Vantage\Schedule\
+IdeaNotebookAddinDailyEvent                                               \Lenovo\Vantage\Schedule\
+Lenovo.Vantage.SmartPerformance.MonthlyReport                             \Lenovo\Vantage\Schedule\
+Lenovo.Vantage.SmartPerformance.SScan                                     \Lenovo\Vantage\Schedule\
+LenovoCompanionAppAddinDailyScheduleTask                                  \Lenovo\Vantage\Schedule\
+LenovoSupportHealthReportSchedule                                         \Lenovo\Vantage\Schedule\
+LenovoSystemUpdateAddin_WeeklyTask                                        \Lenovo\Vantage\Schedule\
+NotificationCenter                                                        \Lenovo\Vantage\Schedule\
+SettingsWidgetAddinDailyScheduleTask                                      \Lenovo\Vantage\Schedule\
+SmartLock.ExpireReminder                                                  \Lenovo\Vantage\Schedule\
+SmartPerformance.ExpireReminder                                           \Lenovo\Vantage\Schedule\
+VantageCoreAddinDailyScheduleTask                                         \Lenovo\Vantage\Schedule\
+VantageCoreAddinIdleScheduleTask                                          \Lenovo\Vantage\Schedule\
+VantageCoreAddinWeekScheduleTask                                          \Lenovo\Vantage\Schedule\
+Messenger-WSP-Helper-S-1-5-21-4064314708-498679389-132253050-1002         \Meta\
+CometUpdaterTaskUser145.2.7632.4583{DF03242D-0DF1-4B77-A488-BCA433FDB66B} \PerplexityUser\CometUpdater\
+SoftLandingCreativeManagementTask                                         \SoftLanding\S-1-5-21-4064314708-498679...
+SoftLandingDeferralTask-{fc1908f8-96a9-45df-9a22-6dca00df863d}            \SoftLanding\S-1-5-21-4064314708-498679...
+TVSUUpdateTask                                                            \TVT\
+TVSUUpdateTask_UserLogOn                                                  \TVT\
+
+
+
+--- Auto-start services with path outside C:\Windows (third-party) ---
+
+Name                   DisplayName                                PathName
+----                   -----------                                --------
+AdobeARMservice        Adobe Acrobat Update Service               "C:\Program Files (x86)\Common Files\Adobe\ARM\...
+Bonjour Service        Bonjour Service                            "C:\Program Files\Bonjour\mDNSResponder.exe"
+brave                  Brave Update Service (brave)               "C:\Program Files (x86)\BraveSoftware\Update\Br...
+ClickToRunSvc          Microsoft Office Click-to-Run Service      "C:\Program Files\Common Files\Microsoft Shared...
+CoworkVMService        Claude                                     "C:\Program Files\WindowsApps\Claude_1.52386.6....
+csc_vpnagent           Cisco Secure Client - AnyConnect VPN Agent "C:\Program Files (x86)\Cisco\Cisco Secure Clie...
+edgeupdate             Microsoft Edge Update Service (edgeupdate) "C:\Program Files (x86)\Microsoft\EdgeUpdate\Mi...
+ElevationService       Wondershare Driver Install Service help    C:\Program Files (x86)\Wondershare\Wondershare ...
+LenovoVantageService   Critical Service for Lenovo Vantage        "C:\Program Files (x86)\Lenovo\VantageService\\...
+MDCoreSvc              Microsoft Defender Core Service            "C:\ProgramData\Microsoft\Windows Defender\Plat...
+NvContainerLocalSystem NVIDIA LocalSystem Container               "C:\Program Files\NVIDIA Corporation\NvContaine...
+TeamViewer             TeamViewer                                 "C:\Program Files\TeamViewer\TeamViewer_Service...
+WinDefend              Microsoft Defender Antivirus Service       "C:\ProgramData\Microsoft\Windows Defender\Plat...
+WSLService             WSL Service                                "C:\Program Files\WSL\wslservice.exe"
+
+
+**********************
+Windows PowerShell transcript end
+End time: 20260914173803
+**********************

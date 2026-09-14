@@ -6,11 +6,47 @@ This is a research artifact, not a released product, so entries track research m
 rather than software versions.
 
 ## [Unreleased] — in progress
-### Planned
-- Windows-VM phase: capture harness (mitmproxy + CA via `certutil` + system proxy), then
-  Windows-only desktop clients (Grammarly desktop, DeepL app, iCloud for Windows) and the
-  free consumer Avast, plus the USB auto-read test (which only meaningfully fires on
-  Windows, where an indexer/AV/desktop client is present to auto-read the stick).
+### Planned (future work)
+- External-validity breadth: real-field runs (Gmail, Google Docs); the two further
+  documents of the intended three-document set (longer report + code snippet); a
+  primary-browser (Chrome/Edge) and macOS environment; a dedicated OneDrive drop-and-sync
+  run; more captures to lift remaining single-run host probes to n>=3.
+- Mechanistic: Frida for certificate-pinned channels; an outbound-byte-volume detector to
+  bound opaque uploads; broaden the Presidio sweep to a full unplanted-PII inventory.
+
+## 2026-09-14
+### Added (host & system-level phase — completed, integrated into the report)
+- **Word / Office augloop reproduced (n=3):** merely *opening* the .docx transmits 96.8%
+  of the document + 12/12 secrets to `augloop.svc.cloud.microsoft`, passively on open.
+- **Mitigation / causation:** disabling the single Office setting "experiences that
+  analyse your content" drops the Word leak to 0% (augloop socket opens but sends no
+  content) — establishes cause and a one-switch mitigation.
+- **Word Protected View:** with the "Enable Editing" banner still up, augloop stays
+  silent (Protected View contains Microsoft's own AI) but the **Grammarly desktop client
+  still exfiltrates 94.2%** to `capi.grammarly.com` — Protected View does not stop a
+  third-party assistant.
+- **Edge/Copilot PDF (n=3):** invoking Copilot to summarise the PDF sends 76.9% + 12/12
+  to `copilot.microsoft.com`; in one run Copilot's visible reply declined to reveal the
+  secrets yet the full document (canary included) had already been transmitted — refusal
+  in the reply != non-transmission on the wire.
+- **DeepL desktop (n=3):** ~99.6% mean to `www2.deepl.com`.
+- **Negatives / controls:** Edge PDF passive (not invoked) ~0%; iCloud Drive sync = no
+  cleartext content; `.md` in Notepad = 0%; VS Code passive = 5.5% telemetry only, 0/12;
+  Avast = uploads an unknown *executable* (CyberCapture) + reputation/telemetry, **not**
+  document content.
+- **Permissions audit (F8/F9):** no writing/translation tool holds mic/camera/full-disk
+  access; the channel is the browser "all-sites" text permission. Autostart confirms the
+  always-on background-actor model (Grammarly `--autostart`, DeepL Startup folder).
+  Scripts: `scripts/capture/mic_audit.ps1`, `scripts/capture/permission_audit.ps1`.
+- Findings log `Host-Capture-Findings.md` (F7–F10), `results/final_summary_table.md`,
+  updated `results/action-spectrum.md`, and a redesigned horizontal action-spectrum figure.
+### Changed
+- Report integrated with all of the above (abstract, contributions, results, permissions
+  subsection, limitations, conclusion/future work); action-spectrum figure redesigned
+  (horizontal, sorted, colour-coded by interaction class, no empty-bar dead space).
+- Trimmed tangential citation-piles in Related Work (removed 4 background/mobile-PII
+  citations that did not carry the argument); documented OneDrive + the 3-document set as
+  explicit scope limitations rather than dropping them silently.
 
 ## 2026-09-10
 ### Added
