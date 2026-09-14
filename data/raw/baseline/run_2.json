@@ -1,27 +1,455 @@
 {
   "tool": "baseline",
   "run_id": "2",
-  "start_time": "2026-07-02T13:45:11.464684+00:00",
-  "end_time": "2026-07-02T13:47:32.756422+00:00",
+  "start_time": "2026-09-11T21:28:56.372261+00:00",
+  "end_time": "2026-09-11T21:30:27.725258+00:00",
   "test_doc_chars": 2065,
   "window_size": 20,
   "tool_version": "unknown",
   "browser_version": "unknown",
   "os_info": "unknown",
-  "requests": [],
+  "requests": [
+    {
+      "kind": "http_request",
+      "timestamp": "2026-09-11T21:29:13.010836+00:00",
+      "host": "browser-intake-us5-datadoghq.com",
+      "method": "POST",
+      "path": "/api/v2/rum?ddsource=browser&dd-api-key=pub71869dceb5b70dba6123af9ca357d1f9&dd-evp-origin-version=7.6.0&dd-evp-origin=browser&dd-request-id=8cc76da9-182e-44cb-97e1-aef05a68a81b&dd-evp-encoding=deflate&batch_time=1789162152518&_dd.api=fetch",
+      "content_length": 6552,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "xí]Kä8r¾ûg\b>\u0019©j\"õHØ>\u0018;^,`Ã\u000b¬½Ù\u0001AQT¦¶¢ê1úïFR©TUåôôÌv÷¨ûÒM\u0006¯`ÄÇ`¤âc`;\u0015ì\u0003!MÕ6Á.àE\u0011ì?\u0006e«OÂð\u0007¥{(ß]Pèª4Á>Ä»@¶MY\u001d\u0006-l£ýÇ W=Ðñ^ºZq-\nö\u0018¡ÝT£UWçK\u0002´\u000b:ÝU]5«\u001a£TW\f_vA_ÜóF`Ôz8\u0005/»@t]]Éi0U\u0011ì¢¤4#\u0012f\u0004£*ÅBA3\u0011F4U´\u00148c\u0006m\u000bÇ9I3\u001c\u0013L\bCÉ.èÛAKè ×íc¯t°\u000b\u001e*õh7¼lµ:èvh`_ºW»`Ðu°\u000fÆtýþÃ\u0007Y¡Pw¢ú ÛÇVß¨[)jþ±*^] U©´VzµA£\u001eÌ\u0004-\\JF(¤9C\n\u0019æe,%qc\u0016ì\u0002¿\u0014cWÿì\u0017üO\u0005ÌÎÿgZ\u0015Ê\u0002\"\nQ¢Æ\u0011\rS\"qÈJ%bÌ¢f$ØB1ÀÔ_ìv7Jê¡2Ïv·0C\u000fCt\u0015ª\bv*KK£¸oM\u000fÐÖüÜ{!d¡X\u001a8IC\u001a«,Ì¥baJ°$\u0014\".cßQO\u0006Ú©Æèg.<*Þµu%}Ð´aoZ­ W[ß+ý \n.\f\u0017\u0007ÅO}°O\"+¦§®ª\u0015?Vá¶e\u0019,JùI\u0018y\föè.Å;;±Jr h{¥¹VM¡´:ï³ë®\u0013æ8.{°\u000b\nÕß¶\u001b\u000f\u000b7Z4}å¤1èîLS´²çms>X\u0001¬·\u0012º~Ù´Íyjïy¡êêAi¹]`\u0017\u001c«¢P\rL¸nÅyxUÏÅ`Ú?\n¾´\u0011\u000fÜ1ó;Óê\u0000rïêFþcuk^äû*¯êÊ<CG@Ù\u001b¡\rÈ­í>ã«®Ö\bTÉ\u001d£·ûÑ\fu½\u000bäQ\u0018~l{à!kÑ÷´\u001bÒôª\u0001)Ú\u001b=¨\u001d(G¡\u0019ÏApYWª1Ó\"¹}Û\u0005Ç!/ÈÕ¢\u001cf_zÆ¯«\u0001\u0015\u0007ÂíL°\u000bò¡ª\u000b\u000eÜ­: qè.\u0018*n/¬jÂÿûËl7E×Ív\u0012ßÑ¥ì\u000e-)®D\u0003sît[ØÊ®nO0S[\u0000cÜÜ\u000f½ÎJ\u001aãÄe\u0012FQÉB*£(Ìh\u0019*+\u0004Ë)JD]ÐêhªÜrÛ¹1Îe\u001aæeABJ³(LeLÃLåy¥(F1l|WÆÎ¾\u0014Cm¸Ó@ü$8{\nvhÚæùÔ\u000e½cJ\u0002g4¡açEHI®ÂI\u0019\"ÌJ*I#jOnQõ æa\u0016 0»VÛSüX\u0015æ\u0018ì\tÑ.8ªêp4Á\u001eG\u0019y±:J?TVÛºA¢\u0002á5QLE\"Øvj\\%ªDåI\u0012f8Á!-i\u001c¦¹*CR\"Ð\u001c¥y\u0002­Ð\u0007eGâ­0§»R©Bi®\u001e@`^&¥'Þ´§`\u0017zèÍÙÄ¹êï!\u0017\u0011\u0007B°E~¤ûä.¾C;Õ<ìa\u0007;ÐÜ~Ún\"?Oëå>nvxi\u0013ºÙáÍ\u000eovx³Ã\u001dþâípÆª,e\u0016¦%*BªÊ2Ì$)Ã\"M\u0012§9¦iñÚaôa¶áÍ\fofø74ÃGaîdÛÀ¸vÃ`åå_óºÍÿ}¤è\u0007]\n§®­¨å'Õ÷°íµj\u000e ìqÄ\u00165US¨§`?÷J¶MÑó¾j¤âµè\r÷¤ cROUõ¼Q|>°i#V\u0006öeQZ5²=4i¯jû¶á¶..«V\u000eÖ,\u000bc<ÚÊvh¼ºµ­O0×ëKéÕ6B»½|Ü\u001c«æ\u001et±\u0007\u0007EÕ¼¶§ÛÖkÕ+¡åñµzÓ¶õÈ\u0013³ÌªÆ\u0012ñGs×~[¶zèUÁ«¦®\u001au±Ö\\jeuó|:Õ\u00140@;úBiP7I<ÿ8¨A-¸V¢ä¢2ÜT'Uðv0\u0004ÐÐ«Ç#ð_ãrTuÁóg/Äó±WE~Ïü¾\u0002+\u0011h%êqà \u0019uê}ð(ôÔi\u0012eÙqXÄO\u0016\bæX](0éÐ ÕÏü\u0007{\u001cã\u0012ºx\u0014Ú.¡\u001c´V\rhÊ©ºQ\u0006\f_SÒ\u000b¢}Í¸ç§¼\u0003Dz°\u00056îL3´¨èÅâ0âreò¶5\u0000h:\u000eÆ³v lNp\u001aâ²WÆáæ\u0014g %á¤¡«¦}Ä)YîÍ\u0015a¦\u0019vÌ×õâw¢_\nÛéBC®âZõ\u001dÜ\u0019=ExâÓ«¦àBÎ÷\b×¼-T}\u0006m7ô!\rÓIG;:¡«~©Y@Ba±r!ïG¤1®A§\u0015/G+ÇÁ\u001e»\fù?QB\u0018É®\b­ ;Ù}»æ4­\u0004TGw(óbÐ\u0004_çm{¯TgUx\u001c\u0001ciMvÞ£h¶,m«ô5¢^¹ëIíF{GFæ8ILÙõf\rUY¶úõyNtg]÷\u0016%\\+\u0000 ¼½xÔ\u001eå·\b¦\u001e\u0001>\u00002¸¯ºî¬<_ï»ÕEÎÒ:Á©d+¼íTã%\"¦wñ¸ÑN\u0016ÂÆùðÒ\u0013±$ºÆ\u0015Nè¸u^ÄZògã\u0015â(]{a@M\u0016\t_ôg[z58ö×­¼÷hbÈ\u00125¯Ûh\u001c´húG¥\u001dI)öF+1iÍ9IÕpÝ>^C8ãIî´êûå\b}ûÇª)ÚGkÓ+gÐåÐd{:y! wtõÈyJ#ªÚ/Ö\u001d[=K°Ôâä5½Ã\u0017gh1­¤ª:ß{\u001cÇñÚ\fÆemA®x®à¢Â;Q5\u000b}ë\u001b%4hû7(;è×Z\\ÇÛ[Q7Fq\u0014\u0014ü¥\u0000\u001eæ\u001f-\u0006\u001a±®\u0007A'Þ´ÅdÑ\tÇ-AQÀèÀØ\u0016ÕÐx¼búÁÙË½{çÓu %Â`D¾ØËÆÙn÷ÕOç¼K{ÀP³\fÐ»¿êËes\u001b]_\u0001l¿U\u0003gñ-\u001fÒºAÝ¿mÆß´àKãMàrþáv\u0003\u001eämYZ\fÓÁÖ\u0014»:óS°\u000f¾\u001btÛ©\u000fÿ¡t]5³{\u0016'n\u0011>øâóTÐc\u0005AØÕ\u0019bsVf½Yà\u0000\u0018+£¤\u00194Ìô)\u0005nwâ\u0019î>ãRÃ\u0015åäõOú\ryçv\u0001ÜÔú;)*.¢¨í\tÐÅ0ÃÂ\rçk([\u0018óhqªÆ´\u001côà[Mz¥Ñ|æ¢WÈ\u0017ô\u0016éx3t_b\\õÐTe¥\nw\u0001ºêÆ!n.ÆOq1Fd¥R!Î0\u000b)Ãy(â\u001cI\u000b\nV\u0012¤Ö\\þ¢¤¥ªÀ)r¡M{¯Íçøù\u001c³-\u0004gó9n>ÇÍç¸ù\u001c7ãæsÜ|Ïqó9n>ÇÍç¸ù\u001c¿>G'\u001a`úÿN¶ýÁY÷º\u0015¥\u0007ÚgLb\u000bEs\u0006¶À´FÔn¥f:ÈV9g\r?õèª¢jøl8c¥×\r×­F\u0011»*oµT\u0005¯Ås;\u000bV¾Æw·/\u001dO¢õórh¼ëäº®j\u001eÚ{Pe¯Vù=\\aûêpÇq\u001eæ]Û¯5¾p\u0019OÓìk¼6\u000f[¾:\u000b[³Ú­¹bþZ·\u001c|óæ\u0016_8Á9nv_r-ê¡\u0007{q\u0000È(fF\u000f\u0014f\u0006O/=%\u001b|sonðÍ\rþyÝà))cGq(d9÷a.ò<¤´ÈrE3%söInppc_¡/üÛþ\u001dLJ~Þï`\u001cèÞ|á/|ó¢/üìä>\t}\u000f°ÉÎþ`\r_\u0000RmãJ`(ã0Uò(Ãl$0-îïÍþ ÎÜ\rÅ\u0015\u001f«ÃÑ:éÎþ¬Z4ÁºÇ®}Tº?ªÚ^±Ô\u0001¿{°óÿfÃ¢ÐK£f\u0001K¤U\u0007G¾\u0016¦jÀ¬ÇÖ]ßØå¡\u0003e4]\u0005­\u0005­\u001a~Y\f*Õ\u001fÖ5KFØ?t`\ngãoÁgloBóûÌTh/bªX^ÖêOâiY;Ãù³æ\u000e\bëÛ\u000b~\u001c*\u0005Xoæcß\tÏ\"¬NYôè\u000eNÜþóQñ7_7è÷\tÐ\u000fSÆÆ!¦\f)\"Ì\u0014aNãBÒ¼Ì\u0004^~\u0012¼:þ¤:\u001dù\u0015b½o:î!eq¶A½\rêmPï7zgc5z¬?Ñ;Ý\u000eF¶v[úAJxàØ~+½ñW<8eZ$\u0004P`X¥\")Â4F,T©ÀX ¯q«fïÌ \u001b«'jeÔ\u0017cÃµòë+ôØX\u0011\u001f:è;áe3Mã0J2J²8aY\nçÝ±v¨\f Êâ8ÎH\bf\u0019ýÜÈ\u0000³ôMd°_\t\u0004¬µWlàç·ZoÙÏU@ðå^5õïâ_\u000e1^ñ²\u0000pÒ\u0010\u0002\u0001ØûÁ\u0013ouuà)Â xc/9ø+:]\u0005{8¼_ \u0019\u001eN¬\n\u0006 U¡úêÐ8¾É[ÌädBÆuÊ²HqÁBæ\"¤\f:\b\u0016!DÆPTP\u0012ËÙ¯}\u0014!\u0017F3©\u0010\u001bBca9¶Àóßý¯ú¡çÒî }ó|M®ú0Ä}\u0000\u0015úÁ9q\f\u0007õÄÅö:ÝV¶Kd\u0005e\u001dÚúw²)î`RfMÛc)\f±úI\u0005ûQ\u0002§\u001aFZð¼-¹«À±ó ]U¸\u0016ö\u0010Wç¨3K\r/ÀVa}-\u001af~É¼²HÚ]p\u000e\u001fºl\u0013\u0004_¶ÂÉØæ||?\u0006G%\n¥{ø§;\nÇ;ÿÙ:~ø;8è^~]|b}Fô÷_¡á\u001a|fxA³·\u001d\u000f\u001b¼ØàÅW\u0006/¾@°¡[PÀYQ\u000b%$\"4B(d*C*P\u0012Td!Â2ò2OY&Ù©ûP4;Y¡}$º\n1J½\u0001,ñ¹\u0012o¨ÜgÉl¤no\u0004üb e\u0011Æ)ñ­½9÷'\u0011ê¨clMãs­¸h¦¹\u000bªtn@}(pÊ\"¦iµÁ2}°ÿ~n{i2bN\f½Z\fÛ\u0007\u000e.{¾ ºê1\u001b!zRr8«eµ3\u0011üÒ\u001c¾W¦\u000f;Ý>=ßÆ\u001cuÛU\u0012\"û?LÛýáxº\u000f\u000føÃjV»M\tÿåîï\u0000<ë1èo4ç1èÏë\u0006LYF]0Å3\u0006m«â?ÇÁ©Ï}(E]C<ÿ9T\u0018£«|\u0018õªËàåí±ã7xìÓí±ãË\u0001\"ÛcÇ·ÿØ±}ÞuCaødeBH$ã0\u0017TQ\u001aæEJCQ$qF\"Å|5ò`û¼ëf7+¼YáÍ\noVx³Â¿8p\u0000ÁtÓ,ÄT°\u0012*Â<¤Y¤\u0012&c\u001aáÕ/ }±VxsÊ¿\u0019\r\u0018oNùÍ)¿9å7Cô\u000f7D×NùTåiÌ\fÈ)X 4Ìh2GE!`DÉíÏ\u0012öºS>¢£_üMß<AQúo°Ùc÷«¾yÂ\b[÷ÍcÆè¾ùÄ¿Ä7§æW\u001dgÙ\u001b.úYõoï¢ÿÃë>zDQ6wÑÿ·\u000b®ýs«Í]ÛßûºòÕÛm\rëª7ª±&ï\u001fæ¬ÿv£\u001aã\u0018e$¢\t!\u0011¥(ã\u0014/Â\u001a4!QF0K8C\u0019Í>»ï!\"\u001bÀÙ\u0000Î·\u0004pn\tjÄ\u0014oA¿\u001bät\u0015ÔÈhFbf!\"X´$e¸\f\u0013!¢\u0004å(\\\"\u0012³\u0011\u0015¼\u0016ÔøçÿùËÏjïDï#\u001bºëE©Ì3/kqè?äÞõôëÄ7x5º¬Ç6Bñ\"²1\"¯\u00066&\u0011$¦Ù{q$&ËVäËküv\u0011JFID\u0013fq¢$%Y|PR\u0006¨D)£QÌHJÑçE(QÊàcq\u001bBÙ\u0010Ê...[truncated, full length 6552 chars]"
+    },
+    {
+      "kind": "http_response",
+      "timestamp": "2026-09-11T21:29:13.205338+00:00",
+      "host": "browser-intake-us5-datadoghq.com",
+      "status_code": 202,
+      "content_length": 53,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "{\"request_id\":\"8cc76da9-182e-44cb-97e1-aef05a68a81b\"}"
+    },
+    {
+      "kind": "http_request",
+      "timestamp": "2026-09-11T21:29:33.347871+00:00",
+      "host": "activity.windows.com",
+      "method": "POST",
+      "path": "/v3/feeds/me/$batch",
+      "content_length": 1371,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "\r\n--Batch_1789162173\r\nContent-Type: application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nPOST https://activity.windows.com/v3/feeds/me/activities HTTP/1.1\r\nContent-Length: 1081\r\nContent-Type: application/json\r\nX-AFS-CV: n8bN9jb0pSJjsLi1.0.1.0\r\nX-AFS-Scenario: 10\r\n\r\n[\n   {\n      \"__schemaVersion\" : 1,\n      \"activityId\" : \"FBF376C4-2BA1-472E-A0EE-F9E63EDD93D5\",\n      \"appId\" : {\n         \"alternateId\" : \"WinAlternateId\",\n         \"packageId\" : \"WinPackageId\",\n         \"windows_universal\" : \"WinPackageId\"\n      },\n      \"applicationId\" : [\n         {\n            \"application\" : \"WinPackageId\",\n            \"platform\" : \"windows_universal\"\n         },\n         {\n            \"application\" : \"WinAlternateId\",\n            \"platform\" : \"alternateId\"\n         },\n         {\n            \"application\" : \"WinPackageId\",\n            \"platform\" : \"packageId\"\n         }\n      ],\n      \"clipFormats\" : [\n         {\n            \"content\" : \"LlxzY3JpcHRzXGNhcHR1cmVccHJveHktdG9nZ2xlLnBzMSBvZmY=\",\n            \"formatName\" : \"Text\"\n         }\n      ],\n      \"lastModifiedOnClient\" : \"2026-09-11T21:29:33.000Z\",\n      \"payload\" : \"\",\n      \"platformDeviceId\" : \"FZqZNUgCkVCHHVne4SX1tdOxQipZ55Heyo1GxELrGgA=\",\n      \"priority\" : 1,\n      \"read\" : false,\n      \"startTime\" : \"2026-09-11T21:29:33.000Z\",\n      \"type\" : 10,\n      \"userActionState\" : 0\n   }\n]\n\r\n--Batch_1789162173--"
+    },
+    {
+      "kind": "http_response",
+      "timestamp": "2026-09-11T21:29:33.448275+00:00",
+      "host": "activity.windows.com",
+      "status_code": 200,
+      "content_length": 1702,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "--batchresponse_dcec5031-8fa9-40be-9f3d-cfa60bcea83a\r\nContent-Type: application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nHTTP/1.1 201 Created\r\nLocation: /V3/feeds/me/activities/fbf376c4-2ba1-472e-a0ee-f9e63edd93d5\r\nX-AFS-BaseEtag: 55fb0db0-ae27-11f1-9117-01020305070d\r\nX-AFS-NewETag: e1479b40-ae27-11f1-9117-01020305070d\r\nX-AFS-Tracking: cV=n8bN9jb0pSJjsLi1.0.1.0.0;server=AM3PEPF00022CC6\r\nclient-request-id: 06a0e78b-28f8-46a4-82bc-6a670c39f42c\r\nDate: Fri, 11 Sep 2026 21:29:33 GMT\r\nX-Content-Type-Options: nosniff\r\nContent-Type: application/json\r\n\r\n[{\"clipFormats\":[{\"content\":\"LlxzY3JpcHRzXGNhcHR1cmVccHJveHktdG9nZ2xlLnBzMSBvZmY=\",\"formatName\":\"Text\"}],\"isBlockedByClient\":false,\"activityId\":\"fbf376c4-2ba1-472e-a0ee-f9e63edd93d5\",\"parentActivityId\":\"00000000-0000-0000-0000-000000000000\",\"deviceId\":\"dds:82beed49-1104-504c-83a8-133a03f492ad\",\"platformDeviceId\":\"FZqZNUgCkVCHHVne4SX1tdOxQipZ55Heyo1GxELrGgA=\",\"lastModified\":\"2026-09-11T21:29:33.172Z\",\"lastModifiedOnClient\":\"2026-09-11T21:29:33.000Z\",\"createdInCloud\":\"2026-09-11T21:29:33.172Z\",\"appId\":{\"alternateId\":\"WinAlternateId\",\"packageId\":\"WinPackageId\",\"windows_universal\":\"WinPackageId\"},\"applicationId\":[{\"platform\":\"windows_universal\",\"application\":\"WinPackageId\"},{\"platform\":\"alternateId\",\"application\":\"WinAlternateId\"},{\"platform\":\"packageId\",\"application\":\"WinPackageId\"}],\"type\":10,\"status\":0,\"priority\":1,\"expiration\":\"2026-09-12T09:29:33.172Z\",\"payload\":\"eyIxIjpbREDACTED_JWT==\",\"jsonPayload\":null,\"remoteId\":null,\"tags\":null,\"assets\":null,\"isAppActivity\":false}]\r\n--batchresponse_dcec5031-8fa9-40be-9f3d-cfa60bcea83a--\r\n"
+    },
+    {
+      "kind": "http_request",
+      "timestamp": "2026-09-11T21:29:33.453960+00:00",
+      "host": "activity.windows.com",
+      "method": "GET",
+      "path": "/v3/feeds/me/views/9b5c3c07-52bb-e2bc-c7c5-05f73d1925b5/activities?pageSize=100",
+      "content_length": 0,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": ""
+    },
+    {
+      "kind": "http_response",
+      "timestamp": "2026-09-11T21:29:33.677176+00:00",
+      "host": "activity.windows.com",
+      "status_code": 200,
+      "content_length": 1297,
+      "tls": true,
+      "content_encoding": "gzip",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "{\"activities\":[{\"clipFormats\":[{\"content\":\"LlxzY3JpcHRzXGNhcHR1cmVccHJveHktdG9nZ2xlLnBzMSBvZmY=\",\"formatName\":\"Text\"}],\"isBlockedByClient\":false,\"activityId\":\"fbf376c4-2ba1-472e-a0ee-f9e63edd93d5\",\"parentActivityId\":\"00000000-0000-0000-0000-000000000000\",\"deviceId\":\"dds:82beed49-1104-504c-83a8-133a03f492ad\",\"platformDeviceId\":\"FZqZNUgCkVCHHVne4SX1tdOxQipZ55Heyo1GxELrGgA=\",\"lastModified\":\"2026-09-11T21:29:33.193Z\",\"lastModifiedOnClient\":\"2026-09-11T21:29:33.000Z\",\"createdInCloud\":\"2026-09-11T21:29:33.188Z\",\"appId\":{\"alternateId\":\"WinAlternateId\",\"packageId\":\"WinPackageId\",\"windows_universal\":\"WinPackageId\"},\"applicationId\":[{\"platform\":\"windows_universal\",\"application\":\"WinPackageId\"},{\"platform\":\"alternateId\",\"application\":\"WinAlternateId\"},{\"platform\":\"packageId\",\"application\":\"WinPackageId\"}],\"type\":10,\"status\":0,\"priority\":1,\"expiration\":\"2026-09-12T09:29:33.172Z\",\"payload\":\"eyIxIjpbREDACTED_JWT==\",\"jsonPayload\":null,\"remoteId\":null,\"tags\":null,\"assets\":null,\"isAppActivity\":false},{\"groupIds\":\"default$windows.data.consent.consentitem$consents\",\"activityId\":\"36352020-5868-cfd7-264b-6865f9d51be4\",\"parentActivityId\":\"00000000-0000-0000-0000-000000000000\",\"deviceId\":null,\"platformDeviceId\":null,\"lastModified\":\"2026-09-11T21:29:33.407Z\",\"lastModifiedOnClient\":\"2026-09-11T21:29:33.407Z\",\"createdInCloud\":\"0001-01-01T00:00:00.000Z\",\"appId\":{\"alternateId\":\"\",\"data_boundary\":\"MicrosoftRequired.Privacy.Consent\",\"packageId\":\"\"},\"applicationId\":[{\"platform\":\"data_boundary\",\"application\":\"MicrosoftRequired.Privacy.Consent\"},{\"platform\":\"packageId\",\"application\":\"\"},{\"platform\":\"alternateId\",\"application\":\"\"}],\"type\":11,\"status\":0,\"priority\":0,\"expiration\":\"2036-09-08T21:29:33.407Z\",\"payload\":\"Q0IBABIZdwBpAG4AZABvAHcAcwBhAGMAYwBvAHUAbgB0AHMAeQBuAGMAYwBvAG4AcwBlAG4AdAAiAW0SCgELRABhAHQAYQBTAGgAYQByAGkAbgBnAAIBAAA=\",\"jsonPayload\":null,\"remoteId\":\"default$windows.data.consent.consentitem$consents\",\"tags\":\"windows.data.consent.consentitem\",\"assets\":null,\"appActivityId\":\"default$windows.data.consent.consentitem$consents|windows.data.consent.consentitem$windowsaccountsyncconsent\",\"isAppActivity\":false},{\"groupIds\":\"default$windows.data.consent.consentitem$consents\",\"activityId\":\"d4f3e740-e76a-3191-05ca-d2dc5380fba8\",\"parentActivityId\":\"00000000-0000-0000-0000-000000000000\",\"deviceId\":null,\"platformDeviceId\":null,\"lastModified\":\"2026-09-11T21:29:33.407Z\",\"lastModifiedOnClient\":\"2026-09-11T21:29:33.407Z\",\"createdInCloud\":\"0001-01-01T00:00:00.000Z\",\"appId\":{\"alternateId\":\"\",\"data_boundary\":\"MicrosoftRequired.Privacy.Consent\",\"packageId\":\"\"},\"applicationId\":[{\"platform\":\"data_boundary\",\"application\":\"MicrosoftRequired.Privacy.Consent\"},{\"platform\":\"packageId\",\"application\":\"\"},{\"platform\":\"alternateId\",\"application\":\"\"}],\"type\":11,\"status\":0,\"priority\":0,\"expiration\":\"2036-09-08T21:29:33.407Z\",\"payload\":\"Q0IBABIaeABiAG8AeABvAHAAdABpAG8AbgBhAGwAZABhAHQAYQBjAG8AbABsAGUAYwB0AGkAbwBuACIBQgEA\",\"jsonPayload\":null,\"remoteId\":\"default$windows.data.consent.consentitem$consents\",\"tags\":\"windows.data.consent.consentitem\",\"assets\":null,\"appActivityId\":\"default$windows.data.consent.consentitem$consents|windows.data.consent.consentitem$xboxoptionaldatacollection\",\"isAppActivity\":false},{\"groupIds\":\"default$windows.data.consent.consentitem$consents\",\"activityId\":\"cce66155-977a-17d7-be38-1f4038689eb5\",\"parentActivityId\":\"00000000-0000-0000-0000-000000000000\",\"deviceId\":null,\"platformDeviceId\":null,\"lastModified\":\"2026-09-11T21:29:33.407Z\",\"lastModifiedOnClient\":\"2026-09-11T21:29:33.407Z\",\"createdInCloud\":\"0001-01-01T00:00:00.000Z\",\"appId\":{\"alternateId\":\"\",\"data_boundary\":\"MicrosoftRequired.Privacy.Consent\",\"packageId\":\"\"},\"applicationId\":[{\"platform\":\"data_boundary\",\"application\":\"MicrosoftRequired.Privacy.Consent\"},{\"platform\":\"packageId\",\"application\":\"\"},{\"platform\":\"alternateId\",\"application\":\"\"}],\"type\":11,\"status\":0,\"priority\":0,\"expiration\":\"2036-09-08T21:29:33.407Z\",\"payload\":\"Q0IBABIeeABiAG8AeABwAGUAcgBzAG8AbgBhAGwAaQB6AGUAZABwAHUAcgBjAGgAYQBzAG...[truncated, full length 5610 chars]"
+    },
+    {
+      "kind": "http_request",
+      "timestamp": "2026-09-11T21:29:33.923382+00:00",
+      "host": "consent.config.office.com",
+      "method": "GET",
+      "path": "/consentcheckin/v3.0/consents/windowsaccountsyncconsent",
+      "content_length": 0,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": ""
+    },
+    {
+      "kind": "http_response",
+      "timestamp": "2026-09-11T21:29:33.964888+00:00",
+      "host": "consent.config.office.com",
+      "status_code": 200,
+      "content_length": 480,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "{\"consentValues\":[{\"id\":\"720b3f29-3a55-4dcb-ab0a-7a5199aa2389_windowsaccountsyncconsent_1\",\"modelType\":\"windowsaccountsyncconsent\",\"isApplicable\":true,\"status\":\"Read\",\"version\":\"1.7\",\"consentType\":\"optin\",\"maxPromptsReached\":true,\"consentedBy\":\"User\",\"consentedInSurface\":\"AppStart\",\"consentedUTC\":\"2026-05-23T09:35:32.8482693+00:00\",\"values\":[{\"traceId\":null,\"categoryName\":\"DataSharing\",\"valueDataType\":\"boolean\",\"value\":\"True\"}],\"needConsent\":false,\"consentReason\":\"unknown\"}]}"
+    },
+    {
+      "kind": "http_request",
+      "timestamp": "2026-09-11T21:29:53.370136+00:00",
+      "host": "activity.windows.com",
+      "method": "POST",
+      "path": "/v3/feeds/me/$batch",
+      "content_length": 1583,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "\r\n--Batch_1789162193\r\nContent-Type: application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nPOST https://activity.windows.com/v3/feeds/me/activities HTTP/1.1\r\nContent-Length: 1293\r\nContent-Type: application/json\r\nX-AFS-CV: U3a+FfZo2+8kHn5N.0.1.0\r\nX-AFS-Scenario: 10\r\n\r\n[\n   {\n      \"__schemaVersion\" : 1,\n      \"activityId\" : \"36D303C5-B9AA-08E6-A6F0-148C10E972A3\",\n      \"appId\" : {\n         \"alternateId\" : \"WinAlternateId\",\n         \"packageId\" : \"WinPackageId\",\n         \"windows_universal\" : \"WinPackageId\"\n      },\n      \"applicationId\" : [\n         {\n            \"application\" : \"WinPackageId\",\n            \"platform\" : \"windows_universal\"\n         },\n         {\n            \"application\" : \"WinAlternateId\",\n            \"platform\" : \"alternateId\"\n         },\n         {\n            \"application\" : \"WinPackageId\",\n            \"platform\" : \"packageId\"\n         }\n      ],\n      \"clipFormats\" : [\n         {\n            \"content\" : \"JGIgPSBHZXQtQ29udGVudCAiRjpcUHJvamVjdHNcUmVzZWFyY2ggUHJvamVjdCAtIFByaXZhY3kgYW5hbHlzaXNcZGF0YVxyYXdcYmFzZWxpbmVccnVuXzIuanNvbiIgLVJhdyB8IENvbnZlcnRGcm9tLUpzb24NCiRiLnN1bW1hcnkNCiItLS0gdW5pcXVlIGRvbWFpbnMgLS0tIjsgJGIucmVxdWVzdHMuaG9zdCB8IFNvcnQtT2JqZWN0IC1VbmlxdWU=\",\n            \"formatName\" : \"Text\"\n         }\n      ],\n      \"lastModifiedOnClient\" : \"2026-09-11T21:29:53.000Z\",\n      \"payload\" : \"\",\n      \"platformDeviceId\" : \"FZqZNUgCkVCHHVne4SX1tdOxQipZ55Heyo1GxELrGgA=\",\n      \"priority\" : 1,\n      \"read\" : false,\n      \"startTime\" : \"2026-09-11T21:29:53.000Z\",\n      \"type\" : 10,\n      \"userActionState\" : 0\n   }\n]\n\r\n--Batch_1789162193--"
+    },
+    {
+      "kind": "http_response",
+      "timestamp": "2026-09-11T21:29:53.467712+00:00",
+      "host": "activity.windows.com",
+      "status_code": 200,
+      "content_length": 2194,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "--batchresponse_b91e36c5-d79e-4b3c-b195-71a2f13091e3\r\nContent-Type: application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nHTTP/1.1 201 Created\r\nLocation: /V3/feeds/me/activities/36d303c5-b9aa-08e6-a6f0-148c10e972a3\r\nX-AFS-BaseEtag: e1479b40-ae27-11f1-9117-01020305070d\r\nX-AFS-NewETag: ed35ce40-ae27-11f1-9117-01020305070d\r\nX-AFS-Tracking: cV=U3a+FfZo2+8kHn5N.0.1.0.0;server=AM3PEPF00022CC6\r\nclient-request-id: 1c8ce1c8-fdf0-4796-9ff5-af76434c24c1\r\nDate: Fri, 11 Sep 2026 21:29:53 GMT\r\nX-Content-Type-Options: nosniff\r\nContent-Type: application/json\r\n\r\n[{\"clipFormats\":[{\"content\":\"JGIgPSBHZXQtQ29udGVudCAiRjpcUHJvamVjdHNcUmVzZWFyY2ggUHJvamVjdCAtIFByaXZhY3kgYW5hbHlzaXNcZGF0YVxyYXdcYmFzZWxpbmVccnVuXzIuanNvbiIgLVJhdyB8IENvbnZlcnRGcm9tLUpzb24NCiRiLnN1bW1hcnkNCiItLS0gdW5pcXVlIGRvbWFpbnMgLS0tIjsgJGIucmVxdWVzdHMuaG9zdCB8IFNvcnQtT2JqZWN0IC1VbmlxdWU=\",\"formatName\":\"Text\"}],\"isBlockedByClient\":false,\"activityId\":\"36d303c5-b9aa-08e6-a6f0-148c10e972a3\",\"parentActivityId\":\"00000000-0000-0000-0000-000000000000\",\"deviceId\":\"dds:82beed49-1104-504c-83a8-133a03f492ad\",\"platformDeviceId\":\"FZqZNUgCkVCHHVne4SX1tdOxQipZ55Heyo1GxELrGgA=\",\"lastModified\":\"2026-09-11T21:29:53.188Z\",\"lastModifiedOnClient\":\"2026-09-11T21:29:53.000Z\",\"createdInCloud\":\"2026-09-11T21:29:53.188Z\",\"appId\":{\"alternateId\":\"WinAlternateId\",\"packageId\":\"WinPackageId\",\"windows_universal\":\"WinPackageId\"},\"applicationId\":[{\"platform\":\"windows_universal\",\"application\":\"WinPackageId\"},{\"platform\":\"alternateId\",\"application\":\"WinAlternateId\"},{\"platform\":\"packageId\",\"application\":\"WinPackageId\"}],\"type\":10,\"status\":0,\"priority\":1,\"expiration\":\"2026-09-12T09:29:53.188Z\",\"payload\":\"eyIxIjpbREDACTED_JWT\",\"jsonPayload\":null,\"remoteId\":null,\"tags\":null,\"assets\":null,\"isAppActivity\":false}]\r\n--batchresponse_b91e36c5-d79e-4b3c-b195-71a2f13091e3--\r\n"
+    },
+    {
+      "kind": "http_request",
+      "timestamp": "2026-09-11T21:29:53.473954+00:00",
+      "host": "activity.windows.com",
+      "method": "GET",
+      "path": "/v3/feeds/me/views/9b5c3c07-52bb-e2bc-c7c5-05f73d1925b5/activities?pageSize=100",
+      "content_length": 0,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": ""
+    },
+    {
+      "kind": "http_response",
+      "timestamp": "2026-09-11T21:29:53.660894+00:00",
+      "host": "activity.windows.com",
+      "status_code": 200,
+      "content_length": 1664,
+      "tls": true,
+      "content_encoding": "gzip",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "{\"activities\":[{\"clipFormats\":[{\"content\":\"JGIgPSBHZXQtQ29udGVudCAiRjpcUHJvamVjdHNcUmVzZWFyY2ggUHJvamVjdCAtIFByaXZhY3kgYW5hbHlzaXNcZGF0YVxyYXdcYmFzZWxpbmVccnVuXzIuanNvbiIgLVJhdyB8IENvbnZlcnRGcm9tLUpzb24NCiRiLnN1bW1hcnkNCiItLS0gdW5pcXVlIGRvbWFpbnMgLS0tIjsgJGIucmVxdWVzdHMuaG9zdCB8IFNvcnQtT2JqZWN0IC1VbmlxdWU=\",\"formatName\":\"Text\"}],\"isBlockedByClient\":false,\"activityId\":\"36d303c5-b9aa-08e6-a6f0-148c10e972a3\",\"parentActivityId\":\"00000000-0000-0000-0000-000000000000\",\"deviceId\":\"dds:82beed49-1104-504c-83a8-133a03f492ad\",\"platformDeviceId\":\"FZqZNUgCkVCHHVne4SX1tdOxQipZ55Heyo1GxELrGgA=\",\"lastModified\":\"2026-09-11T21:29:53.205Z\",\"lastModifiedOnClient\":\"2026-09-11T21:29:53.000Z\",\"createdInCloud\":\"2026-09-11T21:29:53.199Z\",\"appId\":{\"alternateId\":\"WinAlternateId\",\"packageId\":\"WinPackageId\",\"windows_universal\":\"WinPackageId\"},\"applicationId\":[{\"platform\":\"windows_universal\",\"application\":\"WinPackageId\"},{\"platform\":\"alternateId\",\"application\":\"WinAlternateId\"},{\"platform\":\"packageId\",\"application\":\"WinPackageId\"}],\"type\":10,\"status\":0,\"priority\":1,\"expiration\":\"2026-09-12T09:29:53.188Z\",\"payload\":\"eyIxIjpbREDACTED_JWT\",\"jsonPayload\":null,\"remoteId\":null,\"tags\":null,\"assets\":null,\"isAppActivity\":false},{\"groupIds\":\"default$windows.data.consent.consentitem$consents\",\"activityId\":\"36352020-5868-cfd7-264b-6865f9d51be4\",\"parentActivityId\":\"00000000-0000-0000-0000-000000000000\",\"deviceId\":null,\"platformDeviceId\":null,\"lastModified\":\"2026-09-11T21:29:53.407Z\",\"lastModifiedOnClient\":\"2026-09-11T21:29:53.407Z\",\"createdInCloud\":\"0001-01-01T00:00:00.000Z\",\"appId\":{\"alternateId\":\"\",\"data_boundary\":\"MicrosoftRequired.Privacy.Consent\",\"packageId\":\"\"},\"applicationId\":[{\"platform\":\"data_boundary\",\"application\":\"MicrosoftRequired.Privacy.Consent\"},{\"platform\":\"packageId\",\"application\":\"\"},{\"platform\":\"alternateId\",\"application\":\"\"}],\"type\":11,\"status\":0,\"priority\":0,\"expiration\":\"2036-09-08T21:29:53.407Z\",\"payload\":\"Q0IBABIZdwBpAG4AZABvAHcAcwBhAGMAYwBvAHUAbgB0AHMAeQBuAGMAYwBvAG4AcwBlAG4AdAAiAW0SCgELRABhAHQAYQBTAGgAYQByAGkAbgBnAAIBAAA=\",\"jsonPayload\":null,\"remoteId\":\"default$windows.data.consent.consentitem$consents\",\"tags\":\"windows.data.consent.consentitem\",\"assets\":null,\"appActivityId\":\"default$windows.data.consent.consentitem$consents|windows.data.consent.consentitem$windowsaccountsyncconsent\",\"isAppActivity\":false},{\"groupIds\":\"default$windows.data.consent.consentitem$consents\",\"activityId\":\"d4f3e740-e76a-3191-05ca-d2dc5380fba8\",\"parentActivityId\":\"00000000-0000-0000-0000-000000000000\",\"deviceId\":null,\"platformDeviceId\":null,\"lastModified\":\"2026-09-11T21:29:53.407Z\",\"lastModifiedOnClient\":\"2026-09-11T21:29:53.407Z\",\"createdInCloud\":\"0001-01-01T00:00:00.000Z\",\"appId\":{\"alternateId\":\"\",\"data_boundary\":\"MicrosoftRequired.Privacy.Consent\",\"packageId\":\"\"},\"applicationId\":[{\"platform\":\"data_boundary\",\"application\":\"MicrosoftRequired.Privacy.Consent\"},{\"platform\":\"packageId\",\"application\":\"\"},{\"platform\":\"alternateId\",\"application\":\"\"}],\"type\":11,\"status\":0,\"priority\":0,\"expiration\":\"2036-09-08T21:29:53.407Z\",\"payload\":\"Q0IBABIaeABiAG8AeABvAHAAdABpAG8AbgBhAGwAZABhAHQAYQBjAG8AbABsAGUAYwB0AGkAbwBuACIBQgEA\",\"jsonPayload\":null,\"remoteId\":\"default$windows.data.consent.consentitem$consents\",\"tags\":\"windows.data.consent.consentitem\",\"assets\":null,\"appActivityId\":\"default$windows.data.consent.consentitem$consents|windows.data.consent.consentitem$xboxoptionaldatacollection\",\"isAppActivity\":false},{\"groupIds\":\"default$windows.data.consent.consentitem$consents\",\"activityId\":\"cce66155-977a-17d7-be38-1f4038689eb5\",\"parentActivityId\":\"00000000-0000-0000-0000-000000000000\",\"deviceId\":null,\"platformDeviceId\":null,\"lastModified\":\"2026-09-11T21:29:53.407Z\",\"lastModifiedOnClient\":\"2026-09-11...[truncated, full length 6102 chars]"
+    },
+    {
+      "kind": "http_request",
+      "timestamp": "2026-09-11T21:29:53.791849+00:00",
+      "host": "consent.config.office.com",
+      "method": "GET",
+      "path": "/consentcheckin/v3.0/consents/windowsaccountsyncconsent",
+      "content_length": 0,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": ""
+    },
+    {
+      "kind": "http_response",
+      "timestamp": "2026-09-11T21:29:53.825024+00:00",
+      "host": "consent.config.office.com",
+      "status_code": 200,
+      "content_length": 480,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "{\"consentValues\":[{\"id\":\"720b3f29-3a55-4dcb-ab0a-7a5199aa2389_windowsaccountsyncconsent_1\",\"modelType\":\"windowsaccountsyncconsent\",\"isApplicable\":true,\"status\":\"Read\",\"version\":\"1.7\",\"consentType\":\"optin\",\"maxPromptsReached\":true,\"consentedBy\":\"User\",\"consentedInSurface\":\"AppStart\",\"consentedUTC\":\"2026-05-23T09:35:32.8482693+00:00\",\"values\":[{\"traceId\":null,\"categoryName\":\"DataSharing\",\"valueDataType\":\"boolean\",\"value\":\"True\"}],\"needConsent\":false,\"consentReason\":\"unknown\"}]}"
+    },
+    {
+      "kind": "http_request",
+      "timestamp": "2026-09-11T21:30:06.590950+00:00",
+      "host": "browser-intake-us5-datadoghq.com",
+      "method": "POST",
+      "path": "/api/v2/rum?ddsource=browser&dd-api-key=pub71869dceb5b70dba6123af9ca357d1f9&dd-evp-origin-version=7.6.0&dd-evp-origin=browser&dd-request-id=48059a1e-c8f2-4344-b834-5be5e375ba4a&dd-evp-encoding=deflate&batch_time=1789162206584&_dd.api=fetch",
+      "content_length": 5036,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "xí]Qã8r~ÏÏ ò(uD\u0006ò\u0012Üâp@\u0004¸$/{\u000b¢h×²¤¥¨îö\fú¿\u0007EJ²l«§½s3ÉlÖ»\u000f»fE²Xõ©XbFîØi´AR9Ó6(B¢ªÐæ3Ú¶ö xÖ¶ö\rPeÍÖ¡ML\"¤Úfkvþ¡ÍgÔë\u001eøD/\u000f]­N£\rÁ8)Vwµ<3à\bu¶ÝÚ4»+³Ré+o\u0011ê«'ÑÈ\u0003hm\u0003zìºÚ¨Y\u0019S¡\rª¶i³Æ\u0012\u001c§Zg±L¹´ÐéV±\f­ä¼àQ³,/\"Ô·UÐAiÛ^[\u0014¡g£_¼ðFl[«w¶\u001d\nm\u001dt\u0006[£\rÚ;×õÇGUË¡Ò\u000fÒ<ªö¥µOu«d->ê\rEÈê­¶VÛÕ\u0007\u001aý¢0\u0000ÅeºÍK\u0015kà8-)%®T\\¦\u0019Ï\nÊrÂ2\u0014¡q&¦®þyï¿T0¸ñÇ<)ºP\u0015U\u0012ã\u0012'qÊ4.¨\"q¶Õ,IRNQ4ÙÄ\u0000#ó«ÝhåÌ³qG¿ØNº¡\u0007\u0015\u0003AW(Bz»õ<ZO§;xÖÉòÔ{%U¥³\",/âi\u001eJgqA¢¹mÙØÓ¯\u000eÓ³G¡¤ÚkÑµµQG´AM\u001b÷®µ\u001azõô^Ûg]\téÜiqèÑ&O¼\u001e:Sk±7\u0003uÛí\u0016]´tj6ø¡ \u001fQ\u00028Ú^[auSi«+´ÙÊº×SwtûiÚQ*Ý?¹¶öpV6½\tÆzà;ñT­êEÛö\u0015ùÖÒÖÇYÍ¦mNCû{/*]gmaä~\"Pö¦ªt\u0003\u0003®[yRÏôB\u000e®=;almä³\bÂÆiä³ÙÙ\u0007Ú$\"·n?Z|oJS\u001bw³wÒ:°[ß=Ý«¯æ\b<É³× ðûõhºÚK'öm\u000f2T-ûÞ(\u0014¡rPOÚ\u00126Tï¹¦Yá(Ï\"p!\u0014ã(Ãø\u0017X\u001f«åÁ4;´ù\u0019G`ÖÄNÒ1ÌDQ;A3ïcNm4\u0013\u0019¾hË°È/ùòL\u0010|ÉH0\u0016ôªb,²«Ö\u001bÏT´\"é%aT\\¶Ô;o_¨xNXªyÑÅBÕsÊBÝ¶\u001c÷jÆ¡\rÉ\"ô¤UûÒLM\u0019P?\u0007ãÄ%7~UõP5Ì\u0007ùº0©±õF\u0004\u0016\u000eæ5Ñ\u000e3¡8B\u0007Ý\f¢ít#.ô8£­hr\"Nò`|ÏÚ\u0006+\\p.\u001aÏ\u001c·àÊ^LSµ/rÎÓ¹Å4~E\u001b>7öG\u0013Â\b½´¶w¢\u001a#ë8Ò©Ù4Ýà`»Ê£§ÐÙV§ovíº×\u000b²NÏ%3é{fÜÀT·r;ºqhaÜ\u000bªk¬EY·êiêú\u001dmk®D-íàÖ\u0019{eM\u0007c|n 8~À0:«÷¸Îfð=¦ÛµÚ\u000eMÀGïrLattS\u0004Ñq-ú´µiÐ\u0015I\u001cÌëÂy\u0006ª\u000f\u001e+6]Þ(«·V÷{±ÿ6\fGhBÕF7n!!¬AÜy6J>´ö(v%Ú\u0010\u0016¡½´Õ´Z¨¶Qµº¸\nQÌàh·Û^;q0\rÚ\u0010ØmS\f³ò ¼÷F\u001bDØ©£v\"PLiöC¹^²\u0004kDçí`cÆÕ9¨aó\u0004»¶wÕsìîjé\u0000\u0002¾\u000bÚøøaêJÀ°=K\u0019Ãi\u0006#<ìu\u0013ÿ×_\u0017QXvÝ\"\u0002gEö/9¤5\u0012f\u001e@jå]Ý\u001e\u000f0A¶\u0002Á\u0004úßZyÐ¢7.¥ðïöµMåÑjëZv½\u0016VË~aG¦r{Ñ½¢\r-·\bATî\u001f4B\rUU\u001f½¨\u0006\bãä\u0004\u000e\u0017á\u0006Û\b]í´x±Æw\u0018þû\u0016¡¡·3ê*\u0018ÙR¶Íã$Ùfqª$æéÅW2+SKNPZ»ù\u0014v°ÔR\u0015q¹­h¦<\u000bÅÒë²ä¼À\f3\u001dÖ¤ñë±CíDÀ²ÞYf¯(B²iã¡\u001dú 4Í+ÂÓ<ó²¬â:.2¥bL²mªh^âÔcÀÑÔa\u0014¼»Öz<è'\fmh\u0006f¿×f·@púæÑ®\u0005C\fàb¨t,\rÀy¡sT9å:(^x¦YJ9¦,ÎªS.Y\\T)e¥\\&ÛW\u001e\u0019K»Ó^\u0011\u0000\u0002¤y÷´;v>Kç·ÔÛ\f¥ÕÐ»öàeèÝé½)þ\u0005Ô¯*'w°©à\u0005gÔz?°\u0007\u001céæy\u0003F8x¥£q yÑÌ~\u001aâÛ?}¾¿Ü]½ÜñûËÝýåîþr÷¿ör§Ú\u0006¾wÓ¶µ/ÒV\u000bï£¯Ã\u000f? H¸ä¯\bÉyFY$¦\u0005®âT$UÇdKI^q®\u0019k!YºÃÃVë\n0ö3\u0018Ìï/\fãÿßQ¸À÷(|Â÷(üb\rYUÈ°BvôI\u001f¡ÿSbujk«ö®5ÓöýögB\u001eÈÓ\u001bìÑ&K¯ÒhÞ-ºøè{Ê©-Ã\u0018Rç;}Ñ\u0016tº96_É\u001dÛ¯eKù½nªÕ_\u0012/58£]ªqF¼Òåz©P'{§ßÕèz©Ò9ñR§sêRçä¥V\u000b³Yö¸l^öµl?ëeIX=ªKÒj?k#º$.ûûvY·{fí\u000e¿\u0011hÆ,Õ\u0013\u0012\u0013\tÕ,eó8gkn\u0015Î«5ÐÜÉ~X¸g±7½kwV\u001eîðù\u000eïðù\u000eÿÀðùÄºÇã¯Ç\tÍª<Éó8åy\u0012§á¸`Å\u0019aeNm¡ËÕxüÃ&±¬\u001eCÏïð4É/¿:ß¸}'G»Ì\u0018I9É\u0012Pã´`y&ÙÑ\"%9åe¸HiJ8ÿÖ±á/\u001fPÝÃøw\nãëé(öíãÎ\"àjHÿRì]\rÖ\u001f\"\u001c$¬\u0007O\u000f}¬p&\u0014\u0019}F¯¢µfg`÷\u001dDV´)xÔVèW¨Y2h\u0003{÷\u0007s÷Àæ\u0013sTº7»&\u0000{¼%BÎ\u0011d§\fg©T[\u0019+ubVÄ%Ý\u0016qE\u0015WmY!Us\u0010¡f\u0018þ=ÈV\u0007°uÐnßÌÿø÷¿þçhõC/_BHy¾ëAeg\u001e}¤\u0015u»Ûf÷øL\u001fË\u0011Ãu¶u­jý·u@\u001a6Õ©$nv`MÛÄS+¨e>i´I8ìcÐ­\u0012e[\u001dEhN\u0013èàª\u0019¸ýÜj;5yÖö¥\tÞéóbø8?£c¢0ßò\u0016¡­âµòèôù#\u0014óìò©éÓVýöZVÚöð¿Þ6.ÞÐOðñïPæôvÏ\b|ÿ@Aò\"ù-\u0019éå%î){JàëR\u0002\u001a*Ô5»]Ø\u0014ðEÿ¥ì\rLM(öµ5måE§ÁÍzG\u0011*¶¡fp.1OÇßSuz\u001a¡þÉt\u001dØËlÓÆE\u00117\u001e\u001fÝ9Ap¿ø­Eqö°³ã×\u000f3\u0015ÿ¦×ôû)È=ëò£`Ê«j^Î+UÈXª´ÓB\u00151ÇÆ´Ê5É5-T±Z:\u0014NAªZ\u0012^Ý÷÷¼ËwÏ»°g\u0010\u0017\u0019¥9Í3ç]\bIXÆ8ÆEÎq\u0011Ê³äÛB(`Ý\u0013/÷ÄË\u001f-ñe÷ÄË\u001f&H^%^teQH\u001a§\t/â4OtÌsÎã*]aL*¥õYâä9ùÖgò\b\\;ãöC\u0019R.qie£öñè¾W\u0002\u00060äJ\u0002\u0006W\u00120Ð|ñ¬«\t\u0018BÏs)$ÏøG\u0019\u0018§äâ©âÇÎÀü\u0016Tòå`>\u0000%Is^°\u0000Ès\u001cç \u0004ó\"ÏàÃ]\nð°;(¹;(ùA\tIÙ\u001düqQI)\u0015ÎXÂc\\i\u001a§T²XJLcU9'¬¬¨.ÏX|JþüÓo?\r*ÛÖÁ{~÷\b.ô1$«\u0000÷$¤\u000b\u0017¾\u001b0)²t\u001d\u0010\u00162eWðÄ\u0005<!Üs¯ãôâ¬±\u000fñ\teÙï\føHùÃgLÆé\u0014\u0017b­V­­üÕ\u001a²\u0019d]\u001fg¿re så\nÒÉ?î ðQfôø°`qÂRvbëÀ?/ù2Ók¶9 Í\\\u0016\u001f\u000b£9&)¹â»Ôæx<qü@\\IBÙòÒ\u0004jyèÇ\u0002=cþ±Àâ\u0004¦9^æ+\u0019Î9ç7\bÌp\u0004\u0016]OÍµÀ<çì5É(ÆEq@`ääznÖ\u0004ò[\u0016\u0005leùÇ\u0002\u0013B²ô9ôÅµ¹®\td7i\bÀ5¿a$Ië¹¾\u0016\u0012ÂùÇ¥du{®\t¤d¥ç5ä\u0016³ÉÀ`óôcYÑ±Hã\u0003yFoØzÀà[Ìü½Ì(æ\u0005¹6¯+1»¶¯Uü&iFV\u0004^\rðQrÃ\u001c²$É\u001f¾Ò\u0010øV\u0016oU`zÙ\u0000_Fo0lp\reê¿EC`¼a§\u0000\u001fTlÞ f\u0014_ÏáÕ¢\u0000\u001f»!æ±,!\u0005ûx§\u0000\u001f_éxU O?ö/¿Á}±,ÉI~m_×CNrzKg\u0012Ü !ðñ[ÌQBém\u0002iz%IúqÊsFqvÀHðõ\u001c®\t$É\r]àÐìc\u0005Î\n²b\rk\u0002\u000bÂ?¶Cà£·ì\u0002.ùØÛ\u0014\u0014çcpü@ 0®@5\u0005¾eÈcðþP`Zð\"¹!êyÆ\u0015]\u0013ÈoA°Eß°ÊYFù-[Ï3®lú\u0015\t&7\u0018v1Â\u001bÌ\u0006N\u0004È-\u001a\u0002#»AÃ<'\u0004ß !Çaþ±\u001dr\u0014Å-;\u0005\u0018×<ñ@fó\u000b¼_«Ágæ÷J\u000e§jµÿ\u001dkW:óªká_-Ñ<doß0SLhÎ}Êì÷)^m\u001cÒ¼]\u0015XL\u0017 Bv8\fµôùÞñÚÆ~\u001f\u000e\u0017\u001e0öUäë\fpÒÚ¼ÈÑ9|×^×ZÛ\u001bÿôÿþ¹NÆN÷ÎTÿò·iñW?ÆÎJÿ²ÿ7ô\u000b¤[­míÖËïj]+\u001aØ\u0006Èãû\bþ\u0002Ó¤;Mp~Ì|òým¢AgHw\u0007#\u001f¿ot\u0011ä\u001dBÏ>¯:v<SÆóvpZ¨½lv°Cê\u0016H²ZL@¾ùÒ7|iBoÜ\u001c½Èyí ·ÞÉCw¹PÿÐtV?\u001bH{Z­|êò\u0015¾7 \u0011:ã\u000fIâA1MÒ$Ï¢)±'ì×dü1Æ\u0000-QN9ãÞ\u0012C:pMjA\u001fpñ\u0015R½©tç9·,§gi\u000b_³âýPNZ×òàù^Y´JÀ\u0017wÊ.Á|&_^-\u000b0,øÄ··ó¬îh\bI¿Q¾B½\r'ùø~\u0013¶#¤ÑÇ£\u0001¯/Çê\u0007»¤Õ²JÁ)8øãDp)\u000fV÷ÃA\u0005 M2!\b\u001dT÷0\u0018µVÿçóóÌú~Æ,£è_L¨®\u001dÛá\u0006`ÈÆÁuÁhÃY1\u001dìú«\u001f÷f·¯a=\u0005¨âï\nnýÈN^\u0006ØüU\u001d\u0002®D©¡\u0016[\u001c«k@*!EFùRå\u0006ïëö\u0005xÎEvÚ*m ØO©k/D&¬ Åú\u0003Q6ý\u000b\u001cÅ\u0004~Èÿò3\u0015ì¯S\r3Ä58ÇaøL÷úÍðZ~:\u0003Øx\u0006Æé\u0014¶Á×k\t%b[Ë°è!ÖH#lû\"ÁTp´$;#\u000eºï!Ëià*f¸\u0016Á±g7[ã¯`5\u0010'çÕõ§úkü\u000e&§ªÝ\nJêÇLíxjv¯:¿Wç{<°\u0013µé]/ÂT£®\rUÛ\u0005óÆ\u001ag\u0000Ö)(\u000eqý\u0004Uç\u0003ÎíP×\u0000úÚÖùÕ\u0012VÃ5...[truncated, full length 5036 chars]"
+    },
+    {
+      "kind": "http_response",
+      "timestamp": "2026-09-11T21:30:06.771689+00:00",
+      "host": "browser-intake-us5-datadoghq.com",
+      "status_code": 202,
+      "content_length": 53,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "{\"request_id\":\"48059a1e-c8f2-4344-b834-5be5e375ba4a\"}"
+    },
+    {
+      "kind": "http_request",
+      "timestamp": "2026-09-11T21:30:14.506426+00:00",
+      "host": "mobile.events.data.microsoft.com",
+      "method": "POST",
+      "path": "/OneCollector/1.0/",
+      "content_length": 1526,
+      "tls": true,
+      "content_encoding": "deflate",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": ")\u00033.0I1Office_Experimentation_FlightNumberLineScorecardsqô²ÐÝûß\u0011©\"o:e6e58d16cfb94942b795b4918258153aÑ\u0006\u0004Ë\u0015\n\u0001i\u0006LENOVO\u000482JU\u0000Ë\u0016\n\u0001\u0000Ë\u0017\n\u0001I&c:94ba8559-f348-4d0e-96fe-71acc6e639d9©\u000fWindows.Desktop\u0000Ë\u0018\n\u0001\u000fWindows Desktop©,10.0.26100.1.amd64fre.ge_release.240331-1435\u0000Ë\u0019\n\u0001©\tsdxhelperÉ\u0006\u001016.0.20326.20132É\b\tsdxhelper\u0000Ë\u001f\n\u0001I\tUnmeteredi\u0007Unknown\u0000Ë \n\u0001)\u001cEVT-Windows-C++-No-3.7.101.1I$F3DCFE7C-4B0E-480B-AA0E-72C78BD54DBAq\u0002\u0000Ë!\n\u0001i\u0006+02:00\u0000Ë%\n\u0001\u0000É<\u0006customËF\n\u0001-\t\n6\nApp.Branchi\u0004Fork\u0000\u000fApp.InstallType0\u0000\u0004\u0000\bApp.Namei\tSDXHelper\u0000\fApp.Platformi\u0005Win32\u0000\u000bApp.Versioni\u001016.0.20326.20132\u0000\tClient.Id0\u0010Ë\u0006\u000b\u0001\u0003\u0010q{Á¶¦EÑÌ]¯Jc\u0000\"Consent.AddInContentSourceLocation0\u0000\u0010\u0000\u0019Consent.AddInContentState0\u0000\u0004\u00001Consent.ControllerConnectedServicesSourceLocation0\u0000\u0010\u0000(Consent.ControllerConnectedServicesState0\u0000\u0000\u001eConsent.DiagnosticConsentLevel0\u0000\u0004\u0000,Consent.DiagnosticConsentLevelSourceLocation0\u0000\u0000!Consent.DiagnosticDataConsentTime0\u000e®öç´¸Û\u0011\u0000%Consent.DownloadContentSourceLocation0\u0000\u0010\u0000\u001cConsent.DownloadContentState0\u0000\u0000\u001eConsent.ServiceConnectionState0\u0000\u0002\u0000,Consent.ServiceConnectionStateSourceLocation0\u0000\f\u0000\u0019Consent.UserCategoryValue0\u0000\u0002\u0000*Consent.UserContentDependentSourceLocation0\u0000\u0010\u0000!Consent.UserContentDependentState0\u0000\u0000\u000fData.ECSConfigsi\u0004P-E-1714677-2-5,pe17146772:1031203,pr182727014:1391881,,pr1876277c13:1373982,,P-E-1894629-3-7,P-E-1885398-4-10,P-E-1817756-2-9,P-E-28677-C1-3,pe18946293:1276893,pe18177562:1215859,P-E-53073-C1-3,P-E-38231-C1-4,pr177479718:1208296,P-E-1838627-3-7,pe18386273:1207333,pr171648414:1235057,pr1780328c18:1390855,pr188894514:1263845,P-E-1820910-4-13,P-E-1746494-3-7,pr188477214:1370300,pr186100514:1226144,pr186510114:1390213,pr187661114:1373755,pr1876644c13:1393656,,P-E-1734337-C1-3,pe1734337c1:1068525,P-E-29662-C1-3,,pr1894414c13:1386119\u0000\u0013Data.ExpStaleUserId0\f\u0000\rData.LockType0\u0000h\u0000\u0011Data.Segmentation\u0000\u000fData.TimeToLock0\u0000Þ\u0002\u0000\u000eDevice.OsBuildi\u000526200\u0000\u0010Device.OsVersioni\u000410.0\u0000\u000bEvent.Flags0\u0000Àn\u0000\bEvent.Idi&63f8ccf3-b65d-46a0-82d7-2831f33177f4.1\u0000\nEvent.Namei1Office.Experimentation.FlightNumberLineScorecards\u0000\u0010Event.SampleRate0\b¨\u0000\u0000\u0000\u0000\u0000\u0000ð?\u0000\u0013Event.SchemaVersion0\u0000\u0002\u0000\u000eEvent.Sequence0\u0000\u0002\u0000\fEvent.Sourcei\u0003Mso\u0000\nEvent.Time0\u000eÔ®¼Üûß\u0011\u0000\u000fEventInfo.Level0\u0000\u0004\u0000\fLegacy.AppId0\u0000p\u0000\fLegacy.OsEnv0\u0000\u0014\u0000\u0010Release.Audiencei\nProduction\u0000\u0015Release.AudienceGroupi\nProduction\u0000\u000fRelease.Channeli\u0002CC\u0000\fRelease.Forki\b2607-Jul\u0000\u000fSession.EcsETagi.\"ORF96ClzfiwkZIOCGCAZW6uIQe6Hv9CHNSuiq1SdLGc=\"\u0000\rSession.Flags0\u0000à\u0003\u0000\nSession.Idi$63f8ccf3-b65d-46a0-82d7-2831f33177f4\u0000\u0017Session.MeasuresEnabled0\f\u0000\u001dSession.SamplingClientIdValue0\b¨åò\u001fÒo_Ó?\u0000\u0012Session.SubAppName\u0000\u001aSession.VirtualizationType0\u0000\u0000\u0018User.PrimaryIdentityHashi\u0010859065eb011507fc\u0000\u0019User.PrimaryIdentitySpacei\u0006MSACID\u0000\u0014User.TelemetryRegion\u0000\u0010User.TenantGroupi\bConsumer\u0000\rUser.TenantId0\u0010Ë\u0006\u000b\u0001\u0003\u0010\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+    },
+    {
+      "kind": "http_response",
+      "timestamp": "2026-09-11T21:30:14.638029+00:00",
+      "host": "mobile.events.data.microsoft.com",
+      "status_code": 200,
+      "content_length": 9,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "{\"acc\":1}"
+    },
+    {
+      "kind": "http_request",
+      "timestamp": "2026-09-11T21:30:16.593552+00:00",
+      "host": "fa000000054.mro1cdnstorage.public.onecdn.static.microsoft",
+      "method": "GET",
+      "path": "/mro1cdnstorage/033f92d3-bc6d-439a-858a-a17acf70360a/sdx/fa000000054/2.0.2609.7004/en-us_win32.appx",
+      "content_length": 0,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": ""
+    },
+    {
+      "kind": "http_request",
+      "timestamp": "2026-09-11T21:30:16.594429+00:00",
+      "host": "fa000000124.resources.office.net",
+      "method": "GET",
+      "path": "/033f92d3-bc6d-439a-858a-a17acf70360a/1.2.2609.6004/en-us_win32.appx",
+      "content_length": 0,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": ""
+    },
+    {
+      "kind": "http_response",
+      "timestamp": "2026-09-11T21:30:17.640865+00:00",
+      "host": "fa000000054.mro1cdnstorage.public.onecdn.static.microsoft",
+      "status_code": 200,
+      "content_length": 1245666,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "PK\u0003\u0004-\u0000\b\u0000\b\u0000i']\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000!\u0000\u0000\u0000OfflineFiles/excel-win32-16.01.jsì}kwÛ8èç;¿BæìúcF\u0011ågè0¾ít»'±³3=»\u001eO\u000e-A\u0016;\u0012©!)?ÆÖ¿U\u0007\u0001>dÑéÙ{ÏÛ§c@¡P(\u0014\nB\u0011xý§?ü¯£xö7ã¬Õ\u001eØ­Oá Óxµâd\u0016'A\u0016ÆQ§Õ:LZ\u0004¶\u0012²ä\r;øÓë?üá5 øÏx´æ)kÅ£V6\u000eÓÖ(°\u0016üÞÄ·,Ø°uý\u0000\u0019LÃÞ\u0007\u0014á¥­Ã±)²Ö8ËfÞë×7qg*Á:xúzt7\t£ï¯\u000f>ÂßÓ¡ßÛÙÙrß¨ÊÿÔúßXÉmÈîZ,Ýy5Kâi\b¤¼j\u0005­,\u001eZát6¡\n¨)Hâg\u000e¾>Üè`ùâÉ^×Ýjý'\u001bÏAëÏAöO§u\u0011O[ÇÁ9­~ÆFAÔúÌ¢%­ \u001a¶\u0006q%áõ<´Õ># *Å\u001a³¸uÒßi\u001d~>E6ü\u0012|g­Ãd0\u000e¯ÉÐÆú'À\bHnµ>ò§ak\u001e\r\u0001í§ÓÈ\u00048í¿>cÄ®\u0014ø\u0004w0\u001bÏ¯¡\u0007\u0012¤\u0002ÚJû\rª\ndM¯5æ¼\u0006iÆ×\u001fONÎú'H$¶Õêu6;]âî\u001f^¿nõ¡k¡<|ÓÑ\u001d»öZîN§û7üÓq··º»\u001d·\u000bÿ!@2²pÊ@\fâdYö8N³ºløÏB¶B\u0010(kÍ÷³\u0019Þ<ïøÌQLhÀÖ×ÛfB\u0007qFa\u0016\u0006ð$\u0003ý,H2¿\u0000\u0016ÅwmÛÞ¿\rÖùh\u0004L?¹ÏoßØ=°sú(Öëëø·£\u0012Fóh\u0018Ûö#\u0016d¾JÈÈ~LX6O¢6óÏ¯c¬²\fd/òóÑÓÓã·o3|ÿöÍ»¼ZQ!)Ð¦Ã$\t\u001eÖ×\u00156ædö#ë(p?[hS.4¤4D­\u0010DÎÎ:ã =¿ ¾\u0019K²vd\u0003kØetågðÇ^ØDâbÓØ2\to­\u0004ZF\u0006¹J³d>\u0000éÊ\u00199Yg&ãGóÉÄ÷ýè@´u° cP­×Nt°üÙ`È&öbÑ¶÷×òÆpVf¾Æ[E\u000e å:aú)=ü-¸ÿ\u0018\u0007C6Ôràµµv¥ìô\u001f S+s.àg}\u001dò;}\u0018ÕÑÍûy8!\tÐ\u0012¹åëh`X¾°\u0010\u0007ÚY0eé,@é¬*^\u0007k¤\u001fM4]¡ü\u0012¸\u000f\"©óí\u0016ÆÂ\u0010ºçs\u0004ÓT´%ù\u0010©Hêü\u0012Ü\u0006ýA\u0012Î2¾\u001fÏá \u001eí£÷æ\u0004z÷ç\u0007\u0014ª²h´-®ü°Ê»0\u001aÆwPfÀk\"4xÒÉâñ\u001dð#HAj\u000ed\t\u001e<ËÞ°^¿\u000e NÎ\"\r\u0011éLLz½ÙÙ~­¦*¤£ó[jíÂèÍÂ\t\u0011È[\u0003ã\u0000©\u00172ÏÅH\r9­M5¥\u0006$IXÎã\rË¼¶ø\u0018âJF\u0017zÇ\u0014ò6ç\u0012¨Oad\u00163\u0016NªWÉÄ°6Ê2èh>eIp=aÞZ×A?\noæò}a¯ÞP>\u001c\u001a´\u0017X­©\u001cÖç?fcyÚòÖâ¿gsÙõ¼Ik\t~µÆ\u0012¨CÌæRÒòÖòò+4¡\"f\u001dCð?\u0004¨ñ\u001f@å·Õ¬øô?û\u000b9iö?|o\u001cøwÃ\u0012\u0007Þ\u000eapko³Ù\u0005C;,K\u001e\u001c1õâXrÎÓ\u0018ë¢*\u0015\u0014þJj°<Nß0.V9\u0014[B°(ô\u0001WpÃ5\u00153\ntäiÆ¦ò\u0001ÒeVböA!Yâ\u0002\u0014\u000bPR1âÒ$caj¿´T3NïXw£JSY)Î«-Ô5¨ó«q5¡]_CÂ¦`W²²Q=9\u001eÚÓf\u000fé¯`\u000eN`ÐÞWL\u001eWûX»²üFtLXtºNâw÷·Ñ~²±ÁQÇÕ:ßÙC;±÷»0YÅ\u001d­Øýù\bÈ\u001a:³y:nÇ`\u0002å\r\u0002f6,L?Â\u0004'Q\u001eÞ\u0006á\u0004\u0007nÙÒ!Z«¦d!x?\u00181)ýKG6´Î_Ó\u000f!\fÑ2ñ\u001fÅÂ&Û¯ÉÄ³\n\t\u0003CýtèYôc-\bÅ\u0005K³\u000f\u0013\\XqÛÛeôhèÿy\u0012YBþã×Ã,Îâ\f+ì:Ãa\u0018DÐ\u0003ö3Më=çC¤\u00193ÙÃa\u0014G\u000fÓx¾¾øÂáÃÑ\r¾_ÀÊ$gÞ\u000e/ÿ%¼¾£Ó!,lã»¯Ñw°ÿ#ïó)Â\u0011#T`\u001c³[h^\u001aO\u0018h2ÏÝæE\u000fåÇ8)øôóÃu\u0012\u000e?ÅCæ¹{\u000eÐË\u0001N\u001fâäëéG¦Gñ\u0014V\u0019C¯×u¾°ÌÃ\u0016¤}q*\u000egá9Ì/1ô×Å]ìõ\\\u0007²>Äyz\u0011_\u0004é÷Y\u0010±Óô$Â.\u0007$=§?l0uÍ(¦µÂi\u0004Õ&(ó,a°8\u000e²Àë\u0011s\u001eã:Ê«è\u0012[\u0005µáàzp½\u0012Üf%\\º­J¸­\u0012Üv%Üv\tn§\u0012n§\u0004·[\t·[Û«Û+Á½ñJÂ-ÆA2O³¯å©\t&s\u0014pxþxr\b\u0002.RNîÁÞ\bQRÞ{n9ñÈë-´ár\u000b.L\u0017ãDõ\u0018\fìøæô\u0003ùì»\u0006~%ùÏádÒ¿\u000bAëxc;|ôwúã aÃóh\u0002VOgU<\u0016\u001f\u001cÌÓ)(¯[\u0012ó*(\u0017\u0003|84¥Ê\u001b\f`\u001c½@1ÇáuKúæ<\u0012$á\u0000¶fè,ç=,*¾\u001fÎ³ø|Æ\" ò4:\u001dayv\u001c¦|(>Sã³\b,ª\"Mu®ú\u0016ÒsÏO>wªKZÎi\u0004m\"\u0005E}ö!¼gJu<vIQË¹`Á`\fvó×SPk\u0013d\u0019;\u0000¸\"úç1XÎ¯ñ,\u00045F¾\t¤\u0010×V¥ia\u001b:üÝ.g« 4KXÎ§8Ädaoi¥,}Ô¦`ÐëiÉG\u000e\u0000s@\u0006ÜRï|ÀáèF3\bí\u001cÿñ=¬nId1Ù³®õWËù\\_£\u0018\u0016½âÉr`6çI÷üÁrò\u0015ù_¸\u0013Ð³Òb\u0012Íê4ðïa<\u0007êÙr\u0004Ñ5â\u000f¢u´PöKþ±W®ùÖ\u001f-'ÂV%ä5rbþ\u0013úm´ýaêb6Zr8a¹¢Lø@aé¹[»[{;[»ú\u0014dãN\u0002sk<\u0005Xépû»\u001fþÝDö\tôT2Xõ\fÓ¶ýö-\u001bMb°\u0002{®Å¶;YÌ×mwÇ^(\u0002 àc8j¯%Ü~å´\bÿC\nê\\ÜÒâö\u001c:í¨m¤°¬Ñ,0´gíäu\rÁêDÀ'\u0010\u0018ÿ¾4A÷ÑÍÀ\u0006ÍÞû\u0019Ø íÈgÙ\u0015\u0010\u001f\\¢y\u0010©ÇwÝ\u001bí¡!g­¯'*G=I¯`\f\u0016k\n¦F»m®F¸áÌ\u0014WzE©\u0016XÊFÑû*ÉÀ¼ÐÆ¼¼Bï\"p¬\u001d;äÅ#¬_¾1\u0011g\u000fÆÒ\u0016:ÀJ¹sAù-­yÎ\u0010Å£lÃßÒ\\£¾´Ú·ÀøÞHr8´á#\u0010¿·o÷ì\rXÔÀè=\u0002sî0k\u0003½\u001fþÝ\u0016l²\u0016<Y°¾fVû\u0001ój%2\\×¤\u0015\fpò\u001c{UÜÔÆÊb_súU_\u0013DEærNsÒ\"ì\u001cè4g5À¾ôPWf£C¢¦ ¬-Ñù eëë°ZË.Ù\u0015\"\u001f\\V,yôl!^fÈ&,c-|ÁVÑ+¯îw'\\d\u0000?.#¾ðKü_úçg\u0007ø§Ã\u0005)\u001cÁ\u0002Í)¸\u0010ãÜé\u0017¦¨LÈ5\u0003ÔØ\u0007s||¨Ô4¨w\u0018ÍI\u0007¡\u00109_n\bø\\¡m,)\u0018`Áþ\u001cÔÄ½ÁØðzRÛèûC'¢¯ó5å½>C_ËRVÎpÁTf#á\u0010:!\u001f·rè@Wãÿb\u0018¾ÛÁç\u0014w¼Ú]gÛF±\\Éy±Wî3¥4\u000erDèI¸-Qm;\fþ;\u001auÆaàÆZwyädc\u0010\u001eDEÃ@ú\u0016Ä<3U!ZÇ0\u0013D Vû\u0000\u0015Ú!y¤Ùð kÛ^Ø\u0001c\u0013,ê#°®Á÷kõ\fVþ Â\b]\u0000JoÐð½QÐ©Deï\u0007\u001dÒ.\u0016Nï¯&\u001c¨ñWã­¹N±\u000e\u000f¦\u001e\u00077ÿ\u0012&<\u0007©óCr\r¦ºnãþ°C°Ð\u0005ä@\u0012kó¶H¶\u001d1îÕ»l¡¿ÖU¢Éü¦rIrÄ<@\u0013ãc\u0005X:\u000eGÀ¬¶½X8\u0003m×Î~\u00145#ùÎhUô%Kè¾øm²\u001f?C\u001fè×\u0005ôHö=¬63v\u0010tâ^S|*º1Ü@\u0016gµæëÅÖ×­A\u001bá`Á9OOíJdÅc/<ÌG¬~êà#£Í\u0001L¥ÉÓÓ&ÛrDËý«8dN[£HHn\u0014Ü7\u0001L\u001a\u001dÜ§>¼Á]ji\u000bX\u0017I8Ä5\rÊ uÛÞ,¸[\u0012O>HZHF\u000bk\u001b¶ \u001a\u000b¨³a¬\u0000YP÷aÆ÷ßYÛBk<å^#Ë±\u0002é\u0011²\b2\u0019Àä\u0018£B\u0016Â\u000fëÀà\u0006§£¶5\u0006>Xöe÷ª\u0003F.ôÊÑ8\fÛ\u0001t\u0003\u001f¬Gý~Ñ\u001cQj³8D#?+2d1\u0016écl¦`\u000fCL|Ð\u000f\u0013\u0019Ë0i\fÚÍÇY»\t­\u0011Ê4i³\u0013°T*M\rN;À+°OHh\u001b J3Gv6Nb0Y\u000bîù¶©\u00008`ön[aDû-±ÁÀmeRõµÁì¿£m:uäf.4PXÊòp®\u0004\u000f'÷l0GÐ>X>2¯´¦x\u001c\u0004'ñ¤Àò®¶ÏÁ|\u0001hÜ\nï\u0000Ñ>EþM\u001ehjw\u0014\u001e5°9íP\tà-tÆ×(üÇ\u000eË{=m¶á»Ú\u0002\u0002\u001d\n1Èø{zU\u001fè,\u0006´KÒ3\u0010Ù\u0004ùûú±ý·á½x}3ÕfWÚ§çjFM]ãví\rW¢¸¡SÐ\u000egÉÕõhmD\u001bÖÂòð\u0015f4lIýÅt\u0017nU£.aéåà¿ª\u0005ÖÖ«Îoq\u0018µ­o\u0016!Ïò©>d1ð\r\u0016 ß@>ÈBêTì\u000bC±f=L\u000eÒ±÷\u0016à¢_\u0002\u0003µN5aoÁÔºær¤¥eïÑç«åo\"WÔå\u0015\u0015òÑµ³\u001d°Rtb.\u0015¡\u0013ømæËqþôdYv'MB0pl')@L10ý\u0005¼Û25øB?>¸¥E4EÐ×/§G0uÞ\u0007\t\u0003];½lÙÞå\u0000ëÌ\u0013K\u0010c'Ì\u0013&\u000fI<ÍÝ\u0018ÏñBÈu±\u0018\u0019HÕ\u000e¬HV,½\u001de\u001b·P\u0000Ä£Br@toH-1§\u0018a0\u0006®+VáI\u001d²\u0012Ùj&2X÷f&ÿrÞz\n¬)µxåË¼2\u0018á0à\u001cÚäÕ½MÏöM©Hã^\nÓ³à\f\u0004\u001c\u0017¡Ïb_±Û)WÍF¥ª¨'KUÛµÜ]±{ÑUÙÏ:ÏªN^ë\u0000H\u001a¥ÇðÙ~\u0017{\u001b¦<¹¤¬êpöùn\u001e CWL`-Í»¾®½hî®w~\u0017\u001a\r«¯°h\u0005ßvy £Ê¢%\u001cØR4\u0001ÀÔú>a1\u0012\u0015n\u001dbÞê\u001c\u001cÛ|\u001c\u0012d<´u/3Å1ÕAVZ\u0016ïÜÈXóÉù¸¾Îÿ¶ËK}a]|ùzbù\u001c\u001a,¯`¸\u0010-¢®yÝ¥Rä×4­5ò.FD2ºÎ+M¿*z«\t=Pãªö@{ð~T^úÊ*ÖÚ\fÝ%¦;ß\u0016=§àÊ8S=YÒ...[truncated, full length 1245666 chars]"
+    },
+    {
+      "kind": "http_request",
+      "timestamp": "2026-09-11T21:30:17.725786+00:00",
+      "host": "fa000000128.resources.office.net",
+      "method": "GET",
+      "path": "/033f92d3-bc6d-439a-858a-a17acf70360a/1.0.2609.6004/en-us_win32.appx",
+      "content_length": 0,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": ""
+    },
+    {
+      "kind": "http_response",
+      "timestamp": "2026-09-11T21:30:17.745589+00:00",
+      "host": "fa000000128.resources.office.net",
+      "status_code": 200,
+      "content_length": 14174,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "PK\u0003\u0004-\u0000\b\u0000\b\u0000Å¾&]\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\n\u0000\u0000\u0000urlmap.ini\u0003\u0000PK\u0007\b\u0000\u0000\u0000\u0000\u0002\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000PK\u0003\u0004-\u0000\b\u0000\b\u0000Å¾&]\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0017\u0000\u0000\u0000OfflineFiles/urlmap.ini\u0003\u0000PK\u0007\b\u0000\u0000\u0000\u0000\u0002\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000PK\u0003\u0004-\u0000\b\u0000\u0000\u0000Å¾&]\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u000b\u0000\u0000\u0000icon-32.pngPNG\r\n\u001a\n\u0000\u0000\u0000\rIHDR\u0000\u0000\u0000 \u0000\u0000\u0000 \b\u0006\u0000\u0000\u0001\u0004}Jb\u0000\u0000\u0000\u0019tEXtSoftware\u0000Adobe ImageReadyqÉe<\u0000\u0000\u0003viTXtXML:com.adobe.xmp\u0000\u0000\u0000\u0000\u0000<?xpacket begin=\"ï»¿\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?> <x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Adobe XMP Core 5.6-c138 79.159824, 2016/09/14-01:09:01        \"> <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"> <rdf:Description rdf:about=\"\" xmlns:xmpMM=\"http://ns.adobe.com/xap/1.0/mm/\" xmlns:stRef=\"http://ns.adobe.com/xap/1.0/sType/ResourceRef#\" xmlns:xmp=\"http://ns.adobe.com/xap/1.0/\" xmpMM:OriginalDocumentID=\"xmp.did:777c0077-77dd-3642-867d-f167bd4f018a\" xmpMM:DocumentID=\"xmp.did:BB77EFFCD2DA11E6A410848B10918D24\" xmpMM:InstanceID=\"xmp.iid:BB77EFFBD2DA11E6A410848B10918D24\" xmp:CreatorTool=\"Adobe Photoshop CC 2017 (Windows)\"> <xmpMM:DerivedFrom stRef:instanceID=\"xmp.iid:777c0077-77dd-3642-867d-f167bd4f018a\" stRef:documentID=\"xmp.did:777c0077-77dd-3642-867d-f167bd4f018a\"/> </rdf:Description> </rdf:RDF> </x:xmpmeta> <?xpacket end=\"r\"?>å\u0015ÓÓ\u0000\u0000\u0005rIDATxÚb¬««cøöí\u001b\u0003\u00100\u0003ñ_\u0016\u0010gÿþýÿ\u0019 \t$óë×/\u0006333\u0006\u0011\u0011\u0011\u0006\u00162666S§NU\u0000\u0004\u0010cII\t\u00032`AÖ\u000f\u0004\u000fAf0üýûAGG\u0007Ä\u0007\u000b0333\\¹r\u0005Ä\u0007\b@ö\u0014\u0000\u0010°xèn®q[:L7ña´÷¹@@C\ff2úKá\u000fyÎP\tò¢jüu\r03¨*Ü\u001dü[D¾\"\u0013Õ\\\u0014#\u0002ìÑx©o\u0001á\u000f\u0014\u0007\u00005°ìÛ·\u000fÄÈ\u0005ò'¡Ë|\u0003²\u0015$ÜW \u0005¿lllà¢þü\u0001\u0007\f\u0014ô\u001dÉÅÅÅ\u0010\u0012\u0012Âàíí\röê\u001f?À\u0018\b\"\u0019þÃ¼\u0004ò{JJ\nÃÜ¹s\u0019 !\u001a\u0000R\u0000r$¶P\u0004)`D\u000e\u0007\f_\b\u0000\u0002ÃÞ½{á!\u0007R >\fÄ\u0016X4å\u0000ñT$\u001b !\rÒ\fÄ9 §\u0000ño ¶¡ã)P5ÿab,PÃN\u0003±\tÈH.!\u0004@þæ\u0019`\u0002\"ÜÝÝ\u0019¶lÙÂ ,,Ì`jjÊðýûw0\u001b\u0004víÚÅ\u0010\u001e\u001e\u000eN0sæÌ\u0001;\u001f\b.0!\u001bùöí[ÈÈH\u001f?2\b\t\t1<}úáóçÏ\fLLL` M 5 >\u0014¼\u0004\u0007\"0½d\u0001>\u0015«;Þ\u0002a$MX£i\u001a¨\u0002\t\u0016ÍkaêY@\n@N\u0006\u001eÌ\u0010. n\u0002b\u001f æ\u0003â[@<\u00017 ¹\u0001 \u0000eUÌ!\u0014Eoñ¡ß/p\u0015lhùV¥æ\u0006Gmir)¨±­Ñ\u0010\u0007\u001b\\%Á!ÈÉ±!\\\u0015Z\u000b¡ %z÷õ®¼¯>#\u000f\u001c\u0010|÷>ß}ç\u001c×|ß'{­\u0002ný9ö\u00125<+Ë+\\Â\u0001ãÕõ\u000f;ï4\u001bË²¾ Ýý\u0007£2²á\u0016ã8Ú,Û%\u0003þ\u0003§¢îD\u000e{c1\\Þ\u0000¹\rÓñH\rð\u0001\u0013À0A<\u0014\u001b8`º%9\u00181gi\u0006ûTy\u001a\u0018a\u0018ëº`&\u0014E\u0001¦AUUÐ÷=5QÖé,\u0004Ü%Ë2¢çT$P×5èºÎsÃ¶my9wã\u0013ã&Êu±Xðß\b:p>C\u0010\u0004ày\u001eÎó\u001c\u001cÇ4Må\u0006/ØàÑQU\u0015â8^\u0012\u0016¢û¦®ë mÛ_y\rîF\u0013Í\u0005w\u0016ÞÿY|.ë`w¬\t\u0015hahpËx9A\u0003ì6Â!]é\u001fx\u0016\u001f\u00041ÃOì|-\u0016ì1ú\u001bÂ}7Â\u0003¯ò|p&_\u0002Ô^\u0005-\t\u0004Qx\n\u000f\u0010u0Y\u0010/\u0006\u0011Aü\u0003éµK\u0017\u000fV? 0ºÔÅºt\rêÖ_èP\u000eJ§\u000eB·DÖºUV\u0016Iï{¼eÚ\u0015\u0017ôÁÇ®3ÃÌÙ7ß÷É|`Û6WÜ\u0010¼DX#,K%NËo'Â=áVXþwÐÇ\u0001ÇB4Cºì}\u0012ÈI¬\u000ey¶\u001bÆï\u00079k3\u0001ýôè@èÅ\u000e°¸Wd\tW2×©\u001fåº\u0003}»\to±#¬û%°I¸\u0013Ç3Î¸$TÌ\u0004@÷\u0017¦\u001c\u0006°\tAãH_~À®[a)`32\fÓªæe\\¹T*¥âñ8·£ÐL&-AHºÛí2)ßá_\rÑÔQq+ÊÙÛëõúÕÅ¢Êf³ª^¯«f³©J¥\u0012'\b\u0005Y6\u001a\rnK$\u0012ª\\.+ÇqT­VSétZ\u0015\n\u0005ÃyÂLHtÿÝìÕ^H;N§Ã»Â´áB\u001bD&\u001c\u000eó\u0013íX\bãñ\u000eÅbì¯<>'\u0014þ3ä*îD\"}\u0016L à×qH\u0002\u0006é@\u001f\u001eblµ¸\u000fJ\buÄâpèGFÜÀè\u001a8\u0011Òø§\u0002ø\u0014\u0000vIõQbR\u0010X4\u001aUeñÁ¼£6ä¯\bÅ»Çî\u001dÓ JVÄÃ\r\u001d\u0018\u0012Þn·û\r\u0011/EÂ«É\u0003\u001fR\u0018cäsÂ\u001cáÙ\t5\rãÌª#\\øL4xËµ7°O Ì\u0012ö\b>ã¼Ð$T\tÌ±Mø1ÇñmÅÎçó,:4üX`º)9-TæWÐúÁmû\u0003<Aó\u0006\u000eMx\u0000\u0000\u0000\u0000IEND®B`PK\u0007\b4ùØÒR\t\u0000\u0000\u0000\u0000\u0000\u0000R\t\u0000\u0000\u0000\u0000\u0000\u0000PK\u0003\u0004-\u0000\b\u0000\b\u0000Å¾&]\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\f\u0000\u0000\u0000manifest.xml¤V[o0\u0014~ß¯@¼cCBÒ\bÓÔjZ¥v«µÛ[elx\u0003Ù&m÷ëwÌ-\u0017e\u0015ÝòBlßwÏ\r÷Ïeám¸6BÉ\u001f¡Ð÷¸¤\t¹Zø÷_?\u0006§¾g,\u0014JòÿÂÿ>}|ÉsAùªò@@¿¶¶:ÇØÐ5/A¥ Z\u0019[DUUÆ¤ªr¥»E\"¿%?\u001b1\b<==¡§)Rz'a\u0018áï7×ËF3\u0010Ò9ByÏÊì8«í\u0003lgÄ\bj_*npsÑVFmÆÉXb~VD:¡.^\nZ0\u000778wÊ\u000bÿ+Àn\u0001\u0006¡ñÓw\\±4iÌNN£ 'ù,Ùd\u001edÙ\u0019\t²Ùüd\u0012ÄÓé$\u0018\u000eÿÐ§à\"ÌÃ34\u000fÃ8Áý¶Üjµ\u0001»ú3)yzÓ;ëµ9ñ\\oài\u0012¼sÄKº°×§\\\u0006÷Ë\u0004ïo60aª¼8×>¢Û]¨J\u0014Êú¸3TÊ_¯â®¨÷º8À\u0010c¸5XÀa0 J®:8îR\u0004òí»\u001b©Kéª\u0004êQ*Ë]\u0012¼ü°ùES¤¹Qµ\u0018¡6¹HrûV¡¬\f*Äf´\u001b`\u001aQ&ßhØ±\fËÿ\u0019¬§ÿG®ê¬\u0010ô\u001føBî·ÓhZ VR@z_cï,ZI>)cûªqÿ=WÃ\u000bÿ3ÔI¦ÔÏ®Àð\u0000ë;bÉ­×SMu¸8RÛB2þüØUß\u000fÖ¶,zá#rÉ-×¥0®yMzÇ\tû¦áZÖ%\u0010ÅÝc\u0007¿ã¿j¡¹;\u001cÜ>é¸\u0011òa;®#¿´ î¶\u0017ÌuÛ²®*¥­ï\u001d2<ÜÉb§Ûú}h´B_ú\u0011÷1?rR\u001ex\u001eÃî:\u0010®Aëeö\u001c.5¬\u001dO°¯JÝå£ÒÕÔeÍ?¶6Y}\u0004þ.ÃÔ*W\u001dÕxt§c~¬¬hü:®vPHã%_õqÀð¶\u001bÖ\u0017kbË;tw}¨Ù7f9Ïhä\"³¡P¨më\u0000SPñ\u0007C\tÞË+´½Ä&ßx\u0006-\fÓ¥é´+«\nïÃYóÏÂÑ &Y@Âi\u001cDñ4Å'ù\u0019±þÅÙpn\f\u0019Mk±=óCm×Jß\u001f»e¶w°Ýß)Òan\u001d}%\f¨­$>ªy°=ìx/¡à«\f\u000feé\u001f\u0000\u0000\u0000ÿÿ\u0003\u0000PK\u0007\b©yU¬T\u0003\u0000\u0000\u0000\u0000\u0000\u0000Ú\t\u0000\u0000\u0000\u0000\u0000\u0000PK\u0003\u0004-\u0000\b\u0000\b\u0000Å¾&]\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000AppxManifest.xml¤UßoÚ0\u0010~´ÿÁòs\u0013Ò\u0016%T\fZ©\u0012mQé½\u0018Ç\tV\u0013;³\u0015þû]B\b²IÛ\u0002Êï»ï¾»3áõ:ÏÐO®P2Â=×ÃK¦b!Ó\b6q.12ÊfJò\bo¸Á×£¯_Â9eï4åè.JÓeÆ\u001fhÎMA\u00197\u0010H\u000b\u0004_}õ1\u001c\u0012¬+k!!­xN\u000b¦QuÊ\t-5É©\u0014\t7$ª\u0016H\u000f!cõaz^3\u0004Ì¿Âó'AüG!~\u0007§ÿ\u001f8}\fZ\"\u0014ÞÅ\\Za7¨R\u0011ú\u0010° ¾¸ì9\tMÎ ö\u0007ÎryEåùàÂ\u000f.~ß§\u0018ÍËe&Ìë\bO\u001e¢û]R4QºTê¡Çß9fÑ\u0013s%ã3´Þ¨YAËmåD/\u000b^;3áú\u0003ïÊ\u001dx^Éï\\«k+¸©ßÁ2\u0015¦Èè¦â?¨BdÊ¤klÎµ¤»¾=ÅÇ$\u0011£\u0005×?á×ääù\u0006k¦R5\u0012LI§ï»LCR[jäb8å\u0005 3ë~¦:åvÊ«\\·4\u0017Ù®\u0001oÛ\u000e¹/RTËA3îÜkâ(=Ï\u000f¼jaîéºñ<Cy\f~ß­Nx\\Ê4Ï¨MÎÝqvÄk0Nà{\u0007ð óqmá\u00137ªÔl_êÎfT¦%ln¹tJÓb\u001cFã¢È\u0004«g¥ÅèØÐ\u001dÐhÛænÛæÞ½úÓó/q\u0013\u0004a0òÃWaJÝd<A7¨ÓL\u0018Þí¸`´ø...[truncated, full length 14174 chars]"
+    },
+    {
+      "kind": "http_request",
+      "timestamp": "2026-09-11T21:30:17.805326+00:00",
+      "host": "fa000000125.resources.office.net",
+      "method": "GET",
+      "path": "/033f92d3-bc6d-439a-858a-a17acf70360a/1.0.2609.8002/en-us_win32.appx",
+      "content_length": 0,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": ""
+    },
+    {
+      "kind": "http_response",
+      "timestamp": "2026-09-11T21:30:20.037518+00:00",
+      "host": "fa000000124.resources.office.net",
+      "status_code": 200,
+      "content_length": 3044056,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "PK\u0003\u0004-\u0000\b\u0000\u0000\u0000Ç¹&]\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u000b\u0000\u0000\u0000icon-32.pngPNG\r\n\u001a\n\u0000\u0000\u0000\rIHDR\u0000\u0000\u0000 \u0000\u0000\u0000 \b\u0006\u0000\u0000\u0001\u0004}Jb\u0000\u0000\u0000\u0019tEXtSoftware\u0000Adobe ImageReadyqÉe<\u0000\u0000\u0003viTXtXML:com.adobe.xmp\u0000\u0000\u0000\u0000\u0000<?xpacket begin=\"ï»¿\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?> <x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Adobe XMP Core 5.6-c138 79.159824, 2016/09/14-01:09:01        \"> <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"> <rdf:Description rdf:about=\"\" xmlns:xmpMM=\"http://ns.adobe.com/xap/1.0/mm/\" xmlns:stRef=\"http://ns.adobe.com/xap/1.0/sType/ResourceRef#\" xmlns:xmp=\"http://ns.adobe.com/xap/1.0/\" xmpMM:OriginalDocumentID=\"xmp.did:777c0077-77dd-3642-867d-f167bd4f018a\" xmpMM:DocumentID=\"xmp.did:BB77EFFCD2DA11E6A410848B10918D24\" xmpMM:InstanceID=\"xmp.iid:BB77EFFBD2DA11E6A410848B10918D24\" xmp:CreatorTool=\"Adobe Photoshop CC 2017 (Windows)\"> <xmpMM:DerivedFrom stRef:instanceID=\"xmp.iid:777c0077-77dd-3642-867d-f167bd4f018a\" stRef:documentID=\"xmp.did:777c0077-77dd-3642-867d-f167bd4f018a\"/> </rdf:Description> </rdf:RDF> </x:xmpmeta> <?xpacket end=\"r\"?>å\u0015ÓÓ\u0000\u0000\u0005rIDATxÚb¬««cøöí\u001b\u0003\u00100\u0003ñ_\u0016\u0010gÿþýÿ\u0019 \t$óë×/\u0006333\u0006\u0011\u0011\u0011\u0006\u00162666S§NU\u0000\u0004\u0010cII\t\u00032`AÖ\u000f\u0004\u000fAf0üýûAGG\u0007Ä\u0007\u000b0333\\¹r\u0005Ä\u0007\b@ö\u0014\u0000\u0010°xèn®q[:L7ña´÷¹@@C\ff2úKá\u000fyÎP\tò¢jüu\r03¨*Ü\u001dü[D¾\"\u0013Õ\\\u0014#\u0002ìÑx©o\u0001á\u000f\u0014\u0007\u00005°ìÛ·\u000fÄÈ\u0005ò'¡Ë|\u0003²\u0015$ÜW \u0005¿lllà¢þü\u0001\u0007\f\u0014ô\u001dÉÅÅÅ\u0010\u0012\u0012Âàíí\röê\u001f?À\u0018\b\"\u0019þÃ¼\u0004ò{JJ\nÃÜ¹s\u0019 !\u001a\u0000R\u0000r$¶P\u0004)`D\u000e\u0007\f_\b\u0000\u0002ÃÞ½{á!\u0007R >\fÄ\u0016X4å\u0000ñT$\u001b !\rÒ\fÄ9 §\u0000ño ¶¡ã)P5ÿab,PÃN\u0003±\tÈH.!\u0004@þæ\u0019`\u0002\"ÜÝÝ\u0019¶lÙÂ ,,Ì`jjÊðýûw0\u001b\u0004víÚÅ\u0010\u001e\u001e\u000eN0sæÌ\u0001;\u001f\b.0!\u001bùöí[ÈÈH\u001f?2\b\t\t1<}úáóçÏ\fLLL` M 5 >\u0014¼\u0004\u0007\"0½d\u0001>\u0015«;Þ\u0002a$MX£i\u001a¨\u0002\t\u0016ÍkaêY@\n@N\u0006\u001eÌ\u0010. n\u0002b\u001f æ\u0003â[@<\u00017 ¹\u0001 \u0000eUÌ!\u0014Eoñ¡ß/p\u0015lhùV¥æ\u0006Gmir)¨±­Ñ\u0010\u0007\u001b\\%Á!ÈÉ±!\\\u0015Z\u000b¡ %z÷õ®¼¯>#\u000f\u001c\u0010|÷>ß}ç\u001c×|ß'{­\u0002ný9ö\u00125<+Ë+\\Â\u0001ãÕõ\u000f;ï4\u001bË²¾ Ýý\u0007£2²á\u0016ã8Ú,Û%\u0003þ\u0003§¢îD\u000e{c1\\Þ\u0000¹\rÓñH\rð\u0001\u0013À0A<\u0014\u001b8`º%9\u00181gi\u0006ûTy\u001a\u0018a\u0018ëº`&\u0014E\u0001¦AUUÐ÷=5QÖé,\u0004Ü%Ë2¢çT$P×5èºÎsÃ¶my9wã\u0013ã&Êu±Xðß\b:p>C\u0010\u0004ày\u001eÎó\u001c\u001cÇ4Må\u0006/ØàÑQU\u0015â8^\u0012\u0016¢û¦®ë mÛ_y\rîF\u0013Í\u0005w\u0016ÞÿY|.ë`w¬\t\u0015hahpËx9A\u0003ì6Â!]é\u001fx\u0016\u001f\u00041ÃOì|-\u0016ì1ú\u001bÂ}7Â\u0003¯ò|p&_\u0002Ô^\u0005-\t\u0004Qx\n\u000f\u0010u0Y\u0010/\u0006\u0011Aü\u0003éµK\u0017\u000fV? 0ºÔÅºt\rêÖ_èP\u000eJ§\u000eB·DÖºUV\u0016Iï{¼eÚ\u0015\u0017ôÁÇ®3ÃÌÙ7ß÷É|`Û6WÜ\u0010¼DX#,K%NËo'Â=áVXþwÐÇ\u0001ÇB4Cºì}\u0012ÈI¬\u000ey¶\u001bÆï\u00079k3\u0001ýôè@èÅ\u000e°¸Wd\tW2×©\u001fåº\u0003}»\to±#¬û%°I¸\u0013Ç3Î¸$TÌ\u0004@÷\u0017¦\u001c\u0006°\tAãH_~À®[a)`32\fÓªæe\\¹T*¥âñ8·£ÐL&-AHºÛí2)ßá_\rÑÔQq+ÊÙÛëõúÕÅ¢Êf³ª^¯«f³©J¥\u0012'\b\u0005Y6\u001a\rnK$\u0012ª\\.+ÇqT­VSétZ\u0015\n\u0005ÃyÂLHtÿÝìÕ^H;N§Ã»Â´áB\u001bD&\u001c\u000eó\u0013íX\bãñ\u000eÅbì¯<>'\u0014þ3ä*îD\"}\u0016L à×qH\u0002\u0006é@\u001f\u001eblµ¸\u000fJ\buÄâpèGFÜÀè\u001a8\u0011Òø§\u0002ø\u0014\u0000vIõQbR\u0010X4\u001aUeñÁ¼£6ä¯\bÅ»Çî\u001dÓ JVÄÃ\r\u001d\u0018\u0012Þn·û\r\u0011/EÂ«É\u0003\u001fR\u0018cäsÂ\u001cáÙ\t5\rãÌª#\\øL4xËµ7°O Ì\u0012ö\b>ã¼Ð$T\tÌ±Mø1ÇñmÅÎçó,:4üX`º)9-TæWÐúÁmû\u0003<Aó\u0006\u000eMx\u0000\u0000\u0000\u0000IEND®B`PK\u0007\b4ùØÒR\t\u0000\u0000\u0000\u0000\u0000\u0000R\t\u0000\u0000\u0000\u0000\u0000\u0000PK\u0003\u0004-\u0000\b\u0000\b\u0000Ç¹&]\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0017\u0000\u0000\u0000OfflineFiles/urlmap.ini´\\Ms$9n½Ïá\u000eÁOà°'\\íoc\u0002\u0004@©ZU%mU©§»\u000fþíFö¬½;áP6²¨\b)¤RJ|d\u0002\u000fïÌúåÆ×çW>Ûn§ãýôï|{úó¿Íy<í_\u000fG»þçÿ^ð\u0001s+\u0015¹N\u001cLs7\u0006\u001eÐüGÉ¿ýþéå|³óí?¾¾Úoöåöó÷Wù¿ÿ¢/úÇCùE\u000f\r\u0018QJC%(Üzî³\u0003¦¬\u001f\u001bîQäéÇÛ®zP(âÃbl\u0010¹\u000b%kTz\u001dþEkýÐëõC±ø\u001aÎ³õ\b%r\u0013ÊTf\u0016Ieû\u0007ÿíÅ¿ñéÇCÌuRÉP\u00112JÕ>RDmQmVÕîÿ»\u0011øõõx\u0010¾\u001d^Î?âÏ|ËáõöÓ//s\u001eÄnOv²ë{óúûk\u001e(ãì9Ñè]ÊV¤\nÒ(VFÏ?\u001b¿=\u001e_^^<½ßàï®yÐAZb\u0005Téq\u000e\u001e*25AX\u0014ýc³\fëõaÿvÁÃ\u0011c$%nÑlÌä(è£c^\u000e§]Þ[Ô¿þúµÎf¥c\u001cVÇÎ¹b&O6°!ý`=M\u000f·Ë;3úí\u000fÍoPÒ4\u0007aO5âL9Ï)Àµø~t6í¬/ëóÛí)®|\fãòòëÕÞ\u001bþÝë\u001ffêêÓ\u0013«yg\u0007³/-Å\\,É°\u001fQ×\u0014ÿÉC\u001e\u0007NG5ÁÚtâÓèá×\"qåðQ\\ß#\u0017>]çñÍ/}\u0007Éï/zÊÂÔP¨Q\u0017Dî}¶ATÑc|tìÓõñ_¾ÜþùÀÇÇwFþûK\u001eòÊ\tÓ`­8·\fÉ(6l}BÊ\u001f\u001d×¾\u001d\u0003?úuÁ¾¼Úåpòoùø3Ïð~ï×áz»\u001cÎï%å\u001fýÙCï¾l~Ò\u0010m9'¬\u001eKµK.\\³%Ý\u000fÿ\u0014ì¶\f>v®¾×\u0007p*ïcrv\u0005zÌm?üK¸®[}J©«nëÉ%\u000f\u001cÚ\u0013äÜÓ~ø×p8/oÅc¿òt5õõÞn@LMA'@ã\u000f×÷á\u000bG¾\u0003[6\u0007ncE¯Ã­\r¦\u0001Ó3ÙÙ4¶::ïÃ°0¾®»\u0005#ÍYjÔ®8¤Ì\u0006-v2ð4nTm?ýÇ0\u001e×ÁG\u001e5^2 U¨©PHµÍ9RÞ\u0000ã\u001c.?\\ì8Ý\u000bÖHãp­åU°µL²?\u0001\u001cþÂü­]sMQ §Á.\u0012{R­ìzqc%¥º\u001fþõ·ü\u001dë(\t4§Ä[4Ø\u0014\u0019±ß\u0000Ø8Ô>\\÷ßp°ëº\u0002\u0016¥äjÆ=&Z%y\rcJH®\u001f¬Ê}àÏ|´³\u001cÖÝ\u0006'!`s\u000fÕºû\u001a(¤öî\u0014ZÜÕ$ûçñtqGã:ómÝÍè­º\u0006%U7îÖ£[Mñlûøýµ@®AÖ2DÃÈî\f\fSë`AÄo¹\"MûÉT¾Ç±\f~\u0006M}\fq3ª:]ÂÇäþ\u0001\u0014FÝ\u001fBÊA×i9×m}H6­ÈÐ\u000b\u00101Ô\u0012[F\u000f·\u0013ÞoAm\u001düé'\u0016Sh^¼ê¤éüYÄý\u0000ì}õñ²\u000e~­n<)v/\u0002ØZ¢Ö]\u0001>-\u0019î÷1v^\u0019ûq¸stÁ\u001fh¶YaV°PuOPå\u000e«^Iîû7\u000fYºjQ[¯3\u000b\u0019gF'PÝ_Å¼-,ÂäÔ\u00031k\"N½»T\u0013¨å©4fÛ/¢\u001dþéËÂÚsLâ6yõu\u001amµ\u001b2º?Ø¯BÍ^Ç<dhîeä4AcT\u001bNnËÊdÿýeËÞV\u0006OÎM)\u0019y\u0010m-i®#SnnÇÈ\u001fnz½\u000br8¬#Î³\u0012ÅRiºã*NþÍÕ[£ÉµÇýÌ3\u000fa\u001eÁ×\u0002u\b±õ90jRî¶öcÄ\u0019Ý\u0002ß\u0001þ1¼>­ËÝ¦\u0006fõH\u00039+&\\\\>ìÇï²ya\u0003kbedIqnMrG®\u0003SÚj\u0014êûÝÃëÌ!Ó}Vñ\u001cÖ,®ÿ¡\n\u0010Vn\u0001æþèyôÜ]ÇnO&øêoZ^Ë¶ä±sQÙ\u000f_W4Ð\u0007|Ï\u001eí±\u0011T*si¥\b4Ü¯\u001a\u001e+X®¨Ó&v¦&uKþm«­`ö©ìÿ¶´ù3fÔF\u001eý£GHÈ® ¥kñ$\u001eÉ\u000b×nøOü[óç¼®}HÑâð÷\u0002Ðb\u001a½\u0015òTðÊå\u0002ô\u000eíÿ'\u000bã:åS\u001bw\u0006gQÌ]KcH\"&6¦t...[truncated, full length 3044056 chars]"
+    },
+    {
+      "kind": "http_request",
+      "timestamp": "2026-09-11T21:30:20.193874+00:00",
+      "host": "fa000000129.resources.office.net",
+      "method": "GET",
+      "path": "/033f92d3-bc6d-439a-858a-a17acf70360a/1.0.2609.10011/en-us_win32.appx",
+      "content_length": 0,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": ""
+    },
+    {
+      "kind": "http_response",
+      "timestamp": "2026-09-11T21:30:24.191136+00:00",
+      "host": "fa000000125.resources.office.net",
+      "status_code": 200,
+      "content_length": 5985016,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "PK\u0003\u0004-\u0000\b\u0000\u0000\u0000ùs(]\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u000b\u0000\u0000\u0000icon-32.pngPNG\r\n\u001a\n\u0000\u0000\u0000\rIHDR\u0000\u0000\u0000 \u0000\u0000\u0000 \b\u0006\u0000\u0000\u0001\u0004}Jb\u0000\u0000\u0000\u0019tEXtSoftware\u0000Adobe ImageReadyqÉe<\u0000\u0000\u0003viTXtXML:com.adobe.xmp\u0000\u0000\u0000\u0000\u0000<?xpacket begin=\"ï»¿\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?> <x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Adobe XMP Core 5.6-c138 79.159824, 2016/09/14-01:09:01        \"> <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"> <rdf:Description rdf:about=\"\" xmlns:xmpMM=\"http://ns.adobe.com/xap/1.0/mm/\" xmlns:stRef=\"http://ns.adobe.com/xap/1.0/sType/ResourceRef#\" xmlns:xmp=\"http://ns.adobe.com/xap/1.0/\" xmpMM:OriginalDocumentID=\"xmp.did:777c0077-77dd-3642-867d-f167bd4f018a\" xmpMM:DocumentID=\"xmp.did:BB77EFFCD2DA11E6A410848B10918D24\" xmpMM:InstanceID=\"xmp.iid:BB77EFFBD2DA11E6A410848B10918D24\" xmp:CreatorTool=\"Adobe Photoshop CC 2017 (Windows)\"> <xmpMM:DerivedFrom stRef:instanceID=\"xmp.iid:777c0077-77dd-3642-867d-f167bd4f018a\" stRef:documentID=\"xmp.did:777c0077-77dd-3642-867d-f167bd4f018a\"/> </rdf:Description> </rdf:RDF> </x:xmpmeta> <?xpacket end=\"r\"?>å\u0015ÓÓ\u0000\u0000\u0005rIDATxÚb¬««cøöí\u001b\u0003\u00100\u0003ñ_\u0016\u0010gÿþýÿ\u0019 \t$óë×/\u0006333\u0006\u0011\u0011\u0011\u0006\u00162666S§NU\u0000\u0004\u0010cII\t\u00032`AÖ\u000f\u0004\u000fAf0üýûAGG\u0007Ä\u0007\u000b0333\\¹r\u0005Ä\u0007\b@ö\u0014\u0000\u0010°xèn®q[:L7ña´÷¹@@C\ff2úKá\u000fyÎP\tò¢jüu\r03¨*Ü\u001dü[D¾\"\u0013Õ\\\u0014#\u0002ìÑx©o\u0001á\u000f\u0014\u0007\u00005°ìÛ·\u000fÄÈ\u0005ò'¡Ë|\u0003²\u0015$ÜW \u0005¿lllà¢þü\u0001\u0007\f\u0014ô\u001dÉÅÅÅ\u0010\u0012\u0012Âàíí\röê\u001f?À\u0018\b\"\u0019þÃ¼\u0004ò{JJ\nÃÜ¹s\u0019 !\u001a\u0000R\u0000r$¶P\u0004)`D\u000e\u0007\f_\b\u0000\u0002ÃÞ½{á!\u0007R >\fÄ\u0016X4å\u0000ñT$\u001b !\rÒ\fÄ9 §\u0000ño ¶¡ã)P5ÿab,PÃN\u0003±\tÈH.!\u0004@þæ\u0019`\u0002\"ÜÝÝ\u0019¶lÙÂ ,,Ì`jjÊðýûw0\u001b\u0004víÚÅ\u0010\u001e\u001e\u000eN0sæÌ\u0001;\u001f\b.0!\u001bùöí[ÈÈH\u001f?2\b\t\t1<}úáóçÏ\fLLL` M 5 >\u0014¼\u0004\u0007\"0½d\u0001>\u0015«;Þ\u0002a$MX£i\u001a¨\u0002\t\u0016ÍkaêY@\n@N\u0006\u001eÌ\u0010. n\u0002b\u001f æ\u0003â[@<\u00017 ¹\u0001 \u0000eUÌ!\u0014Eoñ¡ß/p\u0015lhùV¥æ\u0006Gmir)¨±­Ñ\u0010\u0007\u001b\\%Á!ÈÉ±!\\\u0015Z\u000b¡ %z÷õ®¼¯>#\u000f\u001c\u0010|÷>ß}ç\u001c×|ß'{­\u0002ný9ö\u00125<+Ë+\\Â\u0001ãÕõ\u000f;ï4\u001bË²¾ Ýý\u0007£2²á\u0016ã8Ú,Û%\u0003þ\u0003§¢îD\u000e{c1\\Þ\u0000¹\rÓñH\rð\u0001\u0013À0A<\u0014\u001b8`º%9\u00181gi\u0006ûTy\u001a\u0018a\u0018ëº`&\u0014E\u0001¦AUUÐ÷=5QÖé,\u0004Ü%Ë2¢çT$P×5èºÎsÃ¶my9wã\u0013ã&Êu±Xðß\b:p>C\u0010\u0004ày\u001eÎó\u001c\u001cÇ4Må\u0006/ØàÑQU\u0015â8^\u0012\u0016¢û¦®ë mÛ_y\rîF\u0013Í\u0005w\u0016ÞÿY|.ë`w¬\t\u0015hahpËx9A\u0003ì6Â!]é\u001fx\u0016\u001f\u00041ÃOì|-\u0016ì1ú\u001bÂ}7Â\u0003¯ò|p&_\u0002Ô^\u0005-\t\u0004Qx\n\u000f\u0010u0Y\u0010/\u0006\u0011Aü\u0003éµK\u0017\u000fV? 0ºÔÅºt\rêÖ_èP\u000eJ§\u000eB·DÖºUV\u0016Iï{¼eÚ\u0015\u0017ôÁÇ®3ÃÌÙ7ß÷É|`Û6WÜ\u0010¼DX#,K%NËo'Â=áVXþwÐÇ\u0001ÇB4Cºì}\u0012ÈI¬\u000ey¶\u001bÆï\u00079k3\u0001ýôè@èÅ\u000e°¸Wd\tW2×©\u001fåº\u0003}»\to±#¬û%°I¸\u0013Ç3Î¸$TÌ\u0004@÷\u0017¦\u001c\u0006°\tAãH_~À®[a)`32\fÓªæe\\¹T*¥âñ8·£ÐL&-AHºÛí2)ßá_\rÑÔQq+ÊÙÛëõúÕÅ¢Êf³ª^¯«f³©J¥\u0012'\b\u0005Y6\u001a\rnK$\u0012ª\\.+ÇqT­VSétZ\u0015\n\u0005ÃyÂLHtÿÝìÕ^H;N§Ã»Â´áB\u001bD&\u001c\u000eó\u0013íX\bãñ\u000eÅbì¯<>'\u0014þ3ä*îD\"}\u0016L à×qH\u0002\u0006é@\u001f\u001eblµ¸\u000fJ\buÄâpèGFÜÀè\u001a8\u0011Òø§\u0002ø\u0014\u0000vIõQbR\u0010X4\u001aUeñÁ¼£6ä¯\bÅ»Çî\u001dÓ JVÄÃ\r\u001d\u0018\u0012Þn·û\r\u0011/EÂ«É\u0003\u001fR\u0018cäsÂ\u001cáÙ\t5\rãÌª#\\øL4xËµ7°O Ì\u0012ö\b>ã¼Ð$T\tÌ±Mø1ÇñmÅÎçó,:4üX`º)9-TæWÐúÁmû\u0003<Aó\u0006\u000eMx\u0000\u0000\u0000\u0000IEND®B`PK\u0007\b4ùØÒR\t\u0000\u0000\u0000\u0000\u0000\u0000R\t\u0000\u0000\u0000\u0000\u0000\u0000PK\u0003\u0004-\u0000\b\u0000\b\u0000ùs(]\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0017\u0000\u0000\u0000OfflineFiles/urlmap.ini´}I\u001b9î½ÿKLa_\u000es±¹¾9¼[¿ga\u000ewÌ¥I¦ª¥Ãüöù@ªîÊè2+YA¸\u0010o\u0001àÀ_/t~|¥gý·ËÓñÿÿå¿éòðïÿ§÷ãáYÿëpÔóÿûõ\u0003k$K¥Ø$\u0012z-ÍE'4n¥E¹~Ã_þãåù¢ÏÿûåUÿý¢¿ütýÛ¿þÖ\fÏßo¥æ&9x2js¥`C¬¤±9SJãñ\u0005ndüåïmüüý&T«K¾±kÑ\u001a²ÍºV;ãûI±áùh^_\u0007¦Ëáåù§é3ùtx½üå¯ÿq|yñÝÿ}àG=ýç/>ìÇw?½jv\u0017s\u0015cÞØ¤Å÷^pÿn§ò»\u0001¼ÿ¯÷³kv][·9\u0006ÔmWë¬µUqÞÊvÅYþ~ÒóËÛõøB¢§v:È§ÞÄ\u0007^k£\u0014S'\u001da©i¾I3Tº¤æ;GþÑh^z?°^\u001eôIÏ\u001f%Ü\u001f?³\u0014¹©®2²Ùæ\u0016±Þá\u00076Ôü¤;?\u001côôQ3ß~½:3\u0006I\u0015ôqM\u001d#M/TÙJ§\u0010\u001c}§\u0005ÃååôAWÞ~¹\u0014³©­¢\u001c0H­\u001a49\u0017j\u0013¡r_Ï-óùö~ÿÀJ¦qÊdÑw±¨6dQ0ÙìsÈÂéGÛÔçåíüÓí×óåtxþôýÖýÐzfM\u001fü###}¦n½gàëéÎ|Y^GKË·oÿúò~úåå$\u000b¿¼\u001e/{:<\u0010Ù?lÍ&\u0011Ò8¤Øú ì©uÙ+LíiÑËæØ|\u0005¸P@¢;\u001b«\"ï}é&\u00010sí´·÷[ª6GÕ\n$TN¶!\u0007F Ó¸\u0000\u0010&c;/çÍ±qÐ`\f\u0018¯R4\u0000ÐTêEKó¾ëì;ýº\u001céò¼Ð×Í\u0001Zõ¢¶\u0003Á\u001b\u0012O\u0005ï\u0016¸F\u0003Ô³\u0017_ç\u0002löisl½Yoc«ÁyçXR1±¦j¼Ã\bIÌdlÏ3/\u0016\u0010\fiÃ¡¦¨|®]Zvè·sïD±o/¶m\u001f\u0015J­71\u0012¥ô®&ÙêH+D6XÀÊ\\L·w\u001e@®º]\u0018Â[~Iâ)õ\u0003åÉ¤»Æ¶|¦£>óa{\u0007:A7\rW\tÙWuR\u0011^çÒcÓöÃdõAç·ZM¢\u0002u\r!æ«\u0016Ù¨Ð¦¡t>IcüeùÔ6ÇVA£=@(cÖ¡Y\\I\u0003õ\u0018»ûa­ü~lB<N äT%ûDÕ\nØm\u001d?E¢\u0012)N¾SÑEt;\u0012S\u0019ê«Qgo0\f*ò®\r@.Á¹\"ý¦ÇåÓi¢ßÈXªDjt¼\rÙx\u000b1E`{eöb{É7\u0006h\u0018×ÁõÉ\u0010\\HuÆ\u0018`\u001eÂ-\u0015Êv:¶·í@®ÑâðVýª!Ä\u0011[3­Õð$\b\u0003å&@\u0018\u001aÄ4MÞW\br\t°M!v\u001f!4m)ÑÎæÛyyúûvìm0¸%xx\u001aÈZ¶@áR0N\u0017ÂzYtû8\u0005ò&\u000bû×Õ³@\u0013·H½°\tÆG;\u0019ÛÛÌ;\r0à\u0019r³Ä\u0000e!SObÀé Ð8\u0017[§å°\u001dC\u0012 ¢VÛ\r #r6À1çñ>\u0005¿ÅÞ~Xúa{lk\fÙ\u001b#½;c®¹SÒ\u0002®\u0015$ýp\\^\u001f&\u0000ÎÇ×g@¬µZ½\u0013o«IÁRÏ³B¤\u0016Þ. >p\u0018=¸j8°æO³\rI»­oO¸\u0012E Ðe)ê}4!¤\u000etC QçbûÁ°\u001dD*åa\u0001I3ìRÌ\u0018§@;1êLIû$3ÚÇ|\u001eè>ÁÐ\u0004&\t}ç:$»ô\u0010&\tõÓq\u0006àz\u0015\u0003=)\\\u0012«\u0007¶.Æ6ß\b{8\u0019ÛÛ%,³\u0015xûFQð?E \u001dR-&~räAÃqûüø¡v¥r¤êCßÕ\u0012À[½ºjÜ¤\u0010y8Ìô[ÈM\r?Ç\u0000ßÀè\u0001Ä\u0000æÒ¥ûI!òpZ\u001e¶c\b<UCvÕ\u0014|3Ybê.\u0004?apâä\u0014ÄÃÛòð¶½ß\u001a\u0004%ÄGÊ\u001dÊ\r®¾»\n®\u000f±¸¨dÿðe¡§ís\u0000Ü?Uëz½7Q\u0002\u001bÉ'Û&ûí ËA¶c¯3ÜÐy\u0000\fPª\u0016!)\u0001$6Eõ4½órØo;õì«-&÷Õ\u001ffÊ\u0010ìu¸,ísÀ¹U3\u0017\n.\u0001éà·$1$\b Ïp´±ýLËÏ¯c...[truncated, full length 5985016 chars]"
+    },
+    {
+      "kind": "http_request",
+      "timestamp": "2026-09-11T21:30:24.414574+00:00",
+      "host": "fa000000193.resources.office.net",
+      "method": "GET",
+      "path": "/033f92d3-bc6d-439a-858a-a17acf70360a/1.0.2609.3005/en-us_win32.appx",
+      "content_length": 0,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": ""
+    },
+    {
+      "kind": "http_response",
+      "timestamp": "2026-09-11T21:30:27.705399+00:00",
+      "host": "fa000000129.resources.office.net",
+      "status_code": 200,
+      "content_length": 5094975,
+      "tls": true,
+      "content_encoding": "",
+      "covered_positions": [],
+      "exposure_chars": 0,
+      "exposure_pct": 0.0,
+      "tokens_found": [],
+      "body_preview": "PK\u0003\u0004-\u0000\b\u0000\u0000\u0000is*]\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u000b\u0000\u0000\u0000icon-32.pngPNG\r\n\u001a\n\u0000\u0000\u0000\rIHDR\u0000\u0000\u0000 \u0000\u0000\u0000 \b\u0006\u0000\u0000\u0001\u0004}Jb\u0000\u0000\u0000\u0019tEXtSoftware\u0000Adobe ImageReadyqÉe<\u0000\u0000\u0003viTXtXML:com.adobe.xmp\u0000\u0000\u0000\u0000\u0000<?xpacket begin=\"ï»¿\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?> <x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Adobe XMP Core 5.6-c138 79.159824, 2016/09/14-01:09:01        \"> <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"> <rdf:Description rdf:about=\"\" xmlns:xmpMM=\"http://ns.adobe.com/xap/1.0/mm/\" xmlns:stRef=\"http://ns.adobe.com/xap/1.0/sType/ResourceRef#\" xmlns:xmp=\"http://ns.adobe.com/xap/1.0/\" xmpMM:OriginalDocumentID=\"xmp.did:777c0077-77dd-3642-867d-f167bd4f018a\" xmpMM:DocumentID=\"xmp.did:BB77EFFCD2DA11E6A410848B10918D24\" xmpMM:InstanceID=\"xmp.iid:BB77EFFBD2DA11E6A410848B10918D24\" xmp:CreatorTool=\"Adobe Photoshop CC 2017 (Windows)\"> <xmpMM:DerivedFrom stRef:instanceID=\"xmp.iid:777c0077-77dd-3642-867d-f167bd4f018a\" stRef:documentID=\"xmp.did:777c0077-77dd-3642-867d-f167bd4f018a\"/> </rdf:Description> </rdf:RDF> </x:xmpmeta> <?xpacket end=\"r\"?>å\u0015ÓÓ\u0000\u0000\u0005rIDATxÚb¬««cøöí\u001b\u0003\u00100\u0003ñ_\u0016\u0010gÿþýÿ\u0019 \t$óë×/\u0006333\u0006\u0011\u0011\u0011\u0006\u00162666S§NU\u0000\u0004\u0010cII\t\u00032`AÖ\u000f\u0004\u000fAf0üýûAGG\u0007Ä\u0007\u000b0333\\¹r\u0005Ä\u0007\b@ö\u0014\u0000\u0010°xèn®q[:L7ña´÷¹@@C\ff2úKá\u000fyÎP\tò¢jüu\r03¨*Ü\u001dü[D¾\"\u0013Õ\\\u0014#\u0002ìÑx©o\u0001á\u000f\u0014\u0007\u00005°ìÛ·\u000fÄÈ\u0005ò'¡Ë|\u0003²\u0015$ÜW \u0005¿lllà¢þü\u0001\u0007\f\u0014ô\u001dÉÅÅÅ\u0010\u0012\u0012Âàíí\röê\u001f?À\u0018\b\"\u0019þÃ¼\u0004ò{JJ\nÃÜ¹s\u0019 !\u001a\u0000R\u0000r$¶P\u0004)`D\u000e\u0007\f_\b\u0000\u0002ÃÞ½{á!\u0007R >\fÄ\u0016X4å\u0000ñT$\u001b !\rÒ\fÄ9 §\u0000ño ¶¡ã)P5ÿab,PÃN\u0003±\tÈH.!\u0004@þæ\u0019`\u0002\"ÜÝÝ\u0019¶lÙÂ ,,Ì`jjÊðýûw0\u001b\u0004víÚÅ\u0010\u001e\u001e\u000eN0sæÌ\u0001;\u001f\b.0!\u001bùöí[ÈÈH\u001f?2\b\t\t1<}úáóçÏ\fLLL` M 5 >\u0014¼\u0004\u0007\"0½d\u0001>\u0015«;Þ\u0002a$MX£i\u001a¨\u0002\t\u0016ÍkaêY@\n@N\u0006\u001eÌ\u0010. n\u0002b\u001f æ\u0003â[@<\u00017 ¹\u0001 \u0000eUÌ!\u0014Eoñ¡ß/p\u0015lhùV¥æ\u0006Gmir)¨±­Ñ\u0010\u0007\u001b\\%Á!ÈÉ±!\\\u0015Z\u000b¡ %z÷õ®¼¯>#\u000f\u001c\u0010|÷>ß}ç\u001c×|ß'{­\u0002ný9ö\u00125<+Ë+\\Â\u0001ãÕõ\u000f;ï4\u001bË²¾ Ýý\u0007£2²á\u0016ã8Ú,Û%\u0003þ\u0003§¢îD\u000e{c1\\Þ\u0000¹\rÓñH\rð\u0001\u0013À0A<\u0014\u001b8`º%9\u00181gi\u0006ûTy\u001a\u0018a\u0018ëº`&\u0014E\u0001¦AUUÐ÷=5QÖé,\u0004Ü%Ë2¢çT$P×5èºÎsÃ¶my9wã\u0013ã&Êu±Xðß\b:p>C\u0010\u0004ày\u001eÎó\u001c\u001cÇ4Må\u0006/ØàÑQU\u0015â8^\u0012\u0016¢û¦®ë mÛ_y\rîF\u0013Í\u0005w\u0016ÞÿY|.ë`w¬\t\u0015hahpËx9A\u0003ì6Â!]é\u001fx\u0016\u001f\u00041ÃOì|-\u0016ì1ú\u001bÂ}7Â\u0003¯ò|p&_\u0002Ô^\u0005-\t\u0004Qx\n\u000f\u0010u0Y\u0010/\u0006\u0011Aü\u0003éµK\u0017\u000fV? 0ºÔÅºt\rêÖ_èP\u000eJ§\u000eB·DÖºUV\u0016Iï{¼eÚ\u0015\u0017ôÁÇ®3ÃÌÙ7ß÷É|`Û6WÜ\u0010¼DX#,K%NËo'Â=áVXþwÐÇ\u0001ÇB4Cºì}\u0012ÈI¬\u000ey¶\u001bÆï\u00079k3\u0001ýôè@èÅ\u000e°¸Wd\tW2×©\u001fåº\u0003}»\to±#¬û%°I¸\u0013Ç3Î¸$TÌ\u0004@÷\u0017¦\u001c\u0006°\tAãH_~À®[a)`32\fÓªæe\\¹T*¥âñ8·£ÐL&-AHºÛí2)ßá_\rÑÔQq+ÊÙÛëõúÕÅ¢Êf³ª^¯«f³©J¥\u0012'\b\u0005Y6\u001a\rnK$\u0012ª\\.+ÇqT­VSétZ\u0015\n\u0005ÃyÂLHtÿÝìÕ^H;N§Ã»Â´áB\u001bD&\u001c\u000eó\u0013íX\bãñ\u000eÅbì¯<>'\u0014þ3ä*îD\"}\u0016L à×qH\u0002\u0006é@\u001f\u001eblµ¸\u000fJ\buÄâpèGFÜÀè\u001a8\u0011Òø§\u0002ø\u0014\u0000vIõQbR\u0010X4\u001aUeñÁ¼£6ä¯\bÅ»Çî\u001dÓ JVÄÃ\r\u001d\u0018\u0012Þn·û\r\u0011/EÂ«É\u0003\u001fR\u0018cäsÂ\u001cáÙ\t5\rãÌª#\\øL4xËµ7°O Ì\u0012ö\b>ã¼Ð$T\tÌ±Mø1ÇñmÅÎçó,:4üX`º)9-TæWÐúÁmû\u0003<Aó\u0006\u000eMx\u0000\u0000\u0000\u0000IEND®B`PK\u0007\b4ùØÒR\t\u0000\u0000\u0000\u0000\u0000\u0000R\t\u0000\u0000\u0000\u0000\u0000\u0000PK\u0003\u0004-\u0000\b\u0000\b\u0000is*]\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0017\u0000\u0000\u0000OfflineFiles/urlmap.ini´}M$7å½ÿKø\t9ÍØ^w\u000e{ë]s\u0003\t 2Ê¬îª_¿\u0011jµf:³¬\"ÜÝ$¤¬ðâ\u000b:\b¼\u0007\u0012à_OüvÿÂOúow§Çÿ÷ÿâÓÝ¿ÿo³ãþ¯ã¾ýß|`\u0019JI4T×HRÑZ»\tâ¼p2ÒùOøË<?ôéô¾½è¿ôï§_Î?ýë\u001fÃ··\u001fÉÇÒZî\u0014<×ëÁqª¥Zöaþ\u0001ÿ:Èüá?ÇøõÇCøHNUKÖLLR\u0007ùRÄ¢ÕêjâçÿÛ\büòòp\u001c|:>?ýò+å·ñz|9ýå¯ÏfÇ¡§;}Ô·Ï¾×?³pKR\\3)µæ*J¹87ª·\u001e]\u001c±üà»½Ý\u001d\u001f\u001fõõ³a~ÿí%3Um¡köÎ\u0011\u0006»&ÉD9öþ\u0011ôéðþöË\u0005ïòvz=>}yûd&ÿû\u0016í¢ÃJªKñÙ4>Zñx¡T.?;*ÇÓóë'c^~sÑ\u00119÷Z<§\">z?BÕ)8³>b½îÝ\u001do?þó\u0003\u000be£¹Næz¡±\u000b¥\u00178½ö\u001eó?\u001eßeþéÿu\u001c÷úúG~xþòéºûðÓ\u000b1\u0014¼æAÕZ÷)\réæ\u0010³\tÅ\u001f.Âñ!¿ÿ]r\fFÊ=\u0019·¿µ\u000fçzW¹µàýÏNÅüýUßß_><³èk=ÊÏVî'^l½b=9¼ÒÌµ-\u0016â\u0016þi4c¼éëW¼ïqüí3\fþÌ\u0012¼P³\u0006fß\rUHt-¶×2ÌÉÏüÀß¿¿¾\u001d¿<égæÿ¯\u001f\\\u000b\\¬0L\u0011P(¥è`¥Æ\b¯\fWvåRx~£\u001d~_Ô¿°\u001d¾ó//ÏÓ×çãÓé0_\u000fÏ§|àß\u001eO`ýñC\u001fqøGÔÄ)Xm#¦ÈÚ\u0006Þ\\\fD+q?\u001eô´\u000bnØË)Fp¨\fÌoéÝÕ\u001d¯ÅýzxÛg¾4ÃZ$&Ë©Qö5\u0007NbÅ\f\u000by%î·Ãñi\u0017Ü½J\u0007Ïð½Ð0mMJ\u0012P^,s²¶v¾¿\u001f\u001eøôtàï»o\u0019~:2Â`·¢\u0016ñ?Ã¥ì\u0010½ÂG­\u0003ß¿\u001cú]pCsÕå0ë\f_ß\u0010g¤dÐ¼ô§\u001dü'¸ö2\u0016@©l#gõ)f¸Àá\u0003:Z\n)÷¸ß.ÆÒwòÝD°®=%L\u0014\u0017o¹T&\u001f\u001f|Ð·}|Àý¡\u001bMAÜ-â\u001b\u0004\u001f£_iägÜ¯ü Oã¸ÓÄK\fÇ\b\u000eCÞÛ¨±*unÎGª±vâß\u000ec\u001fïÒc­¦páLàÚ`\u0000C}Ë\u0002Ú_zúÓû\u0013Üß\u000e_ú.¸s((\u0001ò\u000b&O­\u0014%-Æ>º¨5­Ã-|û]psfh¨æc/U\u0012ì¤U63\r\t/¡ñÊ\u0010*z\u0010Ý²d1\u0005µÒÐ¦Fjµy×#\u0014;ì]ÒÊùÖÃ×]p»a\u0010\u0001ÌJ\t1Ùµj=\u0014-1ç¸ö²ï\u0012`Ê.1< Q\u000fWÇ!ÃP¢\u000b%­¥¶\u0017¾}cf5\rrQ´ºT\u000b[ï9R*+¥\u0004¼øN\u0001ÈYõP@\u0004\u00158z`\u0002\u0002P{5\u001fª\u001f+Ù\np?þ}\u0017Ü¡ÅA-eßFó½B8SWí\u001eóO×\u0006N=\u001dt\u001f\u0002¡Í\u0016bê>¸&­·Þ#!/|möåâ~ßËN\u0016ïÔJêbBÚL$xù4Oð1ëp\u001b\u001f;ùÁQ!ù±\u000bÝAÁyÉÖAh}íÚ[é¿íx°ã.¸µU*<Á#Þ$D|\u0007LeQ`8kq?\u001c^îö!V½å\ná\u0013¤0$P³\bÉ6)\u0015Åf«5§½\u001eÆ>D6ùh\u001dS«âò¤á¥ê@\u0000r\u0015 ÿWã¶}\f\\¹\u000faß`)Þ\r\r\u0004±ÔÑÍ«ùFc\u001dî/Xû8ÂÔ,(Â%qoi®T(Qµv\u001fCk+Ã\u0017Ù Àyç\u0016#em¤Î\u001a+ù,QO\u0012KÓ¸\u001fvS\u0013|Góë\b÷Qjí#QÉ)Gñ}eÀüò¾WZbx\u0010p\u0007ö×üÌ Ì\u001cçH-pÅCTu¸ïôp|Ø\u0005wE´\u0004?\u0001ØmîÂidg]ú0|¥±ß\u001d÷o_Sl3æ8hø® ³>rÓZFäÉ+\táÝëán\u001f?è9\u0014!¦Rw\u001dÊ!O\u000e\u000eÓ\u0019\u001dþ°¯$àwï»÷}\u0004O¯>1t\u000edZ\u0016ÂL[ôi~·úÏoý}ûÛ\u001f÷ñ'...[truncated, full length 5094975 chars]"
+    }
+  ],
   "ws_messages": [],
-  "tls_failures": [],
+  "tls_failures": [
+    {
+      "timestamp": "2026-09-11T21:30:14.050659+00:00",
+      "side": "client",
+      "sni": "ecs.office.com"
+    }
+  ],
   "read_failures": [],
   "summary": {
-    "total_events": 0,
-    "http_requests": 0,
-    "http_responses": 0,
+    "total_events": 29,
+    "http_requests": 15,
+    "http_responses": 14,
     "websocket_messages": 0,
     "exposed_events": 0,
-    "unique_external_domains": 0,
-    "https_events": 0,
+    "unique_external_domains": 10,
+    "https_events": 29,
     "https_event_pct": 100.0,
-    "tls_handshake_failures": 0,
+    "tls_handshake_failures": 1,
     "body_read_failures": 0,
     "per_event_covered_chars": 0,
     "transcript_covered_chars": 0,

@@ -87,3 +87,6 @@ Methodology **approved**. Broaden the study where feasible (partial additions we
 1. Read the files above.
 2. Give an honest status check; flag anything wrong or risky before I collect data.
 3. Tell me the single next action to take.
+
+## Skill usage (Marawan, 2026-09-14)
+Apply the relevant project skills DIRECTLY and automatically — do not announce, ask permission, or narrate that a skill is being used each time. Just use them and surface the result. Relevant skills: `privacy-analysis-review`, `privacy-professor-review`, `academic-humanizer`, `scientific-paper-writing` (and the core docx/pptx/xlsx/pdf builders). Only mention a skill if the user asks which was used.
