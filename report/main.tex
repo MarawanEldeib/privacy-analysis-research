@@ -31,7 +31,9 @@ LLM-integrated writing assistants run as browser extensions that observe the tex
 a user types or pastes into ordinary web fields. This study measures how much of a
 confidential document such tools transmit to their own servers \emph{by default}, with no action beyond installing the extension and pasting text, and even when the
 user has been told not to share the document with AI tools. Using an HTTPS
-man-in-the-middle proxy on an isolated Linux virtual machine, we captured the outbound
+man-in-the-middle proxy---on an isolated Linux virtual machine for the browser
+extensions, and on a Windows~11 host for the desktop and operating-system-level
+tools---we captured the outbound
 traffic of two widely used grammar-checking extensions, Grammarly and LanguageTool, as
 a synthetic ``confidential memo'' containing twelve unique planted identifiers
 (including a UUID canary) was pasted into a controlled local page. Across five runs
