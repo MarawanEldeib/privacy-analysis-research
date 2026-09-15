@@ -96,6 +96,19 @@ extension transmits it, typically over HTTPS or a WebSocket, to its backend,
 which runs the analysis and returns suggestions. Because the analysis is server-side,
 the text itself must leave the user's machine for the feature to function at all.
 
+\paragraph{Intended use versus incidental exposure.} A user's text can reach one of these
+tools in two ways. In \emph{intended} use, the user knowingly hands over the text: they
+type into the tool's own editor, or they click an action such as ``paraphrase'' or
+``summarise.'' Transmission is then expected and effectively consented to. The privacy
+question lies in the other case, \emph{incidental} exposure: the extension is installed and
+enabled, the default state for millions of users, and it captures text the user entered for
+an unrelated purpose, with no intent to use the tool and no action beyond typing or pasting.
+We first confirmed the intended-use mechanism, that server-side analysis makes the text
+leave the machine at all, then measured the incidental case across a set of tools under
+identical conditions. This is how the project's question, how data exposure differs across
+tools during controlled use, is answered: by comparing tools on the exposure that occurs
+when the user has not chosen to share.
+
 \paragraph{Threat model.} We model an ordinary, non-adversarial situation:
 
 \begin{quote}
