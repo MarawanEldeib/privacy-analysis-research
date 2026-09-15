@@ -28,7 +28,7 @@ Supervisor: Prof.\ Dr.\ Marco Aiello\\
 \begin{abstract}
 \noindent
 LLM-integrated writing assistants run as browser extensions that observe the text
-a user types or pastes into ordinary web fields. This study measures how much of a
+a user types or pastes into ordinary text fields on web pages. This study measures how much of a
 confidential document such tools transmit to their own servers \emph{by default}, with no action beyond installing the extension and pasting text, and even when the
 user has been told not to share the document with AI tools. Using an HTTPS
 man-in-the-middle proxy---on an isolated Linux virtual machine for the browser
@@ -50,7 +50,8 @@ document content, whereas the DeepL desktop client (on paste) and merely \emph{o
 document in Microsoft~Word transmit essentially all of it and every secret, the latter to
 Microsoft's default-enabled Office AI cloud and reproducibly across three runs. Disabling
 one Office privacy setting reduces that leak to 0\%, indicating both causation and a
-mitigation. An Edge/Copilot PDF summary, once invoked, transmits about 77\% of the file and
+mitigation, though it stops only Microsoft's own channel and not a third-party assistant.
+An Edge/Copilot PDF summary, once invoked, transmits about 77\% of the file and
 all twelve secrets even though its visible reply omits the confidential details. Where
 certificate pinning blocks interception the host figures are a lower bound. All test data is
 synthetic and the methodology is reproducible.
@@ -60,27 +61,6 @@ synthetic and the methodology is reproducible.
 data exposure, LLM-integrated productivity tools, writing assistants, HTTPS
 interception, planted canary, PII leakage, browser extensions, privacy measurement
 \end{IEEEkeywords}
-
-\section*{Abbreviations}
-\begin{description}[leftmargin=4.2em,style=sameline,nosep,font=\normalfont\bfseries]
-\item[LLM] Large language model
-\item[PII] Personally identifiable information
-\item[HTTPS] Hypertext Transfer Protocol Secure
-\item[TLS] Transport Layer Security
-\item[SNI] Server Name Indication
-\item[WS] WebSocket
-\item[DOM] Document Object Model
-\item[UUID] Universally unique identifier
-\item[JWT] JSON Web Token
-\item[API] Application programming interface
-\item[CA] Certificate authority
-\item[VM] Virtual machine
-\item[OS] Operating system
-\item[DLP] Data-loss prevention
-\item[GDPR] General Data Protection Regulation
-\item[CI] Confidence interval
-\item[augloop] Microsoft Office ``Augmentation Loop'' (Editor/Copilot cloud service)
-\end{description}
 
 \section{Introduction}
 
@@ -197,7 +177,9 @@ building on the browser-instrumentation measurement paradigm established by Open
 
 The most behaviourally similar precedent is ``read-before-submit'' exfiltration:
 \citet{senol2022leakyforms} showed that email addresses and even passwords are sent to
-third parties \emph{as the user types}, before any form is submitted, and
+third parties \emph{as the user types}, before any form is submitted---a pattern recently
+generalised by \citet{munir2025keystroke}, who found widespread third-party keystroke
+event-listener interception across popular sites---and
 \citet{starov2016contactforms} earlier quantified PII leaking from website contact forms.
 We extend that ``transmitted before the user acts'' framing from trackers to
 writing-assistant extensions. Methodologically, our detection step, searching
@@ -573,7 +555,10 @@ client, given the document by paste, transmitted essentially all of it (99.6\% m
 three runs) and every secret to \texttt{www2.deepl.com}; the whole input was uploaded even
 though the free tier only \emph{translates} the first 1500 characters. Invoking
 \textbf{Edge's Copilot} to summarise the planted PDF transmitted \textbf{76.9\%} of the
-file and all twelve secrets to \texttt{copilot.microsoft.com} (three runs, identical). One
+file and all twelve secrets to \texttt{copilot.microsoft.com} (three runs, identical). The
+coverage is lower than the paste-based tools not because less leaked but because the source
+was a PDF: Edge transmits its \emph{text extraction} of the file, which drops layout and
+formatting characters, yet every one of the twelve secrets, canary included, was sent. One
 run is worth isolating: when asked instead for ``interesting facts,'' Copilot's visible
 reply stated it would answer \emph{without} exposing the confidential details, yet the
 capture shows the full document, canary included, had already been sent to Microsoft. A
@@ -597,6 +582,8 @@ single Office setting ``experiences that analyse your content'' and reopening th
 file reduced augloop's transmission to \textbf{0\%} (0/12), with the socket still opening
 but carrying no document content. This both establishes that the Office~AI feature, not
 the act of opening a file, is the cause, and gives users a concrete one-switch mitigation.
+It removes Microsoft's own channel only, however: a third-party assistant hooking the same
+window is unaffected, as the Protected View result next shows.
 
 \paragraph{Protected View does not stop a third-party assistant.} When the file carried a
 mark-of-the-web and opened in Word's sandboxed \emph{Protected View} (the yellow ``Enable
@@ -611,11 +598,14 @@ distinct question is whether a confidential file leaks simply by being \emph{sto
 removable drive or a synced cloud folder while the writing assistants run in the
 background. It does not. Inserting the USB without opening the file (only the Windows
 indexer and shell probed volume metadata, per Process Monitor) and dropping the file into
-iCloud~Drive to sync each transmitted \textbf{no} document content (0/12), even though
+iCloud~Drive to sync each transmitted \textbf{no} document content to the writing tools'
+servers (0/12), even though
 Grammarly and the other clients were running throughout: the file never entered a surface
-they watch. iCloud's own content channels were reachable but carried no cleartext
-(client-side encrypted or not yet synced). The same held for opening the file in a non-AI
-viewer, Notepad, Adobe~Acrobat, or Chrome's PDF viewer, and for opening the PDF in Edge
+they watch. iCloud's own content channels were reachable but carried no cleartext: the file
+syncs to Apple encrypted in transit and, under Advanced Data Protection,
+end-to-end~\citep{apple2024platformsec}, so it reaches Apple's cloud but is never exposed to
+the LLM writing tools. The same held for opening the file in a viewer with no cloud-AI
+integration (Notepad, Adobe~Acrobat, or Chrome's PDF viewer), and for opening the PDF in Edge
 \emph{without} invoking Copilot (0/12; Edge-passive 1.8\% of incidental boilerplate).
 Consumer antivirus (\textbf{Avast}) is a separate class rather than an LLM tool: it
 uploaded an unknown \emph{executable} to its cloud (CyberCapture) plus reputation and
@@ -766,6 +756,16 @@ Firefox method, and recording why is part of the methodology.
         could in principle carry document data we cannot see. We flag every pinned
         host and treat host figures as lower bounds, but did not add an
         outbound-byte-volume anomaly detector to bound that residual.
+  \item \textbf{Native desktop clients (system-proxy blind spot).} The system proxy
+        captures only traffic that honours it, which browser extensions and Office both
+        do. A native client may use its own sockets: the Grammarly Windows client attached
+        to Notepad sent only telemetry over the proxied channels (no document content, 0/12),
+        yet a per-process audit found it also holding a direct TLS socket to an AWS endpoint
+        that bypassed the proxy, whose payload we could not inspect. We therefore report
+        Notepad-with-a-desktop-assistant as \emph{unmeasured}, not zero; full interception of
+        such clients needs a transparent (WinDivert) proxy or a Frida hook (future work).
+        Proxy-captured results---browser extensions, Office/augloop, and Grammarly-in-Word
+        via \texttt{capi}---are unaffected.
   \item \textbf{Background-actor confound.} Other assistants (notably the Grammarly
         desktop client) ran throughout the host phase, as on a real machine. Per-host
         attribution separated their traffic from the tool under test in every case
