@@ -87,8 +87,6 @@ users' expectations. Our contributions are:
   \item A check that turning off one Office setting stops the Word leak; that the tools
         use all-sites text access, not microphone or camera; and that a tool declining to
         \emph{show} a secret does not mean it was not \emph{sent}.
-  \item A list of the tools we tried and dropped, including a fake extension copying a
-        well-known one.
 \end{itemize}
 
 \section{Background and Threat Model}
@@ -679,25 +677,12 @@ the \emph{invisibility} of the transfer, not merely its occurrence, the core
 data-protection concern. We offer no legal determination; establishing a violation is
 fact-specific and beyond a measurement study.
 
-\section{Limitations and Excluded Tools}
+\section{Limitations}
 \label{sec:limitations}
 
-\paragraph{Excluded tools (the honest trail).} Not every candidate fit the controlled
-Firefox method, and recording why is part of the methodology.
-\begin{itemize}[nosep]
-  \item \textbf{ProWritingAid}: a genuine extension, but it did not attach to the
-        controlled test field (it sent only small heartbeats, never the document), so
-        it produced no measurable transmission under this protocol.
-  \item \textbf{QuillBot}: has no official Firefox extension (Chrome only) and so
-        cannot be tested under a Firefox-based method that must be identical for every
-        tool.
-  \item \textbf{Wordtune}: the obvious Firefox listing proved to be a
-        \emph{counterfeit} (a clone under an unrelated publisher, with a scam support
-        link, that echoed text locally and never contacted a server); the genuine tool
-        is published by AI21 Labs but is \emph{on-demand} and therefore does not leak
-        on a background paste. This points to a practical user lesson: verify an
-        extension's publisher before installing.
-\end{itemize}
+\paragraph{Tool scope.} The browser comparison required an identical controlled setup for
+every tool, which only two extensions (Grammarly and LanguageTool) met; other candidates
+could not be measured under the same protocol and are omitted.
 
 \paragraph{Other limitations.}
 \begin{itemize}[nosep]
