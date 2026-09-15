@@ -77,22 +77,16 @@ what they were designed to do. Our contribution is a reproducible
 users' expectations. Our contributions are:
 
 \begin{itemize}[nosep]
-  \item A measurement method that intercepts HTTPS traffic and searches it for planted
-        secrets, including a unique UUID, to see how much of a document reaches a tool's
-        servers.
-  \item Measurements of two common grammar extensions (Grammarly and LanguageTool)
-        against a no-extension baseline.
-  \item A split into two kinds of tool---those that send text automatically in the
-        background and those that send only on an explicit action---which explains why
-        some AI writing tools leak and others do not.
-  \item The same test applied to the host operating system, showing the leak depends on
-        the surface: the document is sent by a desktop tool (DeepL), an invoked assistant
-        (Edge~Copilot), or simply opening it in Word, but not by a USB, an iCloud sync,
-        or a non-AI viewer.
-  \item A check that turning off one Office setting stops the Word leak; which
-        permissions the tools hold (all-sites text access, not microphone or camera); and
-        that a tool declining to \emph{show} a secret does not mean it was not
-        \emph{sent}.
+  \item A measurement method (intercept HTTPS traffic, search it for planted secrets
+        including a unique UUID), tested on Grammarly and LanguageTool against a
+        no-extension baseline.
+  \item The same test on the host system, showing the leak depends on the surface and on
+        whether a tool sends automatically or only on an explicit action: sent by DeepL,
+        an invoked Edge~Copilot, or opening the file in Word, but not by a USB, an iCloud
+        sync, or a non-AI viewer.
+  \item A check that turning off one Office setting stops the Word leak; that the tools
+        use all-sites text access, not microphone or camera; and that a tool declining to
+        \emph{show} a secret does not mean it was not \emph{sent}.
   \item A list of the tools we tried and dropped, including a fake extension copying a
         well-known one.
 \end{itemize}
@@ -307,7 +301,7 @@ frame; the raw captures were also archived so they can be re-analysed offline. W
 report, in order of importance:
 
 \begin{description}[nosep,style=nextline]
-  \item[Planted-secret count (headline).] How many of the twelve identifiers reached
+  \item[Planted-secret count (primary).] How many of the twelve identifiers reached
         the servers, verified individually. The canary makes this unambiguous.
   \item[Exposure \%.] The fraction of the document's characters whose 20-character
         sliding window appears anywhere in outbound traffic, after subtracting hosts
@@ -411,7 +405,7 @@ LanguageTool's payloads contain no such artefact. We surfaced this by running an
 automatic PII detector (Microsoft Presidio) over the decrypted bodies and manually
 discarding its false positives (document dates, quarter labels, financial figures).
 Because it is a manual-review result over the existing captures, we report it as an
-indication rather than a quantified headline. The consequence widens the attack surface
+indication rather than a quantified result. The consequence widens the attack surface
 beyond privacy: exposed session tokens and API keys are exactly what large-scale
 credential-harvesting operations mine from client-side code and application
 traffic~\citep{anthropic2026threats}. A writing assistant that emits its own session
@@ -518,7 +512,7 @@ document and 0 of 12 secrets, whereas the same vendor's browser extension transm
 91.9\% and all twelve secrets to \texttt{api.languagetool.org}. The desktop client
 exposes no option to use a remote server, so the on-device path is not merely available
 but the only one. This is a single-run probe on one desktop client, reported as an
-indication rather than a headline result; the fuller desktop and system-level study
+indication rather than a main result; the fuller desktop and system-level study
 follows in Section~\ref{sec:action-spectrum}.
 
 \subsection{Desktop and system-level exposure: an action spectrum}
@@ -545,7 +539,7 @@ file and all twelve secrets to \texttt{copilot.microsoft.com} (three runs, ident
 coverage is lower than the paste-based tools not because less leaked but because the source
 was a PDF: Edge transmits its \emph{text extraction} of the file, which drops layout and
 formatting characters, yet every one of the twelve secrets, canary included, was sent. One
-run is worth isolating: when asked instead for ``interesting facts,'' Copilot's visible
+run stands out: when asked instead for ``interesting facts,'' Copilot's visible
 reply stated it would answer \emph{without} exposing the confidential details, yet the
 capture shows the full document, canary included, had already been sent to Microsoft. A
 model declining to \emph{display} a secret is therefore not evidence that the secret was
@@ -644,14 +638,14 @@ launch at start-up, so they are already watching before the user does anything.
 \section{Discussion}
 \label{sec:discussion}
 
-The most telling single data point is not the percentage but the canary. A unique
+The clearest single result is the canary, not the percentage. A unique
 token that existed only inside a document marked ``\textsc{do not forward}'' was found,
 seconds after an ordinary paste, in traffic bound for two companies' servers, placed
 there by software the user installed once and forgot. Nothing here is a bug or an
 exploit: server-side analysis \emph{requires} the text to be uploaded, and both vendors
-document that they process user text. The finding is about the distance between that
-design and what a user, told ``don't share this with AI,'' would reasonably believe had
-happened when they simply pasted a paragraph into an unrelated field.
+document that they process user text. The finding is the gap between that
+design and what a user, told ``don't share this with AI,'' would expect when they paste a
+paragraph into an unrelated field.
 
 This distance matters because the exposure is (a) invisible: there is no prompt, no
 click, no confirmation; (b) complete: essentially the whole document, not a
