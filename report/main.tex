@@ -27,39 +27,27 @@ Supervisor: Prof.\ Dr.\ Marco Aiello\\
 
 \begin{abstract}
 \noindent
-LLM-integrated writing assistants run as browser extensions that observe the text
-a user types or pastes into ordinary text fields on web pages. This study measures how much of a
-confidential document such tools transmit to their own servers \emph{by default}, with no action beyond installing the extension and pasting text, and even when the
-user has been told not to share the document with AI tools. Using an HTTPS
-man-in-the-middle proxy---on an isolated Linux virtual machine for the browser
-extensions, and on a Windows~11 host for the desktop and operating-system-level
-tools---we captured the outbound
-traffic of two widely used grammar-checking extensions, Grammarly and LanguageTool, as
-a synthetic ``confidential memo'' containing twelve unique planted identifiers
-(including a UUID canary) was pasted into a controlled local page. Across five runs
-each, both extensions transmitted essentially the entire document (Grammarly
-\textbf{99.0\%}, LanguageTool \textbf{91.9\%} of characters) and \textbf{all twelve
-secrets, including the canary}, over encrypted channels, while a no-extension baseline
-transmitted nothing (0\%, standard deviation 0.0 across runs). We frame this not as an
-exploit but as a gap between default tool behaviour and reasonable user expectation,
-distinguishing \emph{automatic} transmitters that send on paste from \emph{on-demand}
-ones that send only on explicit action. Extending the measurement to the host operating
-system, we find exposure is \emph{surface-dependent}: passively inserting a USB, syncing
-the file to iCloud, or opening it in a non-AI viewer (Notepad, a PDF reader) transmits no
-document content, whereas the DeepL desktop client (on paste) and merely \emph{opening} the
-document in Microsoft~Word transmit essentially all of it and every secret, the latter to
-Microsoft's default-enabled Office AI cloud and reproducibly across three runs. Disabling
-one Office privacy setting reduces that leak to 0\%, indicating both causation and a
-mitigation, though it stops only Microsoft's own channel and not a third-party assistant.
-An Edge/Copilot PDF summary, once invoked, transmits about 77\% of the file and
-all twelve secrets even though its visible reply omits the confidential details. Where
-certificate pinning blocks interception the host figures are a lower bound. All test data is
-synthetic and the methodology is reproducible.
+Large-language-model (LLM)-integrated writing assistants run as browser extensions that
+silently observe the text a user types or pastes into web-page fields and send it to their
+servers for analysis. We measure how much of a confidential document such tools transmit \emph{by
+default}---even when the user has been told not to share it with any AI tool---using an
+HTTPS man-in-the-middle proxy and a synthetic memo carrying twelve unique planted
+identifiers, including a UUID canary. Across five runs each, Grammarly and LanguageTool
+transmitted essentially the entire document (\textbf{99.0\%} and \textbf{91.9\%} of
+characters) and \textbf{all twelve secrets, including the canary}, while a no-extension
+baseline transmitted nothing. Extending the measurement to the host operating system
+shows the exposure is \emph{surface-dependent}: merely \emph{opening} the file in
+Microsoft~Word---with no paste and no submission---streams \textbf{96.8\%} of it to
+Microsoft's default-enabled Office~AI cloud, and disabling a single Office setting stops
+it entirely. Content leaves the machine whenever it enters an LLM-integrated surface,
+independent of where the file is stored; we frame this as a gap between default behaviour
+and reasonable user expectation rather than an exploit. All test data is synthetic and the
+methodology is reproducible.
 \end{abstract}
 
 \begin{IEEEkeywords}
-data exposure, LLM-integrated productivity tools, writing assistants, HTTPS
-interception, planted canary, PII leakage, browser extensions, privacy measurement
+Browser extensions, data exposure, HTTPS interception, LLM-integrated productivity tools,
+PII leakage, planted canary, privacy measurement, writing assistants
 \end{IEEEkeywords}
 
 \section{Introduction}
