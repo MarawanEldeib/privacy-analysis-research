@@ -204,3 +204,22 @@ Delivery channel for run_2 = **USB stick (D:)**: the operator connected the USB 
 **Attribution (critical):** UNION shows 94.24% / 12-of-12 — but per-host attribution proves this was carried by **capi.grammarly.com** (Grammarly desktop re-scanning the canary), NOT Avast. Avast's own decrypted hosts (`analytics.ff.avast.com`, `ipm.avcdn.net`, `s-install.avcdn.net`) carried telemetry/marketing only — **0 document tokens**. Separately, Avast **CyberCapture uploaded an unknown executable (`mitmdump.exe`) to its cloud** and returned a verdict.
 
 **Finding:** Consumer AV (Avast) uploads unknown **executables** (CyberCapture) + telemetry/file-reputation, but does **not** upload document **content**. Distinct threat class from the AI writing tools. This run also validates the per-host attribution method: a naive total would have mis-credited Grammarly's 94% leak to Avast. (Grammarly-as-background-actor confound noted.)
+
+## F11 — Grammarly DESKTOP client on Notepad: telemetry seen via proxy, no document text on captured channels — 2026-09-14
+
+**Setup:** Same 12-secret canary memo (`input-data/test-document.txt`, 2078 B) opened in classic Notepad with the **Grammarly for Windows desktop client** attached and actively suggesting (badge + a rewrite accepted). Host capture via the system-proxy pipeline. Data: `data/raw/notepad_grammarly/run_1.json`.
+
+**Result (via the system proxy):** UNION **0.0% / 0-of-12**, `any_exposure=false`, **0 TLS-handshake failures, 0 body-read failures** — so everything that traversed the proxy was fully decrypted. Whole-capture fingerprint search for the memo (`Nighthawk`, `Helena Voss`, `HV-2026`, canary, `Classification`) in **plaintext and base64 = 0 hits**.
+- Grammarly hosts contacted (all decrypted, all telemetry): `in.grammarly.com/v1/events` (session analytics — `event_name: windowsExtension/session_end`, `session_duration`, user/container IDs), `gnar.grammarly.com/events` (interaction counters — e.g. `alertsAcceptedClassicCount:1`, `alertAcceptedRewrite31_100CharsCount:1`, i.e. the **length-bucket and count of edits, not their text**), `*.femetrics.grammarly.io`, `f-log-inkwell.grammarly.io`.
+- **`capi.grammarly.com` — the channel that carried 99% of the text in the browser runs and 94.2% in Word Protected View — never appeared.**
+- Byte accounting: ~63 KB total outbound to all Grammarly hosts across 46 POSTs; **largest single body 4.2 KB and it is readable telemetry JSON**, not a text-sized opaque blob. No room for a hidden text upload on the captured channels.
+
+## F12 — …but the desktop client has a proxy-BYPASSING channel: Notepad content is UNMEASURED, not zero — 2026-09-14
+
+**Method:** `scripts/capture/conn_audit.ps1` (new) — with the system proxy ON, samples the live TCP endpoints of `Grammarly.Desktop`/`notepad` for 90 s. Any RemoteAddress of `127.0.0.1:8080` = routed through mitmproxy (captured); any public :443 = bypassing the proxy. Data: `data/raw/notepad_grammarly/run_2.*`.
+
+**Result:** `Grammarly.Desktop` held connections to `127.0.0.1:8080` (proxied telemetry, per F11) **and one DIRECT connection to `174.129.115.145:443`** — an **AWS EC2 (us-east-1)** address, matching the Grammarly-on-AWS infrastructure seen in the 2026-09-10 no-proxy capture. This is a **raw socket that ignores the WinINET system proxy**, so its content was never visible to mitmproxy.
+
+**Conclusion (honest):** The Grammarly **desktop** client on Notepad is only *partially* observable by the system-proxy method — telemetry honors the proxy (no text there), but its primary channel goes **direct to AWS, invisible to us**. Therefore the Notepad+Grammarly document leak is **inconclusive on content** (not a confirmed 0%): the text may have left over the AWS channel. Corrects the initial "checked locally / no text left" read.
+
+**Methodological finding:** System-proxy interception cleanly measures **proxy-honoring surfaces** — browser extensions (Grammarly 99%, LanguageTool 92%) and Office (augloop 96.8%; Grammarly-in-Word to `capi` 94.2%, which *did* traverse the proxy and is a confirmed leak). **Native desktop clients using raw sockets are a blind spot** (evidenced: Grammarly.Desktop → AWS). Fully measuring them needs a transparent proxy (WinDivert redirect) or a Frida hook — recorded as future work. This does not affect any confirmed (proxy-captured) result.

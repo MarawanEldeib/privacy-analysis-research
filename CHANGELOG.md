@@ -14,6 +14,24 @@ rather than software versions.
 - Mechanistic: Frida for certificate-pinned channels; an outbound-byte-volume detector to
   bound opaque uploads; broaden the Presidio sweep to a full unplanted-PII inventory.
 
+## 2026-09-15
+### Added
+- **Notepad + Grammarly DESKTOP re-measure (F11/F12):** opened the canary memo in Notepad
+  with the Grammarly Windows desktop client attached and actively suggesting. Via the system
+  proxy: **0/12, 0%** — only telemetry (`in`/`gnar`/`femetrics.grammarly.io`; `capi` absent),
+  ~63 KB, largest body 4.2 KB of readable analytics. BUT a new per-process connection audit
+  (`scripts/capture/conn_audit.ps1`) found `Grammarly.Desktop` holding a **DIRECT** socket to
+  `174.129.115.145:443` (AWS EC2 us-east-1) that **bypasses the WinINET system proxy**.
+  Conclusion: Notepad+Grammarly content is **inconclusive, not zero** — the desktop client's
+  primary channel is invisible to system-proxy capture. Corrects the initial "checked locally"
+  read; recorded as a scoped methodology limitation (native desktop clients need transparent
+  proxy/Frida; browser + Office surfaces remain fully measured, incl. Grammarly-in-Word→capi 94.2%).
+- `scripts/capture/conn_audit.ps1` — per-process TCP endpoint audit (proxy-bypass detector).
+### Changed
+- Abstract: corrected the environment clause — browser extensions on the Linux VM, desktop and
+  OS-level tools on a Windows 11 host (was implicitly all-Linux).
+- `results/action-spectrum.md`: added the Notepad+Grammarly-desktop row (inconclusive/bypass).
+
 ## 2026-09-14
 ### Added (host & system-level phase — completed, integrated into the report)
 - **Word / Office augloop reproduced (n=3):** merely *opening* the .docx transmits 96.8%
