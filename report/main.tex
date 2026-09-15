@@ -80,10 +80,9 @@ users' expectations. Our contributions are:
   \item A measurement method (intercept HTTPS traffic, search it for planted secrets
         including a unique UUID), tested on Grammarly and LanguageTool against a
         no-extension baseline.
-  \item The same test on the host system, showing the leak depends on the surface and on
-        whether a tool sends automatically or only on an explicit action: sent by DeepL,
-        an invoked Edge~Copilot, or opening the file in Word, but not by a USB, an iCloud
-        sync, or a non-AI viewer.
+  \item The same test on the host system: the leak depends on the surface---sent by
+        DeepL, an invoked Edge~Copilot, or opening the file in Word, but not by a USB, an
+        iCloud sync, or a non-AI viewer.
   \item A check that turning off one Office setting stops the Word leak; that the tools
         use all-sites text access, not microphone or camera; and that a tool declining to
         \emph{show} a secret does not mean it was not \emph{sent}.
