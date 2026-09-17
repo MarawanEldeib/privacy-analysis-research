@@ -240,8 +240,8 @@ We measure three conditions: two writing-assistant extensions and a control.
   \item \textbf{Grammarly}: the archetypal always-on grammar/style checker and the
         motivating example for this project.
   \item \textbf{LanguageTool}: an independent grammar checker from a different
-        vendor (LanguageTooler GmbH) that requires no account, making it the cleanest
-        possible replication partner.
+        vendor (LanguageTooler GmbH, a German company) that requires no account, making it
+        the cleanest possible replication partner.
   \item \textbf{Baseline}: the identical browser and procedure with no
         extension installed, to capture and subtract ordinary browser background
         traffic.
@@ -263,12 +263,38 @@ reference codes, and a UUID canary, \canary{}. None of these strings exists
 anywhere on the public internet, so any occurrence in captured network traffic is
 unambiguously attributable to our input. The canary in particular gives a single,
 unforgeable yes/no signal: if it appears in outbound traffic, the confidential payload
-provably reached the tool's servers.
+provably reached the tool's servers. Table~\ref{tab:secrets} lists the twelve identifiers
+and their categories.
+
+\begin{table}[t]
+\centering
+\caption{The twelve planted identifiers embedded in the synthetic memo.}
+\label{tab:secrets}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Category} & \textbf{Item} \\
+\midrule
+Name (direct identifier)      & Helena Voss \\
+Name (direct identifier)      & Theodora Baumgartner-Klein \\
+Contact detail                & Email address \\
+Contact detail                & Phone number \\
+Official / ID number          & Employee ID \\
+Official / ID number          & Tax registration number \\
+Financial identifier          & Q1 expenditure reference \\
+Financial identifier          & Reserve fund code \\
+Financial identifier          & Budget approval code \\
+Legal / contractual reference & Contract number \\
+Confidential project ID       & Project codename \\
+Canary proof-token            & Unique UUID leak marker \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Interception setup}
 
-All captures were performed on an isolated Kali Linux virtual machine so that the
-man-in-the-middle configuration never touched real browsing. We used
+For the browser phase, all captures were performed on an isolated Kali Linux virtual
+machine so that the man-in-the-middle configuration never touched real browsing. We used
 mitmproxy~\citep{mitmproxy} (version 12.2.3) as an intercepting HTTPS/WebSocket proxy
 on \texttt{127.0.0.1:8080}. Each tool ran in its own clean Firefox profile with the
 proxy configured and the mitmproxy certificate authority trusted only within
@@ -285,15 +311,26 @@ would on a real site, but with zero background noise to filter out.
 
 \subsection{Capture procedure}
 
-For each run, the document was loaded into the clipboard and pasted with a
-real, manual \texttt{Ctrl+V} into the focused field, after which the run
-recorded for sixty seconds. The manual paste is a deliberate methodological point: a
-scripted/synthetic paste fills the field visually but does not fire the DOM
+For each run, the document was loaded into the clipboard and pasted manually into the
+focused field, after which the run recorded for sixty seconds. This detail matters: a
+scripted or synthetic paste fills the field visually but does not fire the DOM
 \texttt{input} event the extensions listen for, so the tool never ingests the text and
-nothing is transmitted, a misleading ``clean'' zero. A genuine keystroke is what
-causes the tool to receive the document. Each tool was captured for \textbf{five runs}
-and the baseline for \textbf{three}, following an identical, locked protocol so that
-between-run variance measures reproducibility rather than procedural drift.
+nothing is transmitted, a misleading ``clean'' zero. A real, manual paste does fire that
+event, so in our runs the tools genuinely received the document. Each tool was captured for
+\textbf{five runs} and the baseline for \textbf{three}, following an identical, locked
+protocol so that between-run variance measures reproducibility rather than procedural
+drift.
+
+\subsection{Host and system-level phase}
+Several desktop tools (Microsoft~Office, the DeepL desktop client, Edge/Copilot) are not
+available on Linux, so the host phase was run on a Windows~11 laptop using the same
+interception principle. mitmproxy ran the same scoring add-on, and both the WinINET and
+WinHTTP system proxies were pointed at it: native applications such as Office and the
+Grammarly desktop client use WinHTTP and would otherwise bypass a browser-only proxy. Each
+condition used the same synthetic memo and canary. Because a real machine runs several
+assistants at once, every captured flow was attributed to its destination host, so a leak
+is credited to the specific tool responsible rather than to whatever else happened to be
+running.
 
 \subsection{Metrics}
 \label{sec:metrics}
@@ -322,18 +359,28 @@ report, in order of importance:
         transmission is still detected, and compressed bodies (gzip, brotli, zstd) are
         decoded before matching.
   \item[Reproducibility.] The standard deviation of exposure \% across a tool's runs,
-        labelled High ($<3$~pp), Medium ($3$--$10$~pp), or Low ($>10$~pp).
+        in percentage points (pp), labelled High ($<3$~pp), Medium ($3$--$10$~pp), or
+        Low ($>10$~pp).
   \item[Traffic visibility.] Reported as two separate numbers: the share of
         intercepted events that used HTTPS, and the count of TLS handshakes that could
-        not be intercepted (e.g.\ certificate pinning), never combined into a single
+        not be intercepted (for example due to certificate pinning\footnote{Certificate
+        pinning is when an application accepts only its own expected TLS certificate, so an
+        intercepting proxy cannot decrypt that connection; the TLS handshake is the initial
+        exchange that sets up the encrypted channel.}), never combined into a single
         figure, because a non-zero failure count means the exposure result is a lower
-        bound.
+        bound (traffic we cannot decrypt could only add to what was sent, never subtract).
 \end{description}
 
 \noindent
-We additionally report a 95\% confidence interval on the mean exposure using a
-$t$-distribution ($n{-}1$ degrees of freedom), and use non-overlapping intervals as
-informal evidence of a real difference between conditions.
+For conditions with run-to-run variation we also report a 95\% confidence interval on the
+mean exposure (a range the true average is likely to fall in); where two conditions'
+intervals do not overlap, we treat that as informal evidence of a real difference. For the
+browser tools every run was identical (zero variance), so the interval collapses to the
+reported value.
+
+\paragraph{Code and data availability.} The capture and analysis code, the synthetic memo,
+and the planted-secret list are available at
+\url{https://github.com/MarawanEldeib/privacy-analysis-research}.
 
 \section{Results}
 \label{sec:results}
@@ -724,36 +771,30 @@ own machine; it does not attack the vendors' systems or other users.
 
 \section{Conclusion and Future Work}
 
-Two independent, widely used grammar-checking browser extensions each silently
-transmitted essentially an entire confidential document, and every one of twelve
-planted secrets, including a unique canary, to their servers, automatically, on a
-single paste, with exact reproducibility, while a no-extension baseline transmitted
-nothing. The tools are behaving as designed; the result documents how far that design
-sits from the expectations of a user told not to share a document with AI tools, and it
-distinguishes the automatic transmitters that leak passively from on-demand tools that
-do not. Moving beyond the browser to desktop and system-level exposure
-(Section~\ref{sec:action-spectrum}) showed the leakage is not unique to browser
-extensions: the DeepL desktop client, an invoked Edge/Copilot summary, and simply
-opening a document in Microsoft~Word each transmit essentially the whole document
-by default, whereas passive receipt (USB, iCloud sync) and non-AI viewers do not.
-Disabling a single Office setting removes the Word leak, confirming the cause and giving a
-concrete mitigation, and a permission audit shows the channel is all-sites text access,
-not device sensors. The unifying lesson is that exposure is surface-dependent: content
-leaves the machine whenever it enters a surface an LLM-integrated service monitors, rather
-than being tied to any single application.
+This project measured how much of a confidential document leaves the machine when common
+LLM-integrated productivity tools are used at their defaults. The answer is consistent:
+across browser extensions, a desktop client, an invoked assistant, and an ordinary editor,
+the tools transmit essentially the whole document, and every planted secret, to their own
+servers, without any step a user would recognise as ``sharing.'' The tools behave as
+designed; the finding is how far that design sits from the expectation of a user who was
+told not to share the file. The unifying result is that exposure is surface-dependent:
+content leaves the machine whenever it enters a surface an LLM-integrated service watches,
+not because of where the file is stored or which single application is blamed. This moves
+the user's real point of control to before the text enters such a surface rather than
+after, and it shows the exposure is invisible, effectively complete, and repeatable rather
+than occasional. That one Office setting removes the largest passive leak shows the
+behaviour is a configuration choice, not a technical necessity.
 
-\paragraph{Future work.} The main remaining gaps are breadth rather than new mechanisms:
-real-field confirmation runs (Gmail, Google~Docs); the two further documents from the
-intended three-document set (a longer report and a code snippet); a primary-browser
-(Chrome/Edge) and macOS environment; a dedicated OneDrive drop-and-sync run; and
-additional captures to raise the remaining single-run host probes to the reproducibility
-already achieved for the Word, DeepL, and Edge/Copilot conditions. Two mechanistic
-extensions stay open: dynamic instrumentation (e.g.\ Frida) to see inside
-certificate-pinned channels that are currently only a lower bound, and an outbound-volume
-detector to bound opaque uploads. The automated PII sweep with Microsoft
-Presidio~\citep{microsoft2018presidio}, already used here to surface an unplanted session
-credential, can be broadened into a full per-category inventory of unplanted personal
-data across the captures.
+\paragraph{Future work.} The clearest next direction, raised in supervision, is to
+classify the leaked data by type: an automatic labelling of which categories of personal
+information (names, contact details, financial data, identifiers) each tool transmits. This
+would extend the automated PII sweep with Microsoft Presidio~\citep{microsoft2018presidio},
+already used here to surface an unplanted session credential, into a full per-category
+inventory across the captures. Two mechanistic extensions also remain: dynamic
+instrumentation (for example Frida) to read certificate-pinned channels that are currently
+only a lower bound, and an outbound-volume detector to bound opaque uploads. Further
+captures can raise the remaining single-run host probes to the reproducibility already
+achieved for the Word, DeepL, and Edge/Copilot conditions.
 
 \bibliographystyle{plainnat}
 \bibliography{refs}
