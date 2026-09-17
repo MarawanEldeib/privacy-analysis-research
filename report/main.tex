@@ -400,6 +400,11 @@ report, in order of importance:
 \end{description}
 
 \noindent
+Beyond the twelve planted secrets, we also run an automatic PII detector (Microsoft
+Presidio, an open-source tool that flags names, e-mail addresses, ID numbers, and similar)
+over the decrypted bodies, to catch sensitive data we did not plant.
+
+\noindent
 For conditions with run-to-run variation we also report a 95\% confidence interval on the
 mean exposure (a range the true average is likely to fall in); where two conditions'
 intervals do not overlap, we treat that as informal evidence of a real difference. For the
@@ -461,9 +466,8 @@ to any single class of data. Both tools transmitted every information type prese
 the document (personal names, contact details, official identification numbers,
 financial codes, a legal contract reference, the confidential project codename, and the
 unique canary), while the no-extension baseline transmitted none of them.
-Structured identifiers and regulated personal data are
-therefore exfiltrated just as readily as free-text prose; nothing about being a formatted
-ID number affords any protection.
+Formatted identifiers such as ID numbers and codes are sent just as readily as ordinary
+sentences; their structure gives them no protection.
 
 \subsection{Beyond the planted secrets: a transmitted credential}
 
@@ -476,7 +480,9 @@ LanguageTool's payloads contain no such artefact. We surfaced this by running an
 automatic PII detector (Microsoft Presidio) over the decrypted bodies and manually
 discarding its false positives (document dates, quarter labels, financial figures).
 Because it is a manual-review result over the existing captures, we report it as an
-indication rather than a quantified result. The consequence widens the attack surface
+indication rather than a quantified result.
+
+The consequence widens the attack surface
 beyond privacy: exposed session tokens and API keys are exactly what large-scale
 credential-harvesting operations mine from client-side code and application
 traffic~\citep{anthropic2026threats}. A writing assistant that emits its own session
@@ -485,51 +491,31 @@ just personal data.
 
 \subsection{What was transmitted, and how}
 
-Grammarly streamed the document to its backend over a WebSocket connection (a median
-of roughly 6~kB of outbound payload per run across about two tool-related hosts).
-LanguageTool sent it as an HTTPS \texttt{POST} to \texttt{api.languagetool.org/v2/check}
-(roughly 5.6~kB to a single host). In both cases the twelve planted identifiers,
-including the canary, were recovered from the decrypted outbound traffic. The
-$\sim$8~percentage-point gap between the two tools reflects how much surrounding
-boilerplate each includes rather than any difference in whether the sensitive content
+Grammarly streamed the document to its backend over a WebSocket connection (a median of
+roughly 6~kB of outbound payload per run across about two tool-related hosts); LanguageTool
+sent it as an HTTPS \texttt{POST} to \texttt{api.languagetool.org/v2/check} (roughly
+5.6~kB to a single host). In both cases the twelve planted identifiers, including the canary,
+were recovered from the decrypted outbound traffic. The $\sim$8~percentage-point gap between the two tools reflects how much
+surrounding boilerplate each includes, not any difference in whether the sensitive content
 leaves: both transmitted all of the sensitive tokens.
 
-Viewed over time (Figure~\ref{fig:timeline}), the transmission appears as a single
-outbound burst at the moment the document is pasted, after which the connection falls
-quiet. The no-extension baseline is instructive: it generates more total traffic
-than either tool run, megabytes of browser and OS background activity, yet none of
-it carries document content. This is the same reason a baseline condition is required at
-all: it isolates the environment's own chatter so that document-bearing traffic can be
-attributed unambiguously to the installed tool rather than to the browser or operating
-system.
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.8\linewidth]{figures/cgpt_timeline.png}
-\caption{Traffic over time for a representative run. Both writing assistants transmit the
-document in a single outbound burst at the moment of paste (blue); the no-extension
-baseline produces only background traffic (grey) and never transmits document content.
-Paste timing differs between runs because it was triggered manually; the salient
-feature is the shape (a single document-bearing spike vs.\ none), not the absolute time.}
-\label{fig:timeline}
-\end{figure*}
+The transmission is a single outbound burst at the moment of paste, after which the
+connection falls quiet; the exposure is input-triggered, not continuous. The no-extension
+baseline is instructive: it generates more total traffic than either tool run (megabytes of
+browser and OS background activity), yet none of it carries document content, which is why a
+baseline is needed, to separate the environment's own chatter from document-bearing
+traffic.
 
 \subsection{Independent corroboration without a proxy}
 
-A natural objection to any man-in-the-middle measurement is whether the proxy itself
-induced or altered the transmission. We addressed this with an independent capture that
-removed the proxy entirely: Grammarly's browser profile was switched to a direct
-connection, no interception of any kind, and the same document pasted while a
-packet capture (\texttt{tcpdump}) recorded the machine's traffic, with encrypted-SNI
-disabled so that destination host names remained visible. The capture showed the browser
-resolving \texttt{assets.grammarly.com} and uploading several kilobytes directly to
-Grammarly-owned infrastructure, an AWS EC2 backend
-(\texttt{ec2-44-213-83-95.compute-1.\allowbreak amazonaws.com}) and three CloudFront edges
-(\texttt{*.fra60.r.cloudfront.net}), within the paste window. The payload is opaque in
-this mode (the browser build does not export TLS session keys, so direct traffic cannot be
-decrypted without the proxy), but the destination and timing confirm that the upload occurs
-with nothing intercepting it. The proxy is therefore an observation instrument, not the
-cause of the transmission.
+Could the proxy itself have caused the upload? To rule that out, we repeated the paste with
+the proxy removed entirely: Grammarly ran on a normal direct connection while a packet
+capture (\texttt{tcpdump}) recorded the machine's traffic, with host names left visible. At
+the moment of paste, the browser contacted Grammarly's own servers (an AWS backend and
+Grammarly CloudFront edges) and uploaded several kilobytes. Without the proxy the content
+stays encrypted, so we cannot read it here, but the destination and timing show the upload
+happens with nothing intercepting it. The proxy only observes the leak; it does not cause
+it.
 
 \subsection{Two exposure classes}
 
