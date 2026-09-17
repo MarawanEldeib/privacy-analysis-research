@@ -126,11 +126,11 @@ any further action, the extension transmits the content to its servers.
 
 The adversary here is not a criminal; it is the gap between the tool's default
 behaviour and the user's mental model. The user believes they have withheld the
-document from AI tools. In fact, merely pasting it into a field an unrelated extension
+document from AI tools. In fact, simply pasting it into a field an unrelated extension
 happens to watch has already transmitted it. Our measurement targets precisely this
 gap: exposure that occurs with no user action beyond pasting. The browser paste
 is our primary scenario; we later broaden the same question to desktop applications and
-to the act of merely opening a received file (Section~\ref{sec:action-spectrum}),
+to the act of opening a received file (Section~\ref{sec:action-spectrum}),
 where in some cases even the paste is unnecessary.
 
 \section{Related Work}
@@ -340,8 +340,9 @@ mitmproxy to the vendor. A positive control (example.com) confirms interception 
 Several desktop tools (Microsoft~Office, the DeepL desktop client, Edge/Copilot) are not
 available on Linux, so the host phase was run on a Windows~11 laptop using the same
 interception principle. mitmproxy ran the same scoring add-on, and both the WinINET and
-WinHTTP system proxies were pointed at it. WinINET carries browser and interactive-app
-traffic; WinHTTP carries native and background apps. Office and the Grammarly desktop
+WinHTTP system proxies were pointed at it, with the mitmproxy CA trusted in the Windows
+certificate store and the proxy enabled only during capture. WinINET carries browser and
+interactive-app traffic; WinHTTP carries native and background apps. Office and the Grammarly desktop
 client use WinHTTP and would bypass a WinINET-only (browser) proxy, so covering both is
 what makes the host capture complete. Each
 condition used the same synthetic memo and canary. Because a real machine runs several
@@ -540,21 +541,12 @@ intercepting it. The proxy only observes the leak; it does not cause it.
 \subsection{Desktop and system-level exposure: an action spectrum}
 \label{sec:action-spectrum}
 
-To test whether the browser-extension finding generalises, we repeated the
-measurement on the host operating system (Windows~11) against desktop
-applications and the everyday act of opening a received file. The same
-synthetic document and planted secrets were used, captured with the same
-\texttt{mitmproxy} add-on; interception on the host required trusting the proxy
-CA in the Windows store and routing traffic through a system proxy enabled only
-during capture. Because a real machine runs several assistants at once, every
-captured flow was attributed to its destination host, so a leak is credited to the
-specific tool responsible rather than to whatever else happened to be running. The
-results arrange themselves along a spectrum of user action
-(Figure~\ref{fig:action-spectrum}).
-
-Figure~\ref{fig:action-spectrum} summarises every condition; the prose below highlights
-only the findings that change the interpretation; the receiving host for every condition
-is listed in Table~\ref{tab:results}.
+To test whether the browser-extension finding generalises, we repeated the measurement on
+the Windows host against desktop applications and the everyday act of opening a received
+file, using the host interception setup described in Section~\ref{sec:method}. The results
+arrange themselves along a spectrum of user action. Figure~\ref{fig:action-spectrum}
+summarises every condition and the prose below highlights only the findings that change the
+interpretation; the receiving host for each is listed in Table~\ref{tab:results}.
 
 \textbf{Active submission leaks, as in the browser phase.} The \textbf{DeepL} desktop
 client, given the document by paste, transmitted essentially all of it (99.6\% mean over
@@ -565,8 +557,8 @@ characters.
 \textbf{Opening a PDF in a browser assistant leaks it.} Invoking \textbf{Edge's
 Copilot} to summarise the planted PDF transmitted \textbf{76.9\%} of the file and all
 twelve secrets to Microsoft's Copilot backend (three runs, identical). This matters
-because Edge is the default PDF handler on Windows for many users, so merely opening a
-document to read it can hand it to the assistant. The coverage is lower than the
+because Edge is the default PDF handler on Windows for many users, so opening a
+document just to read it can hand it to the assistant. The coverage is lower than the
 paste-based tools not because less leaked but because the source was a PDF: Edge transmits
 its text extraction of the file, which drops layout and formatting characters, yet every
 one of the twelve secrets, canary included, was sent. One run stands out: when asked
@@ -582,7 +574,7 @@ observations were not instrumented and are not counted in our results, but they
 suggest this gap is a general property of chat assistants rather than a quirk of one
 product.
 
-\textbf{Merely opening a document in Word leaks it.} Opening the same document as a
+\textbf{Opening a document in Word leaks it.} Opening the same document as a
 \texttt{.docx}, with no paste and no submission, streamed \textbf{96.8\%} of it and every
 secret to Microsoft's ``Augmentation Loop'' (augloop), the
 cloud backend for Office's Editor/Copilot services, via posts to an
@@ -611,7 +603,7 @@ at the accessibility layer, still transmitted \textbf{94.2\%} of the document an
 secret to Grammarly's backend. Protected View thus sandboxes macros and even
 Microsoft's own AI, but not an independent assistant reading the same window.
 
-\textbf{A file merely stored on a USB or cloud drive is not read by the tools.} A
+\textbf{A file only stored on a USB or cloud drive is not read by the tools.} A
 distinct question is whether a confidential file leaks simply by being stored on a
 removable drive or a synced cloud folder while the writing assistants run in the
 background. It does not. Inserting the USB without opening the file (only the Windows
@@ -636,7 +628,7 @@ storage-dependent: a file on a USB stick or in a synced cloud folder is not read
 the writing tools until its text enters a surface they watch, so passively receiving or
 opening a file transmits nothing unless that surface has a cloud-AI integration watching
 the content. Content leaves the machine whenever it enters such a surface, whether the user
-pastes into a writing assistant, invokes an assistant, or merely opens the file in a
+pastes into a writing assistant, invokes an assistant, or opens the file in a
 cloud-AI-enabled editor.
 
 \begin{figure}[t]
@@ -644,7 +636,7 @@ cloud-AI-enabled editor.
   \includegraphics[width=\columnwidth]{figures/cgpt_action_spectrum.png}
   \caption{Document characters transmitted to external servers, by user action.
   Submitting to a cloud AI tool (DeepL, Grammarly, LanguageTool, invoked Edge~Copilot)
-  or merely opening the document in Microsoft~Word leaks nearly all of it and
+  or simply opening the document in Microsoft~Word leaks nearly all of it and
   every planted secret; disabling one Office setting drops the Word leak to 0\%, and
   passive receipt (USB, iCloud sync) or non-AI viewers (Notepad, Acrobat, browser PDF)
   transmit no document content. Colour encodes the interaction class; $N$ is the number
