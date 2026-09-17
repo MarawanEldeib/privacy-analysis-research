@@ -344,7 +344,10 @@ WinHTTP system proxies were pointed at it, with the mitmproxy CA trusted in the 
 certificate store and the proxy enabled only during capture. WinINET carries browser and
 interactive-app traffic; WinHTTP carries native and background apps. Office and the Grammarly desktop
 client use WinHTTP and would bypass a WinINET-only (browser) proxy, so covering both is
-what makes the host capture complete. Each
+what makes the host capture complete. For the storage cases, where the question is whether
+a file is actually read rather than what leaves the network, we additionally recorded local
+file-access activity with Process Monitor (a Sysinternals tool that logs file, registry, and
+process events), so we could tell a file being opened from one that was only stored. Each
 condition used the same synthetic memo and canary. Because a real machine runs several
 assistants at once, every captured flow was attributed to its destination host, so a leak
 is credited to the specific tool responsible rather than to whatever else happened to be
@@ -606,8 +609,8 @@ Microsoft's own AI, but not an independent assistant reading the same window.
 \textbf{A file only stored on a USB or cloud drive is not read by the tools.} A
 distinct question is whether a confidential file leaks simply by being stored on a
 removable drive or a synced cloud folder while the writing assistants run in the
-background. It does not. Inserting the USB without opening the file (only the Windows
-indexer and shell probed volume metadata, per Process Monitor) and dropping the file into
+background. It does not. Inserting the USB without opening the file (Process Monitor showed only the Windows
+indexer and shell probing volume metadata, not the file being read) and dropping the file into
 iCloud~Drive to sync each transmitted \textbf{no} document content to the writing tools'
 servers (0/12), even though
 Grammarly and the other clients were running throughout: the file never entered a surface
