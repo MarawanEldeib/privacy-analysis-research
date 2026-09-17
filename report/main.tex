@@ -690,27 +690,18 @@ because that is how they work, even when the user never meant to share (passive)
 grammar checkers we tested are the silent, background kind.
 
 \subsection{Regulatory implications (EU/GDPR and Germany)}
-Because the memo contains
-personal data (names and an employee identifier), the behaviour we measure engages the
-EU General Data Protection Regulation (GDPR, Regulation (EU)~2016/679). A silent,
-whole-document upload sits in tension with several of its principles: lawfulness and
-transparency (Art.~5(1)(a), 6), as the transfer is neither disclosed to the user nor
-obviously grounded in a legal basis; data minimisation (Art.~5(1)(c)), as the entire
-document is sent rather than the text under review; and the information duties of
-Arts.~13--14, as the user is never told the text leaves the device. Where the receiving
-servers sit outside the EU, the transfer additionally engages the Chapter~V safeguards
-(Arts.~44--49). The gap is sharpest in an organisational setting: an employer whose staff
-paste client data into a consumer writing assistant with no Art.~28 processor agreement is
-the realistic non-compliance scenario, and in Germany the analysis is stricter still,
-layering the Federal Data Protection Act (BDSG) and works-council co-determination over
-tools that can observe employee input. This does not render every use unlawful: Microsoft,
-for one, documents an EU Data Boundary and a processor agreement for Office's cloud
-processing~\citep{microsoft2026copilotprivacy}, so the same feature can be deployed
-compliantly. The distinction our results draw is thus practical: vendors that
-offer a lawful-processing path versus default-on consumer tools that offer none. This makes
-the invisibility of the transfer, not merely its occurrence, the core
-data-protection concern. We offer no legal determination; establishing a violation is
-fact-specific and beyond a measurement study.
+Because the memo contains personal data (names and an employee identifier), the behaviour
+we measure falls under the EU General Data Protection Regulation (GDPR). A silent,
+whole-document upload is hard to reconcile with the GDPR principles of transparency and
+data minimisation and the duty to inform the user (Arts.~5, 13--14), and it engages the
+Chapter~V rules on international transfers when the receiving servers sit outside the EU.
+The problem is sharpest for employers, whose staff may paste client data into a consumer
+tool with no Art.~28 processor agreement; German law (the Federal Data Protection Act, BDSG,
+and works-council co-determination) is stricter still. This does not make every use
+unlawful: Microsoft, for example, documents an EU Data Boundary and a processor agreement
+for Office~\citep{microsoft2026copilotprivacy}, so the same feature can be deployed
+compliantly. We make no legal determination; our point is simply that the invisibility of
+the transfer, not merely its occurrence, is the core data-protection concern.
 
 \subsection{Broader impact}
 The concern is not the single copy but what follows it, which this study does not measure
