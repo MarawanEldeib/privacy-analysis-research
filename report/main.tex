@@ -519,35 +519,14 @@ uploaded several kilobytes. Without the proxy the traffic is encrypted, so we ca
 its contents, but the destination and timing show the upload happens even with nothing
 intercepting it. The proxy only observes the leak; it does not cause it.
 
-\subsection{Two exposure classes}
-
-Comparing writing tools under this threat model surfaces a distinction worth stating as a
-result. They fall into two behavioural classes: automatic / background transmitters, which send the document with
-no user action beyond pasting (Grammarly and LanguageTool), and on-demand
-transmitters, which send only text the user actively submits (e.g.\ a paraphraser
-invoked by selecting text and clicking ``rewrite''). Under the study's exact scenario (an extension running in the background while the user merely pastes), the
-automatic class leaks and the on-demand class does not. Grammar checkers trend toward
-the automatic class; paraphrasers toward the on-demand class. This is a meaningful
-distinction for users and policy, not a measurement artefact.
-
 \subsection{Background behaviour when idle}
 
-To separate content transmission from mere background activity, we ran a twenty-minute
-capture with the Grammarly extension loaded on the test page and no user action at
-all, no paste, no typing, no clicks. The capture path was confirmed live by the
-presence of the browser's own background traffic (e.g.\ \texttt{ads.mozilla.org}) as a
-positive control, without which a quiet result could not be distinguished from a broken
-capture. Grammarly was not dormant: twenty-three of twenty-seven captured events reached
-five Grammarly backend hosts: \texttt{auth.grammarly.com},
-\texttt{config.extension.grammarly.com}, \texttt{gateway.grammarly.com},
-\texttt{capi.grammarly.com}, and a logging endpoint \texttt{f-log-extension.grammarly.io}
-(\texttt{POST /logv2}), consistent with authentication, configuration polling, session
-upkeep, and telemetry. However, \textbf{none of this idle traffic carried
-document content or any planted secret} (0\% exposure, 0 of 12). The extension thus
-maintains a continuous background relationship with the vendor simply by being installed
-and loaded, while the document itself leaves only once the user supplies text. Both facts
-matter for the threat model: the tool is always connected, but content exposure is
-input-triggered.
+With the extension loaded but no user action for twenty minutes (a positive control, the
+browser's own background traffic, confirmed the capture was live), Grammarly was not
+dormant: it kept contacting its backend for authentication, configuration, and telemetry.
+But \textbf{none of this idle traffic carried document content or any planted secret}
+(0 of 12). The tool is therefore always connected in the background, yet the document
+itself leaves only once the user supplies text: exposure is input-triggered.
 
 \subsection{Delivery channel: browser extension vs.\ desktop client}
 
@@ -700,10 +679,11 @@ click, no confirmation; (b) complete: essentially the whole document, not a
 fragment; and (c) deterministic: it happens every time, reliably. For an individual
 handling regulated data (health, legal, financial) the implication is direct:
 default-configuration writing assistants are incompatible with a ``do not share''
-instruction unless explicitly disabled, and disabling them is not the default. The
-two-class distinction gives users a practical lever: automatic grammar checkers are the
-ones that leak passively, whereas on-demand paraphrasers only transmit what is actively
-submitted.
+instruction unless explicitly disabled, and disabling them is not the default. It also
+matters when a tool sends: some transmit only when the user actively asks (active,
+on-demand), while others send silently in the background the moment text appears, simply
+because that is how they work, even when the user never meant to share (passive). The
+grammar checkers we tested are the silent, background kind.
 
 \paragraph{Regulatory implications (EU/GDPR and Germany).} Because the memo contains
 personal data (names and an employee identifier), the behaviour we measure engages the
