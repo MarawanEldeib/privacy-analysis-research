@@ -69,7 +69,10 @@ during controlled use?
 
 Concretely: when a confidential document is pasted into an ordinary text field with a
 writing-assistant extension running by default, how much of that document leaves the
-machine, and does it include the specifically sensitive parts?
+machine, and does it include the specifically sensitive parts? Grammar-checking browser
+extensions are the entry point, but the study spans the integration types these tools take
+in practice: browser extensions, desktop and editor applications, and system-level
+services.
 
 This is not a search for a vulnerability. The tools examined here are doing exactly
 what they were designed to do. Our contribution is a reproducible
@@ -727,6 +730,22 @@ offer a lawful-processing path versus default-on consumer tools that offer none.
 the invisibility of the transfer, not merely its occurrence, the core
 data-protection concern. We offer no legal determination; establishing a violation is
 fact-specific and beyond a measurement study.
+
+\paragraph{Broader impact.} The concern is not only that a document is copied once, but
+what happens to it afterwards. Text captured by default feeds a vendor's own processing
+and, potentially, model training, and once it leaves the machine it can be retained,
+combined with other data, and passed to parties the user never chose, a pattern users
+rarely notice because it is authorised deep in terms of service almost no one
+reads~\citep{anthropic2026threats}. As these tools gain broader access and more autonomy,
+the same silent collection scales from individuals to the organisations whose confidential
+data flows through them. The risk is sharpest where personal data reaches actors with
+strong incentives to exploit it, including data brokers and security or defence contractors
+that assemble personal profiles: data gathered for a mundane ``writing help'' feature can,
+once pooled and resold, support profiling and targeting well beyond its original purpose,
+and models can already infer sensitive attributes from ordinary text~\citep{staab2024beyond}.
+Measuring the exposure precisely, rather than assuming vendor assurances hold, is what makes
+the downstream risk assessable: the gap between stated safeguards and observed behaviour is
+exactly what this study quantifies.
 
 \section{Limitations}
 \label{sec:limitations}
