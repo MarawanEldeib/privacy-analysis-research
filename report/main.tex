@@ -29,14 +29,14 @@ Supervisor: Prof.\ Dr.\ Marco Aiello\\
 \noindent
 Large-language-model (LLM)-integrated writing assistants run as browser extensions that
 silently observe the text a user types or pastes into web-page fields and send it to their
-servers for analysis. We measure how much of a confidential document such tools transmit \emph{by
-default}, even when the user has been told not to share it with any AI tool, using an
+servers for analysis. We measure how much of a confidential document such tools transmit by
+default, even when the user has been told not to share it with any AI tool, using an
 HTTPS man-in-the-middle proxy and a synthetic memo carrying twelve unique planted
 identifiers, including a UUID canary. Across five runs each, Grammarly and LanguageTool
 transmitted essentially the entire document (\textbf{99.0\%} and \textbf{91.9\%} of
 characters) and \textbf{all twelve secrets, including the canary}, while a no-extension
 baseline transmitted nothing. Extending the measurement to the host operating system
-shows the exposure is \emph{surface-dependent}: merely \emph{opening} the file in
+shows the exposure is surface-dependent: merely opening the file in
 Microsoft~Word, with no paste and no submission, streams \textbf{96.8\%} of it to
 Microsoft's default-enabled Office~AI cloud, and disabling a single Office setting stops
 it entirely. Content leaves the machine whenever it enters an LLM-integrated surface,
@@ -63,8 +63,8 @@ background, silently watching every field they type or paste into. The question 
 project asks is deliberately mundane:
 
 \begin{quote}
-\emph{How does user data exposure differ across LLM-integrated productivity tools
-during controlled use?}
+How does user data exposure differ across LLM-integrated productivity tools
+during controlled use?
 \end{quote}
 
 Concretely: when a confidential document is pasted into an ordinary text field with a
@@ -73,7 +73,7 @@ machine, and does it include the specifically sensitive parts?
 
 This is not a search for a vulnerability. The tools examined here are doing exactly
 what they were designed to do. Our contribution is a reproducible
-\emph{measurement} of this default behaviour and an analysis of how it diverges from
+measurement of this default behaviour and an analysis of how it diverges from
 users' expectations. Our contributions are:
 
 \begin{itemize}[nosep]
@@ -98,10 +98,10 @@ which runs the analysis and returns suggestions. Because the analysis is server-
 the text itself must leave the user's machine for the feature to function at all.
 
 \paragraph{Intended use versus incidental exposure.} A user's text can reach one of these
-tools in two ways. In \emph{intended} use, the user knowingly hands over the text: they
+tools in two ways. In intended use, the user knowingly hands over the text: they
 type into the tool's own editor, or they click an action such as ``paraphrase'' or
 ``summarise.'' Transmission is then expected and effectively consented to. The privacy
-question lies in the other case, \emph{incidental} exposure: the extension is installed and
+question lies in the other case, incidental exposure: the extension is installed and
 enabled, the default state for millions of users, and it captures text the user entered for
 an unrelated purpose, with no intent to use the tool and no action beyond typing or pasting.
 We first confirmed the intended-use mechanism, that server-side analysis makes the text
@@ -124,9 +124,9 @@ The adversary here is not a criminal; it is the gap between the tool's default
 behaviour and the user's mental model. The user believes they have withheld the
 document from AI tools. In fact, merely pasting it into a field an unrelated extension
 happens to watch has already transmitted it. Our measurement targets precisely this
-gap: exposure that occurs with \emph{no user action beyond pasting}. The browser paste
+gap: exposure that occurs with no user action beyond pasting. The browser paste
 is our primary scenario; we later broaden the same question to desktop applications and
-to the act of merely \emph{opening} a received file (Section~\ref{sec:action-spectrum}),
+to the act of merely opening a received file (Section~\ref{sec:action-spectrum}),
 where in some cases even the paste is unnecessary.
 
 \section{Related Work}
@@ -148,11 +148,11 @@ security model itself: \citet{carlini2012chrome} evaluated Chrome's permission a
 isolation architecture and showed that over-broad host permissions undercut its
 guarantees, and \citet{pantelaios2020changed} showed that benign extensions can turn
 malicious through later updates, which is why a runtime, network-level measurement of
-what a tool \emph{actually} transmits is more reliable than trusting a single reviewed
+what a tool actually transmits is more reliable than trusting a single reviewed
 snapshot.
 
-More recent large-scale studies have moved from browsing metadata to \emph{page
-content}. \citet{nayak2024experimental} experimentally analysed sensitive-data access
+More recent large-scale studies have moved from browsing metadata to page
+content. \citet{nayak2024experimental} experimentally analysed sensitive-data access
 by extensions, including access to credentials on login pages, across the Chrome Web
 Store. \citet{xie2024arcanum} built Arcanum, a dynamic taint-tracking system, and
 found that thousands of extensions, used by an estimated 144 million people, collect sensitive on-page content such as email bodies, social-media activity, and
@@ -166,7 +166,7 @@ building on the browser-instrumentation measurement paradigm established by Open
 
 The most behaviourally similar precedent is ``read-before-submit'' exfiltration:
 \citet{senol2022leakyforms} showed that email addresses and even passwords are sent to
-third parties \emph{as the user types}, before any form is submitted;
+third parties as the user types, before any form is submitted;
 \citet{munir2025keystroke} recently generalised this, finding widespread third-party
 keystroke event-listener interception across popular sites, and
 \citet{starov2016contactforms} earlier quantified PII leaking from website contact forms.
@@ -177,26 +177,22 @@ PII-measurement lineage rooted in dynamic taint tracking
 (TaintDroid~\citep{enck2010taintdroid}) and network-level flow analysis over decrypted
 mobile traffic (ReCon~\citep{ren2016recon}). Because outbound payloads can be encoded or
 obfuscated, we adopt unique planted canaries in the spirit of the black-box
-\emph{differential} leak detection introduced by AGRIGENTO~\citep{continella2017agrigento},
+differential leak detection introduced by AGRIGENTO~\citep{continella2017agrigento},
 so that any transmitted fragment is unambiguously attributable to our input.
 
 Closest to the present work, \citet{vekaria2025bighelp} audited nine generative-AI
 browser assistants and, using traffic decryption, showed that several forward full
 webpage content, including medical and banking details, to their own servers and
 to third-party trackers. Our study is narrower and complementary: rather than a
-broad crawl, we perform a deep, controlled, and \emph{fully reproducible} measurement
+broad crawl, we perform a deep, controlled, and fully reproducible measurement
 of a specific, common threat model (a confidential document pasted into a field with a
 grammar checker running by default), using a planted-canary methodology that makes
 each leak individually and unambiguously attributable. Where prior large-scale work
 answers ``how many extensions leak,'' we answer ``exactly how much of a specific
 confidential document leaves, and which sensitive tokens, for two representative
-tools, with what reproducibility.'' In short, ours is the writing-assistant,
-canary-proven complement to \citeauthor{vekaria2025bighelp}'s assistant-focused audit:
-the same interception principle, narrowed to a single reproducible threat model and
-strengthened with unique planted tokens so that every individual leak is provable, not
-merely observed in aggregate.
+tools, with what reproducibility.''
 
-Finally, why the transmitted \emph{content} matters is reinforced by a parallel line
+Finally, why the transmitted content matters is reinforced by a parallel line
 of work on the privacy risks of large language models, which increasingly sit behind
 these assistants. \citet{carlini2021extracting} showed that language models memorise and
 can regurgitate verbatim personal data from their training set, and
@@ -204,7 +200,7 @@ can regurgitate verbatim personal data from their training set, and
 recovering training examples from deployed systems such as ChatGPT;
 \citet{lukas2023pii} quantified PII leakage from language models and showed that scrubbing
 and differential privacy leave residual exposure. \citet{staab2024beyond} showed that
-models can \emph{infer} sensitive attributes (location, age, income) from ordinary prose;
+models can infer sensitive attributes (location, age, income) from ordinary prose;
 and \citet{mireshghallah2024cansecret} showed that LLM-integrated applications routinely
 disclose information to contextually inappropriate recipients. Text sent to a writing
 assistant is therefore not inert once it leaves the machine, which is precisely what
@@ -215,23 +211,20 @@ perceptions and the reality of PII leakage in LLM-integrated
 settings~\citep{privacyparadox2026}, motivating the concrete, quantified measurement we
 provide here.
 
-Threat-intelligence and industry reporting reinforce the downstream stakes of that
-exposure. Deployed AI pipelines and unauthorised model-reseller/proxy services have been
-observed silently saving and relaying users' inputs (including names, contact
-details, and corporate data across many languages) without their knowledge or
-consent~\citep{anthropic2026threats}, so text that leaves the machine can be retained and
-reused well beyond the tool the user intended. Industry analyses report the same pattern
-for the class of tools we study: a Unit~42 investigation of high-risk generative-AI
-browser extensions found products marketed as productivity aids that read users' email as
-it is composed and intercept prompts and page content~\citep{unit42genai2026}, while
-enterprise-security reporting notes that such extensions read page content largely
-invisibly to conventional data-loss-prevention controls, and that much of the data
-entered into AI tools originates from personal, unmonitored accounts~\citep{csa2026extensions,
+Once the text leaves the machine, it can be kept and reused by others. Threat-intelligence
+reporting has found deployed AI services and unauthorised ``model-reseller'' proxies
+silently storing and passing on users' inputs, including names, contact details, and
+corporate data, without their knowledge~\citep{anthropic2026threats}. Industry analyses
+report the same for the tools we study: a Unit~42 investigation found ``productivity''
+browser extensions that read users' email as they write it and capture page
+content~\citep{unit42genai2026}, and enterprise-security reporting notes that such
+extensions read page content largely invisibly to standard data-loss-prevention tools,
+with much of the data coming from personal, unmonitored accounts~\citep{csa2026extensions,
 cyberhaven2026}.
 
-\paragraph{Research gap.} Prior work either counts \emph{how many} extensions leak at
+\paragraph{Research gap.} Prior work either counts how many extensions leak at
 scale or audits AI assistants broadly; what is missing is a controlled, canary-proven,
-per-secret measurement of how much of a \emph{single confidential document} leaves the
+per-secret measurement of how much of a single confidential document leaves the
 machine, across both the browser extensions and the everyday host applications (Office,
 desktop clients, cloud-AI viewers) a real user actually encounters. This paper fills that
 gap.
@@ -249,7 +242,7 @@ We measure three conditions: two writing-assistant extensions and a control.
   \item \textbf{LanguageTool}: an independent grammar checker from a different
         vendor (LanguageTooler GmbH) that requires no account, making it the cleanest
         possible replication partner.
-  \item \textbf{Baseline}: the identical browser and procedure with \emph{no}
+  \item \textbf{Baseline}: the identical browser and procedure with no
         extension installed, to capture and subtract ordinary browser background
         traffic.
 \end{itemize}
@@ -257,8 +250,8 @@ We measure three conditions: two writing-assistant extensions and a control.
 Two independent tools exhibiting the same behaviour constitutes within-class
 replication, which is substantially stronger evidence than a single data point. The
 scope was reached by evaluating and excluding several other candidates
-(Section~\ref{sec:limitations}); the final design measures \emph{automatic /
-background} exposure by grammar checkers.
+(Section~\ref{sec:limitations}); the final design measures automatic /
+background exposure by grammar checkers.
 
 \subsection{Test document and planted secrets}
 
@@ -266,7 +259,7 @@ The input is a synthetic ``confidential memo'' (2{,}065 characters, 245 words) w
 to look like an internal compliance document and explicitly marked
 ``\textsc{do not forward}.'' Embedded in its prose are \textbf{twelve unique,
 fictional identifiers}: names, an email address, a phone number, project and
-reference codes, and a UUID \emph{canary}, \canary{}. None of these strings exists
+reference codes, and a UUID canary, \canary{}. None of these strings exists
 anywhere on the public internet, so any occurrence in captured network traffic is
 unambiguously attributable to our input. The canary in particular gives a single,
 unforgeable yes/no signal: if it appears in outbound traffic, the confidential payload
@@ -278,8 +271,8 @@ All captures were performed on an isolated Kali Linux virtual machine so that th
 man-in-the-middle configuration never touched real browsing. We used
 mitmproxy~\citep{mitmproxy} (version 12.2.3) as an intercepting HTTPS/WebSocket proxy
 on \texttt{127.0.0.1:8080}. Each tool ran in its own clean Firefox profile with the
-proxy configured and the mitmproxy certificate authority trusted \emph{only within
-that profile}, so decryption was scoped to the experiment. Before any data collection,
+proxy configured and the mitmproxy certificate authority trusted only within
+that profile, so decryption was scoped to the experiment. Before any data collection,
 interception was verified per profile (a known HTTPS site must load without a
 certificate warning and appear in the proxy); this guards against the most dangerous
 failure mode in such studies, in which a broken interception silently looks identical
@@ -293,7 +286,7 @@ would on a real site, but with zero background noise to filter out.
 \subsection{Capture procedure}
 
 For each run, the document was loaded into the clipboard and pasted with a
-\emph{real, manual} \texttt{Ctrl+V} into the focused field, after which the run
+real, manual \texttt{Ctrl+V} into the focused field, after which the run
 recorded for sixty seconds. The manual paste is a deliberate methodological point: a
 scripted/synthetic paste fills the field visually but does not fire the DOM
 \texttt{input} event the extensions listen for, so the tool never ingests the text and
@@ -330,7 +323,7 @@ report, in order of importance:
         decoded before matching.
   \item[Reproducibility.] The standard deviation of exposure \% across a tool's runs,
         labelled High ($<3$~pp), Medium ($3$--$10$~pp), or Low ($>10$~pp).
-  \item[Traffic visibility.] Reported as \emph{two} separate numbers: the share of
+  \item[Traffic visibility.] Reported as two separate numbers: the share of
         intercepted events that used HTTPS, and the count of TLS handshakes that could
         not be intercepted (e.g.\ certificate pinning), never combined into a single
         figure, because a non-zero failure count means the exposure result is a lower
@@ -352,7 +345,7 @@ extensions transmitted essentially the entire document and \textbf{all twelve pl
 secrets, including the canary}, to their servers. Grammarly transmitted a median
 \textbf{99.0\%} of the document's characters; LanguageTool transmitted \textbf{91.9\%}.
 The no-extension baseline transmitted \textbf{0.0\%} and none of the secrets. All
-transmission used HTTPS, and there were \emph{zero} un-interceptable TLS handshakes, so the reported figures are complete, not lower bounds.
+transmission used HTTPS, and there were zero un-interceptable TLS handshakes, so the reported figures are complete, not lower bounds.
 
 \begin{table*}[t]
 \centering
@@ -385,7 +378,7 @@ planted secrets; the no-extension baseline transmits nothing.}
 \subsection{Information types transmitted}
 \label{sec:infotypes}
 
-Grouping the twelve planted secrets by \emph{type} shows that the leak is not confined
+Grouping the twelve planted secrets by type shows that the leak is not confined
 to any single class of data. Both tools transmitted every information type present in
 the document (personal names, contact details, official identification numbers,
 financial codes, a legal contract reference, the confidential project codename, and the
@@ -423,8 +416,8 @@ just personal data.
 
 \subsection{Exact reproducibility}
 
-Both tools produced \emph{identical} exposure on every run (standard deviation
-0.0~percentage points), so we report this as a \emph{deterministic observation} rather
+Both tools produced identical exposure on every run (standard deviation
+0.0~percentage points), so we report this as a deterministic observation rather
 than a sampling estimate: the 95\% confidence intervals collapse to points (Grammarly
 $[99.0,99.0]$, LanguageTool $[91.9,91.9]$) and carry no significance claim. Practically,
 pasting the document causes the same near-complete transmission every time, consistent
@@ -440,11 +433,11 @@ LanguageTool sent it as an HTTPS \texttt{POST} to \texttt{api.languagetool.org/v
 including the canary, were recovered from the decrypted outbound traffic. The
 $\sim$8~percentage-point gap between the two tools reflects how much surrounding
 boilerplate each includes rather than any difference in whether the sensitive content
-leaves: both transmitted \emph{all} of the sensitive tokens.
+leaves: both transmitted all of the sensitive tokens.
 
 Viewed over time (Figure~\ref{fig:timeline}), the transmission appears as a single
 outbound burst at the moment the document is pasted, after which the connection falls
-quiet. The no-extension baseline is instructive: it generates \emph{more} total traffic
+quiet. The no-extension baseline is instructive: it generates more total traffic
 than either tool run, megabytes of browser and OS background activity, yet none of
 it carries document content. This is the same reason a baseline condition is required at
 all: it isolates the environment's own chatter so that document-bearing traffic can be
@@ -483,8 +476,8 @@ cause of the transmission.
 
 The excluded-tool investigation (Section~\ref{sec:limitations}) surfaced a distinction
 worth stating as a result. Writing tools fall into two behavioural classes under this
-threat model: \emph{automatic / background} transmitters, which send the document with
-no user action beyond pasting (Grammarly and LanguageTool), and \emph{on-demand}
+threat model: automatic / background transmitters, which send the document with
+no user action beyond pasting (Grammarly and LanguageTool), and on-demand
 transmitters, which send only text the user actively submits (e.g.\ a paraphraser
 invoked by selecting text and clicking ``rewrite''). Under the study's exact scenario (an extension running in the background while the user merely pastes), the
 automatic class leaks and the on-demand class does not. Grammar checkers trend toward
@@ -494,8 +487,8 @@ distinction for users and policy, not a measurement artefact.
 \subsection{Background behaviour when idle}
 
 To separate content transmission from mere background activity, we ran a twenty-minute
-capture with the Grammarly extension loaded on the test page and \emph{no user action at
-all}, no paste, no typing, no clicks. The capture path was confirmed live by the
+capture with the Grammarly extension loaded on the test page and no user action at
+all, no paste, no typing, no clicks. The capture path was confirmed live by the
 presence of the browser's own background traffic (e.g.\ \texttt{ads.mozilla.org}) as a
 positive control, without which a quiet result could not be distinguished from a broken
 capture. Grammarly was not dormant: twenty-three of twenty-seven captured events reached
@@ -513,7 +506,7 @@ input-triggered.
 \subsection{Delivery channel: browser extension vs.\ desktop client}
 
 A preliminary desktop probe reinforces that the exposure is a property of the
-\emph{browser-extension} delivery rather than of grammar checking itself. LanguageTool's
+browser-extension delivery rather than of grammar checking itself. LanguageTool's
 official standalone desktop application (version~6.6, obtained from the vendor's own
 site) was run through the identical interception setup and given the same document: it
 performed the check entirely on-device and transmitted \textbf{nothing}, 0\% of the
@@ -529,7 +522,7 @@ follows in Section~\ref{sec:action-spectrum}.
 
 To test whether the browser-extension finding generalises, we repeated the
 measurement on the host operating system (Windows~11) against desktop
-applications and the everyday act of \emph{opening} a received file. The same
+applications and the everyday act of opening a received file. The same
 synthetic document and planted secrets were used, captured with the same
 \texttt{mitmproxy} add-on; interception on the host required trusting the proxy
 CA in the Windows store and routing traffic through a system proxy enabled only
@@ -542,17 +535,17 @@ only the findings that change the interpretation, naming each receiving host inl
 \paragraph{Active submission leaks, as in the browser phase.} The \textbf{DeepL} desktop
 client, given the document by paste, transmitted essentially all of it (99.6\% mean over
 three runs) and every secret to \texttt{www2.deepl.com}; the whole input was uploaded even
-though the free tier only \emph{translates} the first 1500 characters. Invoking
+though the free tier only translates the first 1500 characters. Invoking
 \textbf{Edge's Copilot} to summarise the planted PDF transmitted \textbf{76.9\%} of the
 file and all twelve secrets to \texttt{copilot.microsoft.com} (three runs, identical). The
 coverage is lower than the paste-based tools not because less leaked but because the source
-was a PDF: Edge transmits its \emph{text extraction} of the file, which drops layout and
+was a PDF: Edge transmits its text extraction of the file, which drops layout and
 formatting characters, yet every one of the twelve secrets, canary included, was sent. One
 run stands out: when asked instead for ``interesting facts,'' Copilot's visible
-reply stated it would answer \emph{without} exposing the confidential details, yet the
+reply stated it would answer without exposing the confidential details, yet the
 capture shows the full document, canary included, had already been sent to Microsoft. A
-model declining to \emph{display} a secret is therefore not evidence that the secret was
-not \emph{transmitted}; the privacy boundary is the network, not the chat reply.
+model declining to display a secret is therefore not evidence that the secret was
+not transmitted; the privacy boundary is the network, not the chat reply.
 
 \paragraph{Merely opening a document in Word leaks it.} Opening the same document as a
 \texttt{.docx}, with no paste and no submission, streamed \textbf{96.8\%} of it and every
@@ -563,7 +556,7 @@ services are on by default in Microsoft~365 and Microsoft documents that its ``c
 experiences that analyse content'' process document text in the cloud, are enabled by
 default, and can be disabled through an Office privacy setting, with an EU Data Boundary
 and GDPR commitments for the processing~\citep{microsoft2026copilotprivacy}. The
-exfiltration therefore came from the \emph{default productivity suite itself}, not an
+exfiltration therefore came from the default productivity suite itself, not an
 add-in.
 
 \paragraph{Disabling one setting stops it (causation and mitigation).} Turning off the
@@ -575,7 +568,7 @@ It removes Microsoft's own channel only, however: a third-party assistant hookin
 window is unaffected, as the Protected View result next shows.
 
 \paragraph{Protected View does not stop a third-party assistant.} When the file carried a
-mark-of-the-web and opened in Word's sandboxed \emph{Protected View} (the yellow ``Enable
+mark-of-the-web and opened in Word's sandboxed Protected View (the yellow ``Enable
 Editing'' banner still showing, no user action), Microsoft's own augloop stayed silent,
 Protected View contained it, but the \textbf{Grammarly} desktop client, hooking the text
 at the accessibility layer, still transmitted \textbf{94.2\%} of the document and every
@@ -583,7 +576,7 @@ secret to \texttt{capi.grammarly.com}. Protected View thus sandboxes macros and 
 Microsoft's own AI, but not an independent assistant reading the same window.
 
 \paragraph{A file merely stored on a USB or cloud drive is not read by the tools.} A
-distinct question is whether a confidential file leaks simply by being \emph{stored} on a
+distinct question is whether a confidential file leaks simply by being stored on a
 removable drive or a synced cloud folder while the writing assistants run in the
 background. It does not. Inserting the USB without opening the file (only the Windows
 indexer and shell probed volume metadata, per Process Monitor) and dropping the file into
@@ -595,16 +588,16 @@ syncs to Apple encrypted in transit and, under Advanced Data Protection,
 end-to-end~\citep{apple2024platformsec}, so it reaches Apple's cloud but is never exposed to
 the LLM writing tools. The same held for opening the file in a viewer with no cloud-AI
 integration (Notepad, Adobe~Acrobat, or Chrome's PDF viewer), and for opening the PDF in Edge
-\emph{without} invoking Copilot (0/12; Edge-passive 1.8\% of incidental boilerplate).
+without invoking Copilot (0/12; Edge-passive 1.8\% of incidental boilerplate).
 Consumer antivirus (\textbf{Avast}) is a separate class rather than an LLM tool: it
-uploaded an unknown \emph{executable} to its cloud (CyberCapture) plus reputation and
+uploaded an unknown executable to its cloud (CyberCapture) plus reputation and
 telemetry, but not the document's contents. Per-host attribution was essential throughout:
 Grammarly, always running as a background actor, occasionally re-scanned the file and had
 to be attributed away from the tool under test (e.g.\ in the antivirus run) rather than
 mis-credited.
 
-\paragraph{Interpretation.} Exposure is \emph{surface-dependent}, not
-\emph{storage-dependent}: a file on a USB stick or in a synced cloud folder is not read by
+\paragraph{Interpretation.} Exposure is surface-dependent, not
+storage-dependent: a file on a USB stick or in a synced cloud folder is not read by
 the writing tools until its text enters a surface they watch, so passively receiving or
 opening a file transmits nothing unless that surface has a cloud-AI integration watching
 the content. Content leaves the machine whenever it enters such a surface, whether the user
@@ -616,7 +609,7 @@ cloud-AI-enabled editor.
   \includegraphics[width=\columnwidth]{figures/action_spectrum.pdf}
   \caption{Document characters transmitted to external servers, by user action.
   Submitting to a cloud AI tool (DeepL, Grammarly, LanguageTool, invoked Edge~Copilot)
-  or merely \emph{opening} the document in Microsoft~Word leaks nearly all of it and
+  or merely opening the document in Microsoft~Word leaks nearly all of it and
   every planted secret; disabling one Office setting drops the Word leak to 0\%, and
   passive receipt (USB, iCloud sync) or non-AI viewers (Notepad, Acrobat, browser PDF)
   transmit no document content. Colour encodes the interaction class; $N$ is the number
@@ -651,7 +644,7 @@ The clearest single result is the canary, not the percentage. A unique
 token that existed only inside a document marked ``\textsc{do not forward}'' was found,
 seconds after an ordinary paste, in traffic bound for two companies' servers, placed
 there by software the user installed once and forgot. Nothing here is a bug or an
-exploit: server-side analysis \emph{requires} the text to be uploaded, and both vendors
+exploit: server-side analysis requires the text to be uploaded, and both vendors
 document that they process user text. The finding is the gap between that
 design and what a user, told ``don't share this with AI,'' would expect when they paste a
 paragraph into an unrelated field.
@@ -684,7 +677,7 @@ for one, documents an EU Data Boundary and a processor agreement for Office's cl
 processing~\citep{microsoft2026copilotprivacy}, so the same feature can be deployed
 compliantly. The distinction our results draw is thus practical: vendors that
 offer a lawful-processing path versus default-on consumer tools that offer none. This makes
-the \emph{invisibility} of the transfer, not merely its occurrence, the core
+the invisibility of the transfer, not merely its occurrence, the core
 data-protection concern. We offer no legal determination; establishing a violation is
 fact-specific and beyond a measurement study.
 
@@ -738,10 +731,10 @@ single paste, with exact reproducibility, while a no-extension baseline transmit
 nothing. The tools are behaving as designed; the result documents how far that design
 sits from the expectations of a user told not to share a document with AI tools, and it
 distinguishes the automatic transmitters that leak passively from on-demand tools that
-do not. Moving beyond the browser to \emph{desktop and system-level} exposure
+do not. Moving beyond the browser to desktop and system-level exposure
 (Section~\ref{sec:action-spectrum}) showed the leakage is not unique to browser
 extensions: the DeepL desktop client, an invoked Edge/Copilot summary, and simply
-\emph{opening} a document in Microsoft~Word each transmit essentially the whole document
+opening a document in Microsoft~Word each transmit essentially the whole document
 by default, whereas passive receipt (USB, iCloud sync) and non-AI viewers do not.
 Disabling a single Office setting removes the Word leak, confirming the cause and giving a
 concrete mitigation, and a permission audit shows the channel is all-sites text access,
