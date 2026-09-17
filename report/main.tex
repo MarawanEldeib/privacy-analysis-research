@@ -461,7 +461,7 @@ LanguageTool                     & 5 & \textbf{91.9\%} & \textbf{12/12} & yes & 
 No extension (baseline)          & 3 & 0.0\%           & 0/12           & no  & --- \\
 \midrule
 \multicolumn{6}{@{}l}{\textit{Host phase (desktop apps and opening a received file)}}\\
-DeepL desktop (paste)            & 3 & \textbf{99.6\%} & \textbf{12/12} & yes & \texttt{www2.deepl.com} \\
+DeepL desktop (paste)            & 3 & \textbf{99.6\%} & \textbf{12/12} & yes & \texttt{www2.deepl.com}$^{a}$ \\
 Word: open \texttt{.docx}, Office AI on  & 3 & \textbf{96.8\%} & \textbf{12/12} & yes & \texttt{augloop.svc.cloud.microsoft} \\
 Word Protected View + Grammarly desktop  & 1 & \textbf{94.2\%} & \textbf{12/12} & yes & \texttt{capi.grammarly.com} \\
 Edge Copilot: summarise PDF      & 3 & \textbf{76.9\%} & \textbf{12/12} & yes & \texttt{copilot.microsoft.com} \\
@@ -469,6 +469,11 @@ Word: open \texttt{.docx}, Office AI off & 1 & 0.0\%   & 0/12           & no  & 
 Passive: USB / iCloud sync / non-AI viewer & 1 & 0.0\% & 0/12         & no  & (none reach the LLM tools) \\
 \bottomrule
 \end{tabular}
+\par\vspace{3pt}
+{\footnotesize $^{a}$The \texttt{www2} label is not unusual: organisations commonly run
+hostnames such as \texttt{www2} (or \texttt{www1}, \texttt{web2}) for a secondary server, a
+specific service, or an application backend, distinct from the \texttt{www} site a person
+visits in a browser. Here it is simply the host the DeepL client uploads text to.\par}
 \end{table*}
 
 \subsection{Information types transmitted}
@@ -506,7 +511,7 @@ just personal data.
 
 Grammarly streamed the document to its backend over a WebSocket connection (a median of
 roughly 6~kB of outbound payload per run across about two tool-related hosts); LanguageTool
-sent it as an HTTPS \texttt{POST} to \texttt{api.languagetool.org/v2/check} (roughly
+sent it as an HTTPS \texttt{POST} to its own check endpoint (roughly
 5.6~kB to a single host). In both cases the twelve planted identifiers, including the canary,
 were recovered from the decrypted outbound traffic. The $\sim$8~percentage-point gap between the two tools reflects how much
 surrounding boilerplate each includes, not any difference in whether the sensitive content
@@ -545,21 +550,18 @@ during capture. The results arrange themselves along a spectrum of user action
 (Figure~\ref{fig:action-spectrum}).
 
 Figure~\ref{fig:action-spectrum} summarises every condition; the prose below highlights
-only the findings that change the interpretation, naming each receiving host inline.
+only the findings that change the interpretation; the receiving host for every condition
+is listed in Table~\ref{tab:results}.
 
 \textbf{Active submission leaks, as in the browser phase.} The \textbf{DeepL} desktop
 client, given the document by paste, transmitted essentially all of it (99.6\% mean over
-three runs) and every secret to DeepL's service backend (\texttt{www2.deepl.com});\footnote{The
-\texttt{www2} label is not unusual: organisations commonly run hostnames such as
-\texttt{www2} (or \texttt{www1}, \texttt{web2}) for a secondary server, a specific
-service, or an application backend, distinct from the \texttt{www} site a person visits in
-a browser. Here it is simply the host the DeepL client uploads text to.} the
+three runs) and every secret to DeepL's service backend; the
 whole input was uploaded even though the free tier only translates the first 1500
 characters.
 
 \textbf{Opening a PDF in a browser assistant leaks it.} Invoking \textbf{Edge's
 Copilot} to summarise the planted PDF transmitted \textbf{76.9\%} of the file and all
-twelve secrets to \texttt{copilot.microsoft.com} (three runs, identical). This matters
+twelve secrets to Microsoft's Copilot backend (three runs, identical). This matters
 because Edge is the default PDF handler on Windows for many users, so merely opening a
 document to read it can hand it to the assistant. The coverage is lower than the
 paste-based tools not because less leaked but because the source was a PDF: Edge transmits
@@ -579,9 +581,9 @@ product.
 
 \textbf{Merely opening a document in Word leaks it.} Opening the same document as a
 \texttt{.docx}, with no paste and no submission, streamed \textbf{96.8\%} of it and every
-secret to \texttt{augloop.svc.cloud.microsoft} (Microsoft's ``Augmentation Loop,'' the
+secret to Microsoft's ``Augmentation Loop'' (augloop), the
 cloud backend for Office's Editor/Copilot services, via posts to an
-\texttt{OfficeCopilotOrchestrationWorkflow}), reproducibly across three runs. These
+\texttt{OfficeCopilotOrchestrationWorkflow}, reproducibly across three runs. These
 services are on by default in Microsoft~365 and Microsoft documents that its ``connected
 experiences that analyse content'' process document text in the cloud, are enabled by
 default, and can be disabled through an Office privacy setting, with an EU Data Boundary
@@ -603,7 +605,7 @@ mark-of-the-web and opened in Word's sandboxed Protected View (the yellow ``Enab
 Editing'' banner still showing, no user action), Microsoft's own augloop stayed silent,
 Protected View contained it, but the \textbf{Grammarly} desktop client, hooking the text
 at the accessibility layer, still transmitted \textbf{94.2\%} of the document and every
-secret to \texttt{capi.grammarly.com}. Protected View thus sandboxes macros and even
+secret to Grammarly's backend. Protected View thus sandboxes macros and even
 Microsoft's own AI, but not an independent assistant reading the same window.
 
 \textbf{A file merely stored on a USB or cloud drive is not read by the tools.} A
