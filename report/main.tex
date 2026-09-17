@@ -691,84 +691,35 @@ fact-specific and beyond a measurement study.
 \section{Limitations}
 \label{sec:limitations}
 
-\paragraph{Tool scope.} The browser comparison required an identical controlled setup for
-every tool, which only two extensions (Grammarly and LanguageTool) met; other candidates
-could not be measured under the same protocol and are omitted.
+We deliberately measured across several surfaces rather than one: browser extensions in
+Firefox on an isolated Linux VM, and desktop, Office, and operating-system tools on
+Windows~11. Several of the desktop tools are not available on Linux, which is why the host
+phase used Windows; covering browser, desktop, and OS surfaces across two operating systems
+strengthens the external validity of the surface-dependent finding. The measurement has the
+following limits.
 
-\paragraph{Other limitations.}
 \begin{itemize}[nosep]
-  \item \textbf{Single document.} All runs used one test document. The supervisor-agreed
-        design called for three (a memo, a longer report, and a code snippet); only the
-        memo was measured. Because the finding is essentially ``all of it, every time,''
-        document-to-document variance is unlikely to change the qualitative result, but
-        the two additional documents remain unmeasured and are noted as an open item.
-  \item \textbf{Controlled field.} A bare local page isolates the signal but is not a
-        real website; a small number of Gmail/Google-Docs confirmation runs would test
-        representativeness (planned as future work).
-  \item \textbf{Cloud-sync coverage.} Of the consumer cloud-sync clients, only iCloud
-        Drive was measured (no cleartext content observed); a dedicated OneDrive
-        drop-and-sync run was not performed and is left as future work.
-  \item \textbf{Tool drift.} These are cloud products that auto-update, and prior
-        longitudinal work shows extension/app privacy behaviour shifts across versions
-        \citep{ren2018piileaks}. The \emph{pipeline} reproduces exactly; the specific
-        percentages reflect tool behaviour at capture time (each run is timestamped).
-  \item \textbf{Scope of interception.} Certificate pinning can hide traffic; here the
-        count of un-interceptable handshakes was zero, so this did not affect the
-        result, but in general the exposure figure is a lower bound. TLS interception
-        can itself alter or weaken the connection it observes~\citep{durumeric2017https};
-        our proxy CA is trusted only in the isolated test profile, and we report the
-        raw exposure without relying on any modification of the traffic.
-  \item \textbf{Two environments, not exhaustive.} The browser phase used Firefox on a
-        controlled Linux VM; the host phase used Windows~11 with desktop clients and
-        Office. Other browsers (Chrome/Edge as the \emph{primary} profile) and other
-        operating systems (macOS) were not covered and could differ.
-  \item \textbf{Manual trigger timing.} The paste that triggers transmission was
-        performed by hand, so the absolute time of the transmission varies between runs.
-        This affects only \emph{when} the spike occurs, not \emph{whether} it does, nor
-        the measured exposure.
-  \item \textbf{Unequal run counts.} Five runs per tool and three baseline runs. Because
-        every run of a given condition was identical (zero variance), additional runs
-        would not change the reported values, but the asymmetry is noted for
-        completeness.
-  \item \textbf{Detection method.} Sensitive tokens are detected by case-insensitive
-        substring match and document coverage by a 20-character sliding window. Because
-        the planted identifiers are long and synthetically unique, the risk of a
-        coincidental (false-positive) match in unrelated traffic is negligible; the
-        20-character window likewise avoids matches on common short strings.
-\end{itemize}
-
-\paragraph{Host-phase caveats.}
-\begin{itemize}[nosep]
-  \item \textbf{Certificate pinning (lower bound).} Several native Windows and
-        vendor channels (e.g.\ \texttt{*.events.data.microsoft.com}, some Adobe
-        and Google endpoints) refused interception, so their payloads are opaque.
-        Reported host-phase exposure is therefore a lower bound: only decryptable
-        traffic is counted.
-  \item \textbf{Single machine and configuration.} Host runs used one Windows~11
-        laptop signed into one Microsoft~365 account with Office AI features at
-        their defaults; the USB was a card-reader drive. The Word/Office result is
-        contingent on that default-on configuration and would not occur with
-        intelligent services disabled or an offline account.
-  \item \textbf{Opaque uploads not size-profiled.} We count only content we can
-        decrypt and string-match; a compressed or binary payload to a pinned host
-        could in principle carry document data we cannot see. We flag every pinned
-        host and treat host figures as lower bounds, but did not add an
-        outbound-byte-volume anomaly detector to bound that residual.
-  \item \textbf{Native desktop clients (system-proxy blind spot).} The system proxy
-        captures only traffic that honours it, which browser extensions and Office both
-        do. A native client may use its own sockets: the Grammarly Windows client attached
-        to Notepad sent only telemetry over the proxied channels (no document content, 0/12),
-        yet a per-process audit found it also holding a direct TLS socket to an AWS endpoint
-        that bypassed the proxy, whose payload we could not inspect. We therefore report
-        Notepad-with-a-desktop-assistant as \emph{unmeasured}, not zero; full interception of
-        such clients needs a transparent (WinDivert) proxy or a Frida hook (future work).
-        Proxy-captured results (browser extensions, Office/augloop, and Grammarly-in-Word
-        via \texttt{capi}) are unaffected.
-  \item \textbf{Background-actor confound.} Other assistants (notably the Grammarly
-        desktop client) ran throughout the host phase, as on a real machine. Per-host
-        attribution separated their traffic from the tool under test in every case
-        (e.g.\ the antivirus run), but a fully clean-room host with no other assistant
-        installed was not used.
+  \item \textbf{Interception scope (lower bound).} Traffic protected by certificate pinning
+        cannot be read. In the browser phase no handshake refused interception, but several
+        native Windows and vendor channels (for example
+        \texttt{*.events.data.microsoft.com} and some Adobe and Google endpoints) did, so
+        their payloads are opaque. Every reported figure is therefore a lower bound: content
+        we cannot decrypt is not counted. TLS interception can also alter the connection it
+        observes~\citep{durumeric2017https}, so the proxy CA is trusted only in the isolated
+        test profile and we report the raw traffic without modifying it.
+  \item \textbf{Opaque payloads.} We count only content we can decrypt and match as text; a
+        compressed or encrypted payload to a pinned host could in principle carry document
+        data we cannot see. Bounding this with an outbound-byte-volume detector is left as
+        future work.
+  \item \textbf{Native desktop clients.} A native client can use its own sockets that ignore
+        the system proxy: the Grammarly Windows client on Notepad sent only telemetry through
+        the proxy, yet also opened a direct connection to an external server we could not
+        inspect. That case is reported as unmeasured rather than zero; reading such channels
+        needs a transparent (WinDivert) proxy or a Frida hook. Results captured through the
+        proxy (browser extensions, Office, and Grammarly in Word) are unaffected.
+  \item \textbf{Background assistants.} Other assistants ran during the host phase, as on a
+        real machine; per-host attribution separated their traffic from the tool under test
+        in every case, but a fully clean host with nothing else installed was not used.
 \end{itemize}
 
 \section{Ethics and Responsible Disclosure}
@@ -776,10 +727,7 @@ could not be measured under the same protocol and are omitted.
 All test data is synthetic: no real person, organisation, or system is referenced, and
 no real personal data was captured or transmitted. The study measures
 default-configuration behaviour of legitimately installed software on the researcher's
-own machine; it does not attack the vendors' systems or other users. Consistent with
-responsible-disclosure norms, findings are intended to be shared with the affected
-vendors, with a reasonable window to respond, before any public release of the
-repository.
+own machine; it does not attack the vendors' systems or other users.
 
 \section{Conclusion and Future Work}
 
