@@ -430,7 +430,9 @@ attribution.}
 
 \subsection{Headline: both tools transmit the whole document and every secret}
 
-Table~\ref{tab:results} summarises the findings. Both
+Table~\ref{tab:results} summarises every measured condition and its receiving host across
+both phases; this subsection covers the browser phase, and the host phase follows in
+Section~\ref{sec:action-spectrum}. Both
 extensions transmitted essentially the entire document and \textbf{all twelve planted
 secrets, including the canary}, to their servers. Grammarly transmitted a median
 \textbf{99.0\%} of the document's characters; LanguageTool transmitted \textbf{91.9\%}.
@@ -441,19 +443,30 @@ transmission used HTTPS, and there were zero un-interceptable TLS handshakes, so
 
 \begin{table*}[t]
 \centering
-\caption{Default-configuration exposure per condition. Exposure is the median across
-runs; secrets are the number of the twelve planted identifiers detected in outbound
-traffic. ``TLS fail'' is the count of handshakes that could not be intercepted.}
+\caption{Default-configuration exposure per condition, across both measurement phases.
+Exposure is the mean fraction of document characters recovered in outbound traffic across
+runs (browser-phase standard deviation was 0.0~pp); secrets are the number of the twelve
+planted identifiers detected. Where a client pinned its certificate, unintercepted uploads
+make the figure a lower bound.}
 \label{tab:results}
-\small
-\begin{tabular}{lccccccc}
+\footnotesize
+\begin{tabular}{l c c c c l}
 \toprule
-\textbf{Condition} & \textbf{Runs} & \textbf{Exposure} & \textbf{Std.\ dev.} &
-\textbf{Secrets} & \textbf{Canary?} & \textbf{HTTPS} & \textbf{TLS fail} \\
+\textbf{Condition} & \textbf{Runs} & \textbf{Exposure} & \textbf{Secrets} &
+\textbf{Canary?} & \textbf{Receiving host} \\
 \midrule
-Grammarly    & 5 & \textbf{99.0\%} & 0.0 pp & \textbf{12/12} & yes & 100\% & 0 \\
-LanguageTool & 5 & \textbf{91.9\%} & 0.0 pp & \textbf{12/12} & yes & 100\% & 0 \\
-Baseline     & 3 & 0.0\%           & 0.0 pp & 0/12           & no  & n/a  & 0 \\
+\multicolumn{6}{@{}l}{\textit{Browser phase (paste into an ordinary web field)}}\\
+Grammarly                        & 5 & \textbf{99.0\%} & \textbf{12/12} & yes & \texttt{*.grammarly.com} (WebSocket) \\
+LanguageTool                     & 5 & \textbf{91.9\%} & \textbf{12/12} & yes & \texttt{api.languagetool.org} \\
+No extension (baseline)          & 3 & 0.0\%           & 0/12           & no  & --- \\
+\midrule
+\multicolumn{6}{@{}l}{\textit{Host phase (desktop apps and opening a received file)}}\\
+DeepL desktop (paste)            & 3 & \textbf{99.6\%} & \textbf{12/12} & yes & \texttt{www2.deepl.com} \\
+Word: open \texttt{.docx}, Office AI on  & 3 & \textbf{96.8\%} & \textbf{12/12} & yes & \texttt{augloop.svc.cloud.microsoft} \\
+Word Protected View + Grammarly desktop  & 1 & \textbf{94.2\%} & \textbf{12/12} & yes & \texttt{capi.grammarly.com} \\
+Edge Copilot: summarise PDF      & 3 & \textbf{76.9\%} & \textbf{12/12} & yes & \texttt{copilot.microsoft.com} \\
+Word: open \texttt{.docx}, Office AI off & 1 & 0.0\%   & 0/12           & no  & (socket opens, no content) \\
+Passive: USB / iCloud sync / non-AI viewer & 1 & 0.0\% & 0/12         & no  & (none reach the LLM tools) \\
 \bottomrule
 \end{tabular}
 \end{table*}
