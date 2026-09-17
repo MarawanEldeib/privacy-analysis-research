@@ -546,7 +546,10 @@ applications and the everyday act of opening a received file. The same
 synthetic document and planted secrets were used, captured with the same
 \texttt{mitmproxy} add-on; interception on the host required trusting the proxy
 CA in the Windows store and routing traffic through a system proxy enabled only
-during capture. The results arrange themselves along a spectrum of user action
+during capture. Because a real machine runs several assistants at once, every
+captured flow was attributed to its destination host, so a leak is credited to the
+specific tool responsible rather than to whatever else happened to be running. The
+results arrange themselves along a spectrum of user action
 (Figure~\ref{fig:action-spectrum}).
 
 Figure~\ref{fig:action-spectrum} summarises every condition; the prose below highlights
@@ -624,10 +627,9 @@ integration (Notepad, Adobe~Acrobat, or Chrome's PDF viewer), and for opening th
 without invoking Copilot (0/12; Edge-passive 1.8\% of incidental boilerplate).
 Consumer antivirus (\textbf{Avast}) is a separate class rather than an LLM tool: it
 uploaded an unknown executable to its cloud (CyberCapture) plus reputation and
-telemetry, but not the document's contents. Per-host attribution was essential throughout:
-Grammarly, always running as a background actor, occasionally re-scanned the file and had
-to be attributed away from the tool under test (e.g.\ in the antivirus run) rather than
-mis-credited.
+telemetry, but not the document's contents. This attribution mattered in practice: Grammarly,
+always running in the background, occasionally re-scanned the file and had to be credited
+to itself (e.g.\ in the antivirus run) rather than to the tool under test.
 
 \textbf{Interpretation.} Exposure is surface-dependent, not
 storage-dependent: a file on a USB stick or in a synced cloud folder is not read by
