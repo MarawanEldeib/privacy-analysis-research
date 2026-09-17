@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 420" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arw" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#555555"/></marker>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.12"/></filter>
+  </defs>
+  <text x="60" y="52" font-size="28" font-weight="700" fill="#222222">From captured traffic to an exposure number</text>
+
+  <!-- 4 steps -->
+  <g filter="url(#sh)"><rect x="55" y="110" width="250" height="150" rx="14" fill="#E4EEF2" stroke="#2E5A6E" stroke-width="2"/></g>
+  <text x="180" y="150" font-size="16.5" font-weight="700" fill="#204551" text-anchor="middle">Outbound flow</text>
+  <text x="180" y="178" font-size="14" fill="#204551" text-anchor="middle">request / response /</text>
+  <text x="180" y="198" font-size="14" fill="#204551" text-anchor="middle">WebSocket frame</text>
+
+  <g filter="url(#sh)"><rect x="385" y="110" width="250" height="150" rx="14" fill="#EAF4EE" stroke="#2E7D5B" stroke-width="2"/></g>
+  <text x="510" y="150" font-size="16.5" font-weight="700" fill="#1E5B40" text-anchor="middle">Decompress</text>
+  <text x="510" y="182" font-size="14" fill="#1E5B40" text-anchor="middle">gzip / brotli / zstd</text>
+
+  <g filter="url(#sh)"><rect x="715" y="110" width="250" height="150" rx="14" fill="#EAF4EE" stroke="#2E7D5B" stroke-width="2"/></g>
+  <text x="840" y="150" font-size="16.5" font-weight="700" fill="#1E5B40" text-anchor="middle">Decode variants</text>
+  <text x="840" y="178" font-size="13.5" fill="#1E5B40" text-anchor="middle">plain, base64, UTF-16,</text>
+  <text x="840" y="198" font-size="13.5" fill="#1E5B40" text-anchor="middle">URL, JSON, HTML</text>
+
+  <g filter="url(#sh)"><rect x="1045" y="110" width="290" height="150" rx="14" fill="#EAF4EE" stroke="#2E7D5B" stroke-width="2.6"/></g>
+  <g transform="translate(1085,150)" stroke="#1E5B40" stroke-width="2.6" fill="none"><circle cx="0" cy="0" r="12" fill="#FFFFFF"/><line x1="9" y1="9" x2="18" y2="18"/></g>
+  <text x="1200" y="150" font-size="16.5" font-weight="700" fill="#1E5B40" text-anchor="middle">Match</text>
+  <text x="1200" y="178" font-size="13.5" fill="#1E5B40" text-anchor="middle">20-char window +</text>
+  <text x="1200" y="198" font-size="13.5" fill="#1E5B40" text-anchor="middle">canary + 12 secrets</text>
+
+  <!-- arrows between -->
+  <line x1="305" y1="185" x2="378" y2="185" stroke="#555555" stroke-width="2.4" marker-end="url(#arw)"/>
+  <line x1="635" y1="185" x2="708" y2="185" stroke="#555555" stroke-width="2.4" marker-end="url(#arw)"/>
+  <line x1="965" y1="185" x2="1038" y2="185" stroke="#555555" stroke-width="2.4" marker-end="url(#arw)"/>
+
+  <!-- output -->
+  <g filter="url(#sh)"><rect x="440" y="310" width="520" height="90" rx="14" fill="#FDECEC" stroke="#B23A48" stroke-width="2.4"/></g>
+  <g transform="translate(478,355)" stroke="#8E2434" stroke-width="2.6" fill="none"><line x1="-8" y1="10" x2="-8" y2="-8"/><line x1="0" y1="10" x2="0" y2="-14"/><line x1="8" y1="10" x2="8" y2="-2"/></g>
+  <text x="510" y="348" font-size="16.5" font-weight="700" fill="#7C1F2E">Exposure % (baseline-subtracted),</text>
+  <text x="510" y="374" font-size="15" fill="#7C1F2E">secrets found (x/12), per host</text>
+  <path d="M1190 260 C1120 300, 1000 320, 965 345" stroke="#555555" stroke-width="2.4" fill="none" marker-end="url(#arw)"/>
+</svg>
