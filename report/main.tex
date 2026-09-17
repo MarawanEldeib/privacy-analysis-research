@@ -93,7 +93,7 @@ users' expectations. Our contributions are:
 \section{Background and Threat Model}
 \label{sec:threat}
 
-\paragraph{How these tools work.} A writing-assistant extension registers content
+\textbf{How these tools work.} A writing-assistant extension registers content
 scripts that attach to a page's editable fields, that is, text boxes and rich-text areas
 (in web terms, \texttt{<textarea>} and \texttt{contenteditable} elements), on visited
 pages. When text appears in such a field, the
@@ -101,7 +101,7 @@ extension transmits it, typically over HTTPS or a WebSocket, to its backend,
 which runs the analysis and returns suggestions. Because the analysis is server-side,
 the text itself must leave the user's machine for the feature to function at all.
 
-\paragraph{Intended use versus incidental exposure.} A user's text can reach one of these
+\textbf{Intended use versus incidental exposure.} A user's text can reach one of these
 tools in two ways. In intended use, the user knowingly hands over the text: they
 type into the tool's own editor, or they click an action such as ``paraphrase'' or
 ``summarise.'' Transmission is then expected and effectively consented to. The privacy
@@ -114,7 +114,7 @@ identical conditions. This is how the project's question, how data exposure diff
 tools during controlled use, is answered: by comparing tools on the exposure that occurs
 when the user has not chosen to share.
 
-\paragraph{Threat model.} We model an ordinary, non-adversarial situation:
+\textbf{Threat model.} We model an ordinary, non-adversarial situation:
 
 \begin{quote}
 A user receives a confidential file and is explicitly told not to share it with AI
@@ -228,7 +228,7 @@ extensions read page content largely invisibly to standard data-loss-prevention 
 with much of the data coming from personal, unmonitored accounts~\citep{csa2026extensions,
 cyberhaven2026}.
 
-\paragraph{Research gap.} Prior work either counts how many extensions leak at
+\textbf{Research gap.} Prior work either counts how many extensions leak at
 scale or audits AI assistants broadly; what is missing is a controlled, canary-proven,
 per-secret measurement of how much of a single confidential document leaves the
 machine, across both the browser extensions and the everyday host applications (Office,
@@ -411,7 +411,7 @@ intervals do not overlap, we treat that as informal evidence of a real differenc
 browser tools every run was identical (zero variance), so the interval collapses to the
 reported value.
 
-\paragraph{Code and data availability.} The capture and analysis code, the synthetic memo,
+\textbf{Code and data availability.} The capture and analysis code, the synthetic memo,
 and the planted-secret list are available at
 \url{https://github.com/MarawanEldeib/privacy-analysis-research}.
 
@@ -534,13 +534,13 @@ during capture. The results arrange themselves along a spectrum of user action
 Figure~\ref{fig:action-spectrum} summarises every condition; the prose below highlights
 only the findings that change the interpretation, naming each receiving host inline.
 
-\paragraph{Active submission leaks, as in the browser phase.} The \textbf{DeepL} desktop
+\textbf{Active submission leaks, as in the browser phase.} The \textbf{DeepL} desktop
 client, given the document by paste, transmitted essentially all of it (99.6\% mean over
 three runs) and every secret to DeepL's service backend (\texttt{www2.deepl.com}); the
 whole input was uploaded even though the free tier only translates the first 1500
 characters.
 
-\paragraph{Opening a PDF in a browser assistant leaks it.} Invoking \textbf{Edge's
+\textbf{Opening a PDF in a browser assistant leaks it.} Invoking \textbf{Edge's
 Copilot} to summarise the planted PDF transmitted \textbf{76.9\%} of the file and all
 twelve secrets to \texttt{copilot.microsoft.com} (three runs, identical). This matters
 because Edge is the default PDF handler on Windows for many users, so merely opening a
@@ -554,12 +554,13 @@ included, had already been sent to Microsoft. A model declining to display a sec
 therefore not evidence that the secret was not transmitted; the privacy boundary is the
 network, not the chat reply. We saw the same pattern informally with a second assistant
 (Anthropic's Claude) outside the measured runs, where it declined to reproduce sensitive
-content in its reply although the request had already carried the text to the server;
-these observations were not instrumented and are not counted in our results, but they
+content in its reply although the request had already carried the text to the server, and
+on occasion did not honour a later request to disregard the content at all; these
+observations were not instrumented and are not counted in our results, but they
 suggest this gap is a general property of chat assistants rather than a quirk of one
 product.
 
-\paragraph{Merely opening a document in Word leaks it.} Opening the same document as a
+\textbf{Merely opening a document in Word leaks it.} Opening the same document as a
 \texttt{.docx}, with no paste and no submission, streamed \textbf{96.8\%} of it and every
 secret to \texttt{augloop.svc.cloud.microsoft} (Microsoft's ``Augmentation Loop,'' the
 cloud backend for Office's Editor/Copilot services, via posts to an
@@ -571,7 +572,7 @@ and GDPR commitments for the processing~\citep{microsoft2026copilotprivacy}. The
 exfiltration therefore came from the default productivity suite itself, not an
 add-in.
 
-\paragraph{Disabling one setting stops it (causation and mitigation).} Turning off the
+\textbf{Disabling one setting stops it (causation and mitigation).} Turning off the
 single Office setting ``experiences that analyse your content'' (File $>$ Account $>$
 Account Privacy $>$ Manage Settings, under Connected Experiences) and reopening the same
 file reduced augloop's transmission to \textbf{0\%} (0/12), with the socket still opening
@@ -580,7 +581,7 @@ the act of opening a file, is the cause, and gives users a concrete one-switch m
 It removes Microsoft's own channel only, however: a third-party assistant hooking the same
 window is unaffected, as the Protected View result next shows.
 
-\paragraph{Protected View does not stop a third-party assistant.} When the file carried a
+\textbf{Protected View does not stop a third-party assistant.} When the file carried a
 mark-of-the-web and opened in Word's sandboxed Protected View (the yellow ``Enable
 Editing'' banner still showing, no user action), Microsoft's own augloop stayed silent,
 Protected View contained it, but the \textbf{Grammarly} desktop client, hooking the text
@@ -588,7 +589,7 @@ at the accessibility layer, still transmitted \textbf{94.2\%} of the document an
 secret to \texttt{capi.grammarly.com}. Protected View thus sandboxes macros and even
 Microsoft's own AI, but not an independent assistant reading the same window.
 
-\paragraph{A file merely stored on a USB or cloud drive is not read by the tools.} A
+\textbf{A file merely stored on a USB or cloud drive is not read by the tools.} A
 distinct question is whether a confidential file leaks simply by being stored on a
 removable drive or a synced cloud folder while the writing assistants run in the
 background. It does not. Inserting the USB without opening the file (only the Windows
@@ -609,7 +610,7 @@ Grammarly, always running as a background actor, occasionally re-scanned the fil
 to be attributed away from the tool under test (e.g.\ in the antivirus run) rather than
 mis-credited.
 
-\paragraph{Interpretation.} Exposure is surface-dependent, not
+\textbf{Interpretation.} Exposure is surface-dependent, not
 storage-dependent: a file on a USB stick or in a synced cloud folder is not read by
 the writing tools until its text enters a surface they watch, so passively receiving or
 opening a file transmits nothing unless that surface has a cloud-AI integration watching
@@ -673,7 +674,7 @@ on-demand), while others send silently in the background the moment text appears
 because that is how they work, even when the user never meant to share (passive). The
 grammar checkers we tested are the silent, background kind.
 
-\paragraph{Regulatory implications (EU/GDPR and Germany).} Because the memo contains
+\textbf{Regulatory implications (EU/GDPR and Germany).} Because the memo contains
 personal data (names and an employee identifier), the behaviour we measure engages the
 EU General Data Protection Regulation (GDPR, Regulation (EU)~2016/679). A silent,
 whole-document upload sits in tension with several of its principles: lawfulness and
@@ -695,7 +696,7 @@ the invisibility of the transfer, not merely its occurrence, the core
 data-protection concern. We offer no legal determination; establishing a violation is
 fact-specific and beyond a measurement study.
 
-\paragraph{Broader impact.} The concern is not only that a document is copied once, but
+\textbf{Broader impact.} The concern is not only that a document is copied once, but
 what happens to it afterwards, which is beyond what this study measures yet is what makes
 the measurement matter. Text captured by default feeds a vendor's own processing and,
 potentially, model training, and once it leaves the machine it can be retained, combined
@@ -764,7 +765,7 @@ after, and it shows the exposure is invisible, effectively complete, and repeata
 than occasional. That one Office setting removes the largest passive leak shows the
 behaviour is a configuration choice, not a technical necessity.
 
-\paragraph{Future work.} The clearest next direction, raised in supervision, is to
+\textbf{Future work.} The clearest next direction, raised in supervision, is to
 classify the leaked data by type: an automatic labelling of which categories of personal
 information (names, contact details, financial data, identifiers) each tool transmits. This
 would extend the automated PII sweep with Microsoft Presidio~\citep{microsoft2018presidio},
