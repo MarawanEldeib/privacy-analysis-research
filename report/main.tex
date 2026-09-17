@@ -519,15 +519,6 @@ uploaded several kilobytes. Without the proxy the traffic is encrypted, so we ca
 its contents, but the destination and timing show the upload happens even with nothing
 intercepting it. The proxy only observes the leak; it does not cause it.
 
-\subsection{Background behaviour when idle}
-
-With the extension loaded but no user action for twenty minutes (a positive control, the
-browser's own background traffic, confirmed the capture was live), Grammarly was not
-dormant: it kept contacting its backend for authentication, configuration, and telemetry.
-But \textbf{none of this idle traffic carried document content or any planted secret}
-(0 of 12). The tool is therefore always connected in the background, yet the document
-itself leaves only once the user supplies text: exposure is input-triggered.
-
 \subsection{Delivery channel: browser extension vs.\ desktop client}
 
 A preliminary desktop probe reinforces that the exposure is a property of the
