@@ -786,21 +786,17 @@ exactly what this study quantifies.
 \label{sec:limitations}
 
 We measured across several surfaces (browser extensions on an isolated Linux VM; desktop,
-Office, and OS tools on Windows~11, since several desktop tools are unavailable on Linux),
-which strengthens external validity. The main limits are:
-
-\begin{itemize}[nosep]
-  \item \textbf{Unreadable traffic (lower bound).} Certificate pinning blocks interception
-        on some channels (e.g.\ \texttt{*.events.data.microsoft.com}, some Adobe and Google
-        endpoints); content we cannot decrypt is not counted, so every figure is a lower
-        bound. The proxy CA is trusted only in the isolated test profile and we report raw
-        traffic unmodified~\citep{durumeric2017https}.
-  \item \textbf{Native desktop clients.} A native app can use sockets that ignore the system
-        proxy: the Grammarly Windows client on Notepad sent only telemetry through the proxy
-        while opening a direct connection we could not inspect, so that case is reported as
-        unmeasured, not zero. Proxy-captured results (browser extensions, Office, Grammarly
-        in Word) are unaffected.
-\end{itemize}
+Office, and operating-system tools on Windows~11, since several desktop tools are
+unavailable on Linux), which strengthens external validity. Two limits apply. First,
+traffic protected by certificate pinning cannot be read (for example
+\texttt{*.events.data.microsoft.com} and some Adobe and Google endpoints); content we
+cannot decrypt is not counted, so every reported figure is a lower bound. The proxy CA is
+trusted only in the isolated test profile, and we report the raw traffic
+unmodified~\citep{durumeric2017https}. Second, a native application can use sockets that
+ignore the system proxy: the Grammarly Windows client on Notepad sent only telemetry
+through the proxy while opening a direct connection we could not inspect, so that case is
+reported as unmeasured rather than zero; results captured through the proxy (browser
+extensions, Office, and Grammarly in Word) are unaffected.
 
 \section{Ethics and Responsible Disclosure}
 
