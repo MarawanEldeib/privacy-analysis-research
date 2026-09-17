@@ -239,7 +239,7 @@ gap.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/cgpt_overview.png}
+\includegraphics[width=0.72\textwidth]{figures/cgpt_overview.png}
 \caption{Overview of the measurement pipeline. The synthetic memo (with twelve planted
 secrets and a UUID canary) enters the tool under test, whose traffic is intercepted by
 mitmproxy on \texttt{127.0.0.1:8080}; a capture add-on decodes and matches the outbound
@@ -338,7 +338,7 @@ drift.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.9\textwidth]{figures/cgpt_browser_phase.png}
+\includegraphics[width=0.7\textwidth]{figures/cgpt_browser_phase.png}
 \caption{Browser phase. On an isolated Kali Linux VM, the canary memo is pasted into a
 bare local page; the extension reads the field and transmits over HTTPS/WebSocket through
 mitmproxy to the vendor. A positive control (example.com) confirms interception is live.}
@@ -360,7 +360,7 @@ running.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.9\textwidth]{figures/cgpt_host_phase.png}
+\includegraphics[width=0.7\textwidth]{figures/cgpt_host_phase.png}
 \caption{Host phase (Windows 11). Native applications and Office reach the network through
 the system proxy (WinINET + WinHTTP), which forwards to mitmproxy. WinHTTP is required
 because native clients bypass a browser-only proxy; every flow is attributed to its
@@ -421,7 +421,7 @@ and the planted-secret list are available at
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.86\textwidth]{figures/cgpt_detection.png}
+\includegraphics[width=0.68\textwidth]{figures/cgpt_detection.png}
 \caption{From captured traffic to an exposure number: each outbound flow is decompressed,
 decoded across encodings, and matched with a 20-character sliding window plus the canary
 and twelve secrets, yielding a baseline-subtracted exposure percentage and per-host
