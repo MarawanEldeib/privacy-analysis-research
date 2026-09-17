@@ -640,14 +640,11 @@ cloud-AI-enabled editor.
   \centering
   \includegraphics[width=\columnwidth]{figures/cgpt_action_spectrum.png}
   \caption{Document characters transmitted to external servers, by user action.
-  Submitting to a cloud AI tool (DeepL, Grammarly, LanguageTool, invoked Edge~Copilot)
-  or simply opening the document in Microsoft~Word leaks nearly all of it and
-  every planted secret; disabling one Office setting drops the Word leak to 0\%, and
-  passive receipt (USB, iCloud sync) or non-AI viewers (Notepad, Acrobat, browser PDF)
-  transmit no document content. Colour encodes the interaction class; $N$ is the number
-  of independent runs (browser writing assistants 5, standard deviation~0;
-  Word/DeepL/Edge-Copilot 2--3; other host probes single-run), so equal bar lengths
-  should not be read as equal statistical weight.}
+  Submitting to a cloud AI tool or simply opening the document in Word leaks nearly all of
+  it and every planted secret; one Office setting drops the Word leak to 0\%, and passive
+  receipt or non-AI viewers transmit nothing. Colour encodes the interaction class; the
+  per-bar run count $N$ varies (see Table~\ref{tab:results}), so equal bar lengths are not
+  equal statistical weight.}
   \label{fig:action-spectrum}
 \end{figure}
 
