@@ -455,10 +455,10 @@ Baseline     & 3 & 0.0\%           & 0.0 pp & 0/12           & no  & n/a  & 0 \\
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.85\linewidth]{figures/exposure_chart.pdf}
+\includegraphics[width=0.85\linewidth]{figures/cgpt_exposure.png}
 \caption{Share of the confidential document transmitted to each tool's servers by
 default. Both grammar checkers transmit essentially the whole document and all twelve
-planted secrets; the no-extension baseline transmits nothing.}
+planted secrets (the no-extension baseline, in Table~\ref{tab:results}, transmits nothing).}
 \label{fig:exposure}
 \end{figure}
 
@@ -476,10 +476,10 @@ ID number affords any protection.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.72\linewidth]{figures/info_type_breakdown.pdf}
+\includegraphics[width=0.72\linewidth]{figures/cgpt_infotypes.png}
 \caption{Information types transmitted to each tool's servers, grouped from the twelve
-planted secrets (planted items exposed / items in type, over $\geq$1 run). Both writing
-assistants expose every type; the no-extension baseline exposes none.}
+planted secrets. Both writing assistants expose every type (the no-extension baseline
+exposes none).}
 \label{fig:infotypes}
 \end{figure*}
 
@@ -523,7 +523,7 @@ system.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.8\linewidth]{figures/traffic_timeline.pdf}
+\includegraphics[width=0.8\linewidth]{figures/cgpt_timeline.png}
 \caption{Traffic over time for a representative run. Both writing assistants transmit the
 document in a single outbound burst at the moment of paste (blue); the no-extension
 baseline produces only background traffic (grey) and never transmits document content.
@@ -682,7 +682,7 @@ cloud-AI-enabled editor.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{figures/action_spectrum.pdf}
+  \includegraphics[width=\columnwidth]{figures/cgpt_action_spectrum.png}
   \caption{Document characters transmitted to external servers, by user action.
   Submitting to a cloud AI tool (DeepL, Grammarly, LanguageTool, invoked Edge~Copilot)
   or merely opening the document in Microsoft~Word leaks nearly all of it and
