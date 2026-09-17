@@ -429,7 +429,9 @@ Table~\ref{tab:results} and Figure~\ref{fig:exposure} summarise the findings. Bo
 extensions transmitted essentially the entire document and \textbf{all twelve planted
 secrets, including the canary}, to their servers. Grammarly transmitted a median
 \textbf{99.0\%} of the document's characters; LanguageTool transmitted \textbf{91.9\%}.
-The no-extension baseline transmitted \textbf{0.0\%} and none of the secrets. All
+Every run of each tool was identical (standard deviation 0.0~pp), so these are deterministic
+observations rather than sampling estimates and the 95\% confidence intervals collapse to
+points. The no-extension baseline transmitted \textbf{0.0\%} and none of the secrets. All
 transmission used HTTPS, and there were zero un-interceptable TLS handshakes, so the reported figures are complete, not lower bounds.
 
 \begin{table*}[t]
@@ -498,16 +500,6 @@ credential-harvesting operations mine from client-side code and application
 traffic~\citep{anthropic2026threats}. A writing assistant that emits its own session
 credential alongside the user's text is therefore leaking a directly abusable secret, not
 just personal data.
-
-\subsection{Exact reproducibility}
-
-Both tools produced identical exposure on every run (standard deviation
-0.0~percentage points), so we report this as a deterministic observation rather
-than a sampling estimate: the 95\% confidence intervals collapse to points (Grammarly
-$[99.0,99.0]$, LanguageTool $[91.9,91.9]$) and carry no significance claim. Practically,
-pasting the document causes the same near-complete transmission every time, consistent
-with the upload being a fixed part of the tools' normal operation rather than an
-occasional event.
 
 \subsection{What was transmitted, and how}
 
