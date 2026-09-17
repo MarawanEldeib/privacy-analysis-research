@@ -90,8 +90,9 @@ users' expectations. Our contributions are:
 \label{sec:threat}
 
 \paragraph{How these tools work.} A writing-assistant extension registers content
-scripts that attach to editable elements (\texttt{<textarea>} and
-\texttt{[contenteditable]}) on visited pages. When text appears in such a field, the
+scripts that attach to a page's editable fields, that is, text boxes and rich-text areas
+(in web terms, \texttt{<textarea>} and \texttt{contenteditable} elements), on visited
+pages. When text appears in such a field, the
 extension transmits it, typically over HTTPS or a WebSocket, to its backend,
 which runs the analysis and returns suggestions. Because the analysis is server-side,
 the text itself must leave the user's machine for the feature to function at all.
