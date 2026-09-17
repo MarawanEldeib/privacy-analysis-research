@@ -397,11 +397,11 @@ report, in order of importance:
         in percentage points (pp), labelled High ($<3$~pp), Medium ($3$--$10$~pp), or
         Low ($>10$~pp).
   \item[Traffic visibility.] Reported as two separate numbers: the share of
-        intercepted events that used HTTPS, and the count of TLS handshakes that could
-        not be intercepted (for example due to certificate pinning\footnote{Certificate
-        pinning is when an application accepts only its own expected TLS certificate, so an
-        intercepting proxy cannot decrypt that connection; the TLS handshake is the initial
-        exchange that sets up the encrypted channel.}), never combined into a single
+        intercepted events that used HTTPS, and the count of TLS handshakes (the initial
+        exchange that sets up an encrypted connection) that could not be intercepted, for
+        example due to certificate pinning, where an application accepts only its own
+        expected certificate so an intercepting proxy cannot decrypt that connection. These
+        are never combined into a single
         figure, because a non-zero failure count means the exposure result is a lower
         bound (traffic we cannot decrypt could only add to what was sent, never subtract).
 \end{description}
