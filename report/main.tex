@@ -268,8 +268,8 @@ The input is a synthetic ``confidential memo'' (2{,}065 characters, 245 words) w
 to look like an internal compliance document and explicitly marked
 ``\textsc{do not forward}.'' Embedded in its prose are twelve unique,
 fictional identifiers: names, an email address, a phone number, project and
-reference codes, and a UUID canary, \canary{}. None of these strings exists
-anywhere on the public internet, so any occurrence in captured network traffic is
+reference codes, and a UUID canary, \canary{}. None of these strings existed
+anywhere on the public internet when captured, so any occurrence in captured network traffic is
 unambiguously attributable to our input. The canary in particular gives a single,
 unforgeable yes/no signal: if it appears in outbound traffic, the confidential payload
 provably reached the tool's servers. Table~\ref{tab:secrets} lists the twelve identifiers
@@ -441,12 +441,12 @@ Table~\ref{tab:results} summarises every measured condition and its receiving ho
 both phases; this subsection covers the browser phase, and the host phase follows in
 Section~\ref{sec:action-spectrum}. Both
 extensions transmitted essentially the entire document and \textbf{all twelve planted
-secrets, including the canary}, to their servers. Grammarly transmitted a median
+secrets, including the canary}, to their servers. Grammarly transmitted a mean
 \textbf{99.0\%} of the document's characters; LanguageTool transmitted \textbf{91.9\%}.
 Every run of each tool was identical (standard deviation 0.0~pp), so these are deterministic
 observations rather than sampling estimates and the 95\% confidence intervals collapse to
 points. The no-extension baseline transmitted \textbf{0.0\%} and none of the secrets. All
-transmission used HTTPS, and there were zero un-interceptable TLS handshakes, so the reported figures are complete, not lower bounds.
+transmission used HTTPS, and there were zero un-interceptable TLS handshakes, so these browser-phase figures are complete, not lower bounds; host-phase figures can be lower bounds where a client pins its certificate (Section~\ref{sec:limitations}).
 
 \begin{table*}[t]
 \centering
@@ -516,7 +516,7 @@ just personal data.
 
 \subsection{What was transmitted, and how}
 
-Grammarly streamed the document to its backend over a WebSocket connection (a median of
+Grammarly streamed the document to its backend over a WebSocket connection (a mean of
 roughly 6~kB of outbound payload per run across about two tool-related hosts); LanguageTool
 sent it as an HTTPS \texttt{POST} to its own check endpoint (roughly
 5.6~kB to a single host). In both cases the twelve planted identifiers, including the canary,
@@ -742,9 +742,12 @@ Office, and operating-system tools on Windows~11, since several desktop tools ar
 unavailable on Linux), which strengthens external validity. Two limits apply. First,
 traffic protected by certificate pinning cannot be read (for example
 \texttt{*.events.data.microsoft.com} and some Adobe and Google endpoints); content we
-cannot decrypt is not counted, so every reported figure is a lower bound. The proxy CA is
-trusted only in the isolated test profile, and we report the raw traffic
-unmodified~\citep{durumeric2017https}. Second, a native application can use sockets that
+cannot decrypt is not counted, so any host-phase figure affected by pinning is a lower
+bound; the browser phase had zero failed handshakes. In the browser phase the proxy CA was
+trusted only in the isolated Firefox profile; in the host phase it was added to the Windows
+certificate store for the capture window and removed afterwards, with only
+synthetic-document flows retained. Interception can itself weaken the observed
+connection~\citep{durumeric2017https}. Second, a native application can use sockets that
 ignore the system proxy: the Grammarly Windows client on Notepad sent only telemetry
 through the proxy while opening a direct connection we could not inspect, so that case is
 reported as unmeasured rather than zero; results captured through the proxy (browser
