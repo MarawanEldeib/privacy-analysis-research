@@ -140,7 +140,8 @@ decade. \citet{starov2017extended} were among the first to systematically measur
 ``privacy diffusion'' enabled by extensions, showing that many leak identifying
 information far beyond what their function requires. \citet{weissbacher2017exray}
 built Ex-Ray to detect history-leaking extensions, and \citet{aggarwal2018ispy}
-analysed and detected ``spying'' extensions that exfiltrate browsing behaviour.
+analysed and detected ``spying'' extensions that exfiltrate (covertly transmit) browsing
+behaviour.
 \citet{chen2018mystique} scaled dynamic taint tracking to 181{,}683 extensions,
 flagging thousands that leak privacy-sensitive information. These works established
 that extension data collection is widespread and frequently undisclosed. They also
@@ -172,7 +173,8 @@ The most behaviourally similar precedent is ``read-before-submit'' exfiltration:
 third parties as the user types, before any form is submitted;
 \citet{munir2025keystroke} recently generalised this, finding widespread third-party
 keystroke event-listener interception across popular sites, and
-\citet{starov2016contactforms} earlier quantified PII leaking from website contact forms.
+\citet{starov2016contactforms} earlier quantified personally identifiable information (PII)
+leaking from website contact forms.
 We extend that ``transmitted before the user acts'' framing from trackers to
 writing-assistant extensions. Methodologically, our detection step, searching
 intercepted flows for known sensitive strings, follows a mature network-level
@@ -205,7 +207,7 @@ recovering training examples from deployed systems such as ChatGPT;
 and differential privacy leave residual exposure. \citet{staab2024beyond} showed that
 models can infer sensitive attributes (location, age, income) from ordinary prose;
 and \citet{mireshghallah2024cansecret} showed that LLM-integrated applications routinely
-disclose information to contextually inappropriate recipients. Text sent to a writing
+disclose information to recipients that are inappropriate for the context. Text sent to a writing
 assistant is therefore not inert once it leaves the machine, which is precisely what
 makes quantifying how much of it leaves, and to whom, worthwhile. This gap between what
 users believe about their exposure and what actually leaves their devices has itself
@@ -347,8 +349,10 @@ mitmproxy to the vendor. A positive control (example.com) confirms interception 
 Several desktop tools (Microsoft~Office, the DeepL desktop client, Edge/Copilot) are not
 available on Linux, so the host phase was run on a Windows~11 laptop using the same
 interception principle. mitmproxy ran the same scoring add-on, and both the WinINET and
-WinHTTP system proxies were pointed at it: native applications such as Office and the
-Grammarly desktop client use WinHTTP and would otherwise bypass a browser-only proxy. Each
+WinHTTP system proxies were pointed at it. WinINET carries browser and interactive-app
+traffic; WinHTTP carries native and background apps. Office and the Grammarly desktop
+client use WinHTTP and would bypass a WinINET-only (browser) proxy, so covering both is
+what makes the host capture complete. Each
 condition used the same synthetic memo and canary. Because a real machine runs several
 assistants at once, every captured flow was attributed to its destination host, so a leak
 is credited to the specific tool responsible rather than to whatever else happened to be
@@ -385,7 +389,8 @@ report, in order of importance:
         baseline-subtracted outbound traffic matched over all decoded variants.
         A 20-character window is long enough to avoid false
         matches from common words and short enough to catch fragmented sends; a
-        per-host concatenated-transcript pass additionally catches content split
+        per-host concatenated-transcript pass (all of a host's traffic joined into one
+        stream) additionally catches content split
         across multiple frames. Matching is performed over plain, URL-decoded,
         JSON-unescaped, HTML-entity, base64-decoded, and UTF-16 variants so that encoded
         transmission is still detected, and compressed bodies (gzip, brotli, zstd) are
