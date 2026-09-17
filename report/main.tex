@@ -767,20 +767,25 @@ data-protection concern. We offer no legal determination; establishing a violati
 fact-specific and beyond a measurement study.
 
 \paragraph{Broader impact.} The concern is not only that a document is copied once, but
-what happens to it afterwards. Text captured by default feeds a vendor's own processing
-and, potentially, model training, and once it leaves the machine it can be retained,
-combined with other data, and passed to parties the user never chose, a pattern users
-rarely notice because it is authorised deep in terms of service almost no one
-reads~\citep{anthropic2026threats}. As these tools gain broader access and more autonomy,
-the same silent collection scales from individuals to the organisations whose confidential
-data flows through them. The risk is sharpest where personal data reaches actors with
-strong incentives to exploit it, including data brokers and security or defence contractors
-that assemble personal profiles: data gathered for a mundane ``writing help'' feature can,
-once pooled and resold, support profiling and targeting well beyond its original purpose,
-and models can already infer sensitive attributes from ordinary text~\citep{staab2024beyond}.
-Measuring the exposure precisely, rather than assuming vendor assurances hold, is what makes
-the downstream risk assessable: the gap between stated safeguards and observed behaviour is
-exactly what this study quantifies.
+what happens to it afterwards, which is beyond what this study measures yet is what makes
+the measurement matter. Text captured by default feeds a vendor's own processing and,
+potentially, model training, and once it leaves the machine it can be retained, combined
+with other data, and passed to parties the user never chose. This is rarely noticed because
+it is permitted deep in terms of service that few people read; vendors' own documentation
+confirms that content is processed and retained in the cloud by
+default~\citep{microsoft2026copilotprivacy}. As these tools gain broader access and act more
+autonomously, the same silent collection scales from individuals to the organisations whose
+confidential data flows through them, and the safeguards vendors state do not always hold in
+practice: threat-intelligence reporting documents real misuse of deployed AI systems, some
+caught only after harm had occurred~\citep{anthropic2026threats}. The risk is sharpest where
+personal data reaches actors with strong incentives to exploit it, such as data brokers and
+security or defence contractors that assemble personal profiles: data gathered for a mundane
+``writing help'' feature can, once pooled and resold, support profiling and targeting far
+beyond its original purpose, and models can already infer sensitive attributes from ordinary
+text~\citep{staab2024beyond}. These downstream harms lie outside this paper's measurement
+scope; quantifying the exposure precisely, rather than trusting vendor assurances, is the
+necessary first step to reasoning about them, and the gap between stated safeguards and
+observed behaviour is exactly what this study measures.
 
 \section{Limitations}
 \label{sec:limitations}
