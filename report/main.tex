@@ -519,20 +519,6 @@ uploaded several kilobytes. Without the proxy the traffic is encrypted, so we ca
 its contents, but the destination and timing show the upload happens even with nothing
 intercepting it. The proxy only observes the leak; it does not cause it.
 
-\subsection{Delivery channel: browser extension vs.\ desktop client}
-
-A preliminary desktop probe reinforces that the exposure is a property of the
-browser-extension delivery rather than of grammar checking itself. LanguageTool's
-official standalone desktop application (version~6.6, obtained from the vendor's own
-site) was run through the identical interception setup and given the same document: it
-performed the check entirely on-device and transmitted \textbf{nothing}, 0\% of the
-document and 0 of 12 secrets, whereas the same vendor's browser extension transmitted
-91.9\% and all twelve secrets to \texttt{api.languagetool.org}. The desktop client
-exposes no option to use a remote server, so the on-device path is not merely available
-but the only one. This is a single-run probe on one desktop client, reported as an
-indication rather than a main result; the fuller desktop and system-level study
-follows in Section~\ref{sec:action-spectrum}.
-
 \subsection{Desktop and system-level exposure: an action spectrum}
 \label{sec:action-spectrum}
 
