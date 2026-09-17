@@ -425,7 +425,7 @@ attribution.}
 
 \subsection{Headline: both tools transmit the whole document and every secret}
 
-Table~\ref{tab:results} and Figure~\ref{fig:exposure} summarise the findings. Both
+Table~\ref{tab:results} summarises the findings. Both
 extensions transmitted essentially the entire document and \textbf{all twelve planted
 secrets, including the canary}, to their servers. Grammarly transmitted a median
 \textbf{99.0\%} of the document's characters; LanguageTool transmitted \textbf{91.9\%}.
@@ -453,15 +453,6 @@ Baseline     & 3 & 0.0\%           & 0.0 pp & 0/12           & no  & n/a  & 0 \\
 \end{tabular}
 \end{table*}
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.85\linewidth]{figures/cgpt_exposure.png}
-\caption{Share of the confidential document transmitted to each tool's servers by
-default. Both grammar checkers transmit essentially the whole document and all twelve
-planted secrets (the no-extension baseline, in Table~\ref{tab:results}, transmits nothing).}
-\label{fig:exposure}
-\end{figure}
-
 \subsection{Information types transmitted}
 \label{sec:infotypes}
 
@@ -469,19 +460,10 @@ Grouping the twelve planted secrets by type shows that the leak is not confined
 to any single class of data. Both tools transmitted every information type present in
 the document (personal names, contact details, official identification numbers,
 financial codes, a legal contract reference, the confidential project codename, and the
-unique canary), while the no-extension baseline transmitted none of them
-(Figure~\ref{fig:infotypes}). Structured identifiers and regulated personal data are
+unique canary), while the no-extension baseline transmitted none of them.
+Structured identifiers and regulated personal data are
 therefore exfiltrated just as readily as free-text prose; nothing about being a formatted
 ID number affords any protection.
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.72\linewidth]{figures/cgpt_infotypes.png}
-\caption{Information types transmitted to each tool's servers, grouped from the twelve
-planted secrets. Both writing assistants expose every type (the no-extension baseline
-exposes none).}
-\label{fig:infotypes}
-\end{figure*}
 
 \subsection{Beyond the planted secrets: a transmitted credential}
 
