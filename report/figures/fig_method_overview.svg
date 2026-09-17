@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 780" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arw" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#333333"/>
+    </marker>
+    <marker id="arwT" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#2E5A6E"/>
+    </marker>
+    <marker id="arwG" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#2E7D5B"/>
+    </marker>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <text x="60" y="56" font-size="30" font-weight="700" fill="#222222">Measurement pipeline</text>
+
+  <!-- ================= Row 1 ================= -->
+  <!-- Memo -->
+  <g filter="url(#sh)">
+    <rect x="60" y="110" width="360" height="150" rx="14" fill="#FBF4E8" stroke="#C9A227" stroke-width="2"/>
+  </g>
+  <circle cx="112" cy="150" r="24" fill="#F0E2C4"/>
+  <g stroke="#8A6D1E" stroke-width="2.4" fill="none">
+    <rect x="100" y="136" width="24" height="30" rx="2" fill="#FFFFFF"/>
+    <line x1="105" y1="144" x2="119" y2="144"/><line x1="105" y1="150" x2="119" y2="150"/><line x1="105" y1="156" x2="115" y2="156"/>
+  </g>
+  <text x="150" y="146" font-size="20" font-weight="700" fill="#5C4A12">Synthetic memo</text>
+  <text x="150" y="176" font-size="17" fill="#5C4A12">12 planted secrets</text>
+  <text x="150" y="200" font-size="17" fill="#5C4A12">+ UUID canary</text>
+
+  <!-- Tool -->
+  <g filter="url(#sh)">
+    <rect x="520" y="110" width="360" height="150" rx="14" fill="#FDECEC" stroke="#B23A48" stroke-width="2"/>
+  </g>
+  <circle cx="572" cy="150" r="24" fill="#F6D6D6"/>
+  <g stroke="#8E2434" stroke-width="2.4" fill="none">
+    <rect x="559" y="136" width="26" height="20" rx="2" fill="#FFFFFF"/>
+    <line x1="559" y1="143" x2="585" y2="143"/><circle cx="563" cy="140" r="1.2" fill="#8E2434"/>
+  </g>
+  <text x="612" y="140" font-size="20" font-weight="700" fill="#7C1F2E">Tool under test</text>
+  <text x="612" y="168" font-size="16" fill="#7C1F2E">browser extension /</text>
+  <text x="612" y="190" font-size="16" fill="#7C1F2E">desktop app / Office</text>
+
+  <!-- Vendor -->
+  <g filter="url(#sh)">
+    <rect x="980" y="110" width="360" height="150" rx="14" fill="#FDECEC" stroke="#B23A48" stroke-width="2"/>
+  </g>
+  <circle cx="1032" cy="150" r="24" fill="#F6D6D6"/>
+  <g stroke="#8E2434" stroke-width="2.4" fill="none">
+    <path d="M1020 152 a12 8 0 0 1 3 -15 a10 9 0 0 1 19 2 a9 8 0 0 1 2 13 z" fill="#FFFFFF"/>
+  </g>
+  <text x="1072" y="140" font-size="20" font-weight="700" fill="#7C1F2E">Vendor servers</text>
+  <text x="1072" y="168" font-size="15" fill="#7C1F2E">capi.grammarly.com,</text>
+  <text x="1072" y="190" font-size="15" fill="#7C1F2E">augloop, www2.deepl.com</text>
+
+  <!-- Row1 arrows -->
+  <line x1="420" y1="185" x2="512" y2="185" stroke="#333333" stroke-width="2.4" marker-end="url(#arw)"/>
+  <text x="466" y="176" font-size="15" fill="#333333" text-anchor="middle" font-style="italic">paste / open</text>
+  <line x1="880" y1="185" x2="972" y2="185" stroke="#333333" stroke-width="2.4" marker-end="url(#arw)"/>
+  <text x="926" y="176" font-size="15" fill="#333333" text-anchor="middle" font-style="italic">TLS</text>
+  <text x="926" y="200" font-size="15" fill="#333333" text-anchor="middle">&#128274;</text>
+
+  <!-- ================= Proxy (center) ================= -->
+  <line x1="700" y1="260" x2="700" y2="352" stroke="#2E5A6E" stroke-width="2.4" marker-end="url(#arwT)"/>
+  <text x="712" y="300" font-size="15" fill="#2E5A6E" font-style="italic">intercept</text>
+  <g filter="url(#sh)">
+    <rect x="520" y="356" width="360" height="120" rx="14" fill="#E4EEF2" stroke="#2E5A6E" stroke-width="2.4"/>
+  </g>
+  <g transform="translate(566,416)" stroke="#2E5A6E" stroke-width="2.6" fill="none">
+    <path d="M0,-22 L20,-14 V2 C20,14 10,22 0,26 C-10,22 -20,14 -20,2 V-14 Z" fill="#FFFFFF"/>
+    <path d="M-8,2 L-2,9 L10,-6" stroke-width="3"/>
+  </g>
+  <text x="612" y="404" font-size="21" font-weight="700" fill="#204551">mitmproxy</text>
+  <text x="612" y="430" font-size="16" fill="#204551">127.0.0.1:8080</text>
+  <text x="612" y="452" font-size="16" fill="#204551">HTTPS + WebSocket</text>
+  <text x="700" y="500" font-size="14" fill="#666666" text-anchor="middle" font-style="italic">CA trusted only in the isolated test profile</text>
+
+  <!-- ================= Row 3 ================= -->
+  <!-- Capture add-on -->
+  <g filter="url(#sh)">
+    <rect x="60" y="560" width="470" height="150" rx="14" fill="#EAF4EE" stroke="#2E7D5B" stroke-width="2"/>
+  </g>
+  <circle cx="112" cy="600" r="24" fill="#CFE7DA"/>
+  <g stroke="#1E5B40" stroke-width="2.6" fill="none">
+    <circle cx="108" cy="596" r="9" fill="#FFFFFF"/><line x1="115" y1="603" x2="122" y2="610"/>
+  </g>
+  <text x="150" y="592" font-size="20" font-weight="700" fill="#1E5B40">Capture add-on</text>
+  <text x="150" y="618" font-size="15.5" fill="#1E5B40">decode gzip / brotli / zstd; match plain /</text>
+  <text x="150" y="640" font-size="15.5" fill="#1E5B40">base64 / UTF-16; 20-char window</text>
+  <text x="150" y="662" font-size="15.5" fill="#1E5B40">+ canary check</text>
+
+  <!-- Output -->
+  <g filter="url(#sh)">
+    <rect x="760" y="560" width="470" height="150" rx="14" fill="#EEF1F1" stroke="#4C6663" stroke-width="2"/>
+  </g>
+  <circle cx="812" cy="600" r="24" fill="#D8E0DF"/>
+  <g stroke="#33403E" stroke-width="2.6" fill="none">
+    <line x1="802" y1="610" x2="802" y2="590"/><line x1="810" y1="610" x2="810" y2="584"/><line x1="818" y1="610" x2="818" y2="596"/>
+  </g>
+  <text x="852" y="592" font-size="20" font-weight="700" fill="#2B3735">Per-run output</text>
+  <text x="852" y="618" font-size="15.5" fill="#2B3735">Exposure %, secrets found (x/12),</text>
+  <text x="852" y="640" font-size="15.5" fill="#2B3735">per-host attribution,</text>
+  <text x="852" y="662" font-size="15.5" fill="#2B3735">baseline-subtracted</text>
+
+  <!-- Row3 arrows -->
+  <path d="M560 452 C420 500, 320 520, 295 552" stroke="#2E7D5B" stroke-width="2.4" fill="none" marker-end="url(#arwG)"/>
+  <text x="360" y="520" font-size="15" fill="#2E7D5B" font-style="italic">decrypted flows</text>
+  <line x1="530" y1="635" x2="752" y2="635" stroke="#333333" stroke-width="2.4" marker-end="url(#arw)"/>
+  <text x="641" y="626" font-size="15" fill="#333333" text-anchor="middle" font-style="italic">scored</text>
+</svg>
