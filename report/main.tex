@@ -713,35 +713,31 @@ data-protection concern. We offer no legal determination; establishing a violati
 fact-specific and beyond a measurement study.
 
 \subsection{Broader impact}
-The concern is not only that a document is copied once, but
-what happens to it afterwards, which is beyond what this study measures yet is what makes
-the measurement matter. Text captured by default feeds a vendor's own processing and,
-potentially, model training, and once it leaves the machine it can be retained, combined
-with other data, and passed to parties the user never chose. This is rarely noticed because
-it is permitted deep in terms of service that few people read; vendors' own documentation
-confirms that content is processed and retained in the cloud by
-default~\citep{microsoft2026copilotprivacy}. The footprint is also widening at the tools
-themselves: assistants now offer persistent memory that can retain special-category data
-such as health conditions or religious beliefs, currently opt-in and off by
-default~\citep{anthropic2026memory}, yet expanding what these systems durably hold about a
-user. As these tools gain broader access and act more
-autonomously, the same silent collection scales from individuals to the organisations whose
-confidential data flows through them, and the safeguards vendors state do not always hold in
-practice: threat-intelligence reporting documents real misuse of deployed AI systems, some
-caught only after harm had occurred~\citep{anthropic2026threats}, and models have shown
-unexpected autonomy in testing, including an unreleased model that inserted self-authored
-instructions declaring it would ``not answer to corporations or governments''~\citep{astra2026rogue}. The risk is sharpest where
-personal data reaches actors with strong incentives to exploit it, such as data brokers and
-security or defence contractors that assemble personal profiles: data gathered for a mundane
-``writing help'' feature can, once pooled and resold, support profiling and targeting far
-beyond its original purpose. Investigative reporting on the Gaza war, for instance, describes
-military AI systems (such as ``Lavender'') that build target lists and time strikes to
-individuals' homes~\citep{abraham2024lavender}; analytics firms such as Palantir state they
-support defence programmes while denying involvement in those specific systems. Models can
-already infer sensitive attributes from ordinary text~\citep{staab2024beyond}. These downstream harms lie outside this paper's measurement
-scope; quantifying the exposure precisely, rather than trusting vendor assurances, is the
-necessary first step to reasoning about them, and the gap between stated safeguards and
-observed behaviour is exactly what this study measures.
+The concern is not the single copy but what follows it, which this study does not measure
+yet is what makes the measurement matter. Text captured by default feeds a vendor's own
+processing and, potentially, model training; once it leaves the machine it can be retained,
+combined with other data, and passed to parties the user never chose, all permitted deep in
+terms of service few people read. Vendors' own documentation confirms content is processed
+and retained in the cloud by default~\citep{microsoft2026copilotprivacy}. The footprint is
+widening at the tools themselves: assistants now offer persistent memory that can retain
+special-category data such as health conditions or religious beliefs, currently opt-in and
+off by default~\citep{anthropic2026memory} but expanding what they durably hold. As these
+tools gain access and act more autonomously, the same silent collection scales from
+individuals to organisations, and stated safeguards do not always hold: threat-intelligence
+reporting documents real misuse of deployed AI systems, some caught only after
+harm~\citep{anthropic2026threats}, and an unreleased model in testing inserted self-authored
+instructions declaring it would ``not answer to corporations or
+governments''~\citep{astra2026rogue}. The risk is sharpest where data reaches actors with
+incentives to exploit it: data gathered for a mundane ``writing help'' feature can, once
+pooled and resold by data brokers or defence contractors, support profiling and targeting
+far beyond its original purpose. Investigative reporting on the Gaza war describes military
+AI systems (such as ``Lavender'') that build target lists and time strikes to individuals'
+homes~\citep{abraham2024lavender}; firms such as Palantir state they support defence
+programmes while denying involvement in those specific systems. Models can already infer
+sensitive attributes from ordinary text~\citep{staab2024beyond}. These downstream harms lie
+outside our measurement scope; quantifying exposure precisely, rather than trusting vendor
+assurances, is the necessary first step to reasoning about them, and that gap between stated
+safeguards and observed behaviour is what this study measures.
 
 \section{Limitations}
 \label{sec:limitations}
