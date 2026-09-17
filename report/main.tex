@@ -508,14 +508,16 @@ traffic.
 
 \subsection{Independent corroboration without a proxy}
 
-Could the proxy itself have caused the upload? To rule that out, we repeated the paste with
-the proxy removed entirely: Grammarly ran on a normal direct connection while a packet
-capture (\texttt{tcpdump}) recorded the machine's traffic, with host names left visible. At
-the moment of paste, the browser contacted Grammarly's own servers (an AWS backend and
-Grammarly CloudFront edges) and uploaded several kilobytes. Without the proxy the content
-stays encrypted, so we cannot read it here, but the destination and timing show the upload
-happens with nothing intercepting it. The proxy only observes the leak; it does not cause
-it.
+Our main method routes the browser's traffic through the mitmproxy so we can decrypt and
+read it. A fair worry is that inserting the proxy could itself change the tool's behaviour,
+making the upload an artefact of our setup rather than something that happens normally. To
+check, we repeated the paste with the proxy removed completely: Grammarly used a normal,
+direct internet connection while \texttt{tcpdump} (a tool that records which servers the
+computer contacts, and when) logged the traffic. At the moment of paste, the browser still
+contacted Grammarly's own servers (an AWS backend and Grammarly content-delivery edges) and
+uploaded several kilobytes. Without the proxy the traffic is encrypted, so we cannot read
+its contents, but the destination and timing show the upload happens even with nothing
+intercepting it. The proxy only observes the leak; it does not cause it.
 
 \subsection{Two exposure classes}
 
