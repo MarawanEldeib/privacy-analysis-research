@@ -14,6 +14,7 @@
 
 \definecolor{leakred}{HTML}{B23A48}
 \newcommand{\canary}{\texttt{CANARY-BC267061-\allowbreak 67DC-485B-8E51-6F5494765CAB}}
+\setcounter{secnumdepth}{3}% no a)/b) numbering on run-in \paragraph headings
 
 \title{Measuring Data Exposure in\\ LLM-Integrated Productivity Tools}
 \author{\IEEEauthorblockN{Marawan Eldeib}
@@ -250,22 +251,13 @@ flows to produce a baseline-subtracted exposure figure and per-host attribution.
 \subsection{Study design and conditions}
 
 We measure three conditions: two writing-assistant extensions and a control.
-
-\begin{itemize}[nosep]
-  \item \textbf{Grammarly}: the archetypal always-on grammar/style checker and the
-        motivating example for this project.
-  \item \textbf{LanguageTool}: an independent grammar checker from a different
-        vendor (LanguageTooler GmbH, a German company) that requires no account, making it
-        the cleanest possible replication partner.
-  \item \textbf{Baseline}: the same browser and procedure with no extension, to subtract
-        ordinary background traffic.
-\end{itemize}
-
-Two independent tools exhibiting the same behaviour constitutes within-class
-replication, which is substantially stronger evidence than a single data point. The
-scope was reached by evaluating and excluding several other candidates
-(Section~\ref{sec:limitations}); the final design measures automatic /
-background exposure by grammar checkers.
+\textbf{Grammarly} is the always-on grammar and style checker that motivated this project.
+\textbf{LanguageTool} is a grammar checker from a different company (LanguageTooler GmbH,
+based in Germany) that needs no account, which makes it a clean second tool for checking
+whether the same behaviour repeats. The \textbf{baseline} is the same browser and steps
+with no extension installed, used to subtract the browser's ordinary background traffic.
+Testing two independent tools rather than one gives stronger evidence: if both behave the
+same way, the result is not a quirk of a single product.
 
 \subsection{Test document and planted secrets}
 
@@ -800,19 +792,14 @@ which strengthens external validity. The main limits are:
 \begin{itemize}[nosep]
   \item \textbf{Unreadable traffic (lower bound).} Certificate pinning blocks interception
         on some channels (e.g.\ \texttt{*.events.data.microsoft.com}, some Adobe and Google
-        endpoints), and we match only content we can decrypt; an encrypted or compressed
-        payload there could carry data we cannot see, so every figure is a lower bound. The
-        proxy CA is trusted only in the isolated test profile and we report raw traffic
-        unmodified~\citep{durumeric2017https}; bounding opaque uploads with a byte-volume
-        detector is future work.
+        endpoints); content we cannot decrypt is not counted, so every figure is a lower
+        bound. The proxy CA is trusted only in the isolated test profile and we report raw
+        traffic unmodified~\citep{durumeric2017https}.
   \item \textbf{Native desktop clients.} A native app can use sockets that ignore the system
         proxy: the Grammarly Windows client on Notepad sent only telemetry through the proxy
         while opening a direct connection we could not inspect, so that case is reported as
         unmeasured, not zero. Proxy-captured results (browser extensions, Office, Grammarly
         in Word) are unaffected.
-  \item \textbf{Background assistants.} Other assistants ran during the host phase, as on a
-        real machine; per-host attribution separated their traffic in every case, but a
-        fully clean host was not used.
 \end{itemize}
 
 \section{Ethics and Responsible Disclosure}
