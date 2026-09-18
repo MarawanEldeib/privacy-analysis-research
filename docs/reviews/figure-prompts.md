@@ -60,6 +60,26 @@ two-column IEEE page (will be placed full width).
 
 ---
 
+---
+
+## PROMPT 3 — "Burst timeline" (DATA plot — plot these exact values, do not invent)
+
+> Create a clean, flat vector-style line chart (landscape, ~1500×550, white background, no
+> big title inside the image), in the same visual style, fonts, and palette as my other two
+> figures (blue = infrastructure, red = leak/vendor). It is a step chart of **cumulative
+> outbound tool-host frames** (y) versus **seconds since the first outbound event** (x, from
+> 0 to 60). Plot exactly these measured points and hold each line flat to 60 s; do not add,
+> smooth, or invent any data:
+>
+> - **Grammarly (red):** step increments at t = 0.00 s → 1, 0.12 s → 2, 0.44 s → 3,
+>   2.44 s → 4, 5.40 s → 5, then flat at 5 until 60 s.
+> - **LanguageTool (blue):** two frames at t = 0.00 s → 2, then flat at 2 until 60 s.
+>
+> x-axis label: "Seconds since first outbound event (60 s capture)". y-axis label:
+> "Cumulative outbound tool-host frames". Include a small legend. The point is to show a
+> single burst in the first ~5 seconds and then silence for the rest of the 60 s window.
+> Use a step (post) interpolation, integer y ticks. Keep it uncluttered and professional.
+
 ### After you generate them
 Download both as PNG (SVG too if offered) and drop them into `report/figures/`, e.g.
 `fig_setup.png` and `fig_pipeline.png`. Tell me the filenames and I'll wire them into the
