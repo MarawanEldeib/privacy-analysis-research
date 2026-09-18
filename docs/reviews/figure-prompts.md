@@ -80,6 +80,39 @@ two-column IEEE page (will be placed full width).
 > single burst in the first ~5 seconds and then silence for the rest of the 60 s window.
 > Use a step (post) interpolation, integer y ticks. Keep it uncluttered and professional.
 
+---
+
+## PROMPT 4 — "Action spectrum" (DATA bar chart — plot these exact values, do not invent)
+
+> Create a clean, flat vector-style horizontal bar chart (portrait-ish, ~1500×950, white
+> background, **no title text inside the image** — the paper caption supplies it), in the
+> same style/fonts/palette as my other figures. x-axis 0–100, label:
+> "Document-content coverage in outbound traffic (%)". One bar per row, in this exact top-to-
+> bottom order, with the exact value and run count labelled at the end of each bar as
+> "VALUE%  (N=n)". Colour each bar by its interaction class (see legend). Do not add, round,
+> or invent any values.
+>
+> | Row (top to bottom) | Value | N | Class |
+> |---|---|---|---|
+> | DeepL desktop (paste) | 99.6% | 3 | User-initiated |
+> | Grammarly extension (paste) | 99.0% | 5 | Incidental / open-triggered |
+> | Word: connected experiences on (open) | 96.8% | 3 | Incidental / open-triggered |
+> | Word Protected View + Grammarly desktop | 94.2% | 2 | Incidental / open-triggered |
+> | LanguageTool extension (paste) | 91.9% | 5 | Incidental / open-triggered |
+> | Edge Copilot (invoked) † | 76.9% | 3 | User-initiated |
+> | Word: connected experiences off | 0.0% | 1 | Mitigation (setting off) |
+> | Edge — PDF open, not invoked | 1.8% | 1 | No document content |
+> | PDF in Chrome / Acrobat | 0.0% | 1 | No document content |
+> | .txt / .md in Notepad | 0.0% | 1 | No document content |
+> | iCloud Drive sync | 0.0% | 1 | No document content |
+> | USB inserted, not opened | 0.0% | 1 | No document content |
+>
+> Legend (four classes, with these colours): Incidental / open-triggered (dark red),
+> User-initiated (orange), Mitigation (setting off) (green), No document content (grey).
+> Add a small footnote/caption note: "† Edge/Copilot is a lower bound (some channels were
+> certificate-pinned)." Keep it uncluttered and professional; 0.0% rows will show as no
+> visible bar, which is correct.
+
 ### After you generate them
 Download both as PNG (SVG too if offered) and drop them into `report/figures/`, e.g.
 `fig_setup.png` and `fig_pipeline.png`. Tell me the filenames and I'll wire them into the

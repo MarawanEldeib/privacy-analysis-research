@@ -203,8 +203,9 @@ of a specific, common threat model (a confidential document pasted into a field 
 grammar checker running by default), using a planted-canary methodology that makes
 each leak individually and unambiguously attributable. Where prior large-scale work
 answers ``how many extensions leak,'' we answer ``exactly how much of a specific
-confidential document leaves, and which sensitive tokens, for two representative
-tools, with what reproducibility.''
+confidential document leaves, and which sensitive tokens, for two writing assistants under
+identical conditions and, exploratively, across other host surfaces, with what
+reproducibility.''
 
 Finally, why the transmitted content matters is reinforced by a parallel line
 of work on the privacy risks of large language models, which increasingly sit behind
@@ -272,8 +273,11 @@ behave the same way, the result is not a quirk of a single product. The \emph{se
 exploratory host phase then probes other surfaces (the DeepL desktop client, Microsoft~Word
 with Office connected experiences, Edge/Copilot on a PDF, and passive storage or non-AI
 viewers); these conditions differ in user action and file format, so they are read
-individually rather than as a same-task cross-tool comparison. Software versions and
-accounts for both tiers are listed in Table~\ref{tab:env}.
+individually rather than as a same-task cross-tool comparison. Together the conditions
+cover the browser-extension, desktop-application, and editor/Office integration types;
+pure web-interface tools (chatbot websites) are out of scope, because pasting into them is
+intended use by definition and carries no gap between behaviour and expectation. Software
+versions and accounts for both tiers are listed in Table~\ref{tab:env}.
 
 \begin{table}[t]
 \centering
