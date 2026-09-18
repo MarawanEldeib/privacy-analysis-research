@@ -91,7 +91,7 @@ users' expectations. Our contributions are:
   \item A host-level extension showing exposure is surface-dependent: it depends on the
         surface a document enters, not on where the file is stored.
   \item A permission analysis showing the exposure channel is all-sites text access, not
-        the microphone or camera, together with a one-setting mitigation for the Word leak.
+        the microphone or camera, together with a one-setting mitigation for the Word transmission.
 \end{itemize}
 
 \section{Background and Threat Model}
@@ -131,10 +131,11 @@ document into a normal text field (an email reply, a web form, a notes box). Wit
 any further action, the extension transmits the content to its servers.
 \end{quote}
 
-The adversary here is not a criminal; it is the gap between the tool's default
-behaviour and the user's mental model. The user believes they have withheld the
-document from AI tools. In fact, simply pasting it into a field an unrelated extension
-happens to watch has already transmitted it. Our measurement targets precisely this
+We do not assume a malicious vendor, a compromised endpoint, or a network attacker; the
+concern is unintended disclosure of document content to remote service providers through
+enabled productivity-tool integrations. The user believes they have withheld the document
+from AI tools. In fact, simply pasting it into a field an unrelated extension happens to
+watch has already transmitted it. Our measurement targets precisely this
 gap: exposure that occurs with no user action beyond pasting. The browser paste
 is our primary scenario; we later broaden the same question to desktop applications and
 to the act of opening a received file (Section~\ref{sec:action-spectrum}),
@@ -383,9 +384,9 @@ a file is actually read rather than what leaves the network, we additionally rec
 file-access activity with Process Monitor (a Sysinternals tool that logs file, registry, and
 process events), so we could tell a file being opened from one that was only stored. Each
 condition used the same synthetic memo and canary. Because a real machine runs several
-assistants at once, every captured flow was attributed to its destination host, so a leak
-is credited to the specific tool responsible rather than to whatever else happened to be
-running.
+assistants at once, every captured flow was attributed to its destination host, so a
+transmission is credited to the specific tool responsible rather than to whatever else
+happened to be running.
 
 \subsection{Metrics}
 \label{sec:metrics}
@@ -477,8 +478,8 @@ indicating high within-setup repeatability rather than determinism across enviro
 no-extension baseline transmitted \textbf{0.0\%} and none of the secrets. All transmission
 used HTTPS, and there were zero un-interceptable TLS handshakes, so these browser-phase
 figures are complete, not lower bounds; host-phase figures can be lower bounds where a
-client pins its certificate (Section~\ref{sec:limitations}). The leak is not confined to
-one class of data: both tools transmitted every information type in the document (personal
+client pins its certificate (Section~\ref{sec:limitations}). The transmission is not confined
+to one class of data: both tools transmitted every information type in the document (personal
 names, contact details, official identification numbers, financial codes, a legal contract
 reference, the confidential project codename, and the canary), and formatted identifiers
 such as ID numbers were sent as readily as ordinary sentences. Table~\ref{tab:indicators}
@@ -609,7 +610,7 @@ computer contacts, and when) logged the traffic. At the moment of paste, the bro
 contacted Grammarly's own servers (an AWS backend and Grammarly content-delivery edges) and
 uploaded several kilobytes. Without the proxy the traffic is encrypted, so we cannot read
 its contents, but the destination and timing show the upload happens even with nothing
-intercepting it. The proxy only observes the leak; it does not cause it.
+intercepting it. The proxy only observes the transmission; it does not cause it.
 
 \subsection{Desktop and system-level exposure: an action spectrum}
 \label{sec:action-spectrum}
@@ -623,7 +624,7 @@ arrange along a spectrum of user action (Figure~\ref{fig:action-spectrum}); the 
 highlights only the findings that change the interpretation, and the receiving host for
 each is listed in Table~\ref{tab:results}.
 
-\textbf{Active submission leaks, as in the browser phase.} The \textbf{DeepL} desktop
+\textbf{Active submission transmits the document, as in the browser phase.} The \textbf{DeepL} desktop
 client, given the document by paste, transmitted essentially all of it (99.6\% mean over
 three runs) and every secret to DeepL's service backend; the whole input was uploaded even
 though only part of it is translated on the free tier.
@@ -678,7 +679,7 @@ the text. Protected View thus sandboxes macros and even Microsoft's own AI, but 
 independent assistant reading the same window.
 
 \textbf{A file only stored on a USB or cloud drive is not read by the tools.} A
-distinct question is whether a confidential file leaks simply by being stored on a
+distinct question is whether a confidential file is transmitted simply by being stored on a
 removable drive or a synced cloud folder while the writing assistants run in the
 background. It does not. Inserting the USB without opening the file (Process Monitor showed only the Windows
 indexer and shell probing volume metadata, not the file being read) and dropping the file into
