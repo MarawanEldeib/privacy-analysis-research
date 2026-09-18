@@ -99,7 +99,7 @@ two-column IEEE page (will be placed full width).
 > | Word: connected experiences on (open) | 96.8% | 3 | Incidental / open-triggered |
 > | Word Protected View + Grammarly desktop | 94.2% | 2 | Incidental / open-triggered |
 > | LanguageTool extension (paste) | 91.9% | 5 | Incidental / open-triggered |
-> | Edge Copilot (invoked) † | 76.9% | 3 | User-initiated |
+> | Edge Copilot (invoked) | 76.9% | 3 | User-initiated |
 > | Word: connected experiences off | 0.0% | 1 | Mitigation (setting off) |
 > | Edge — PDF open, not invoked | 1.8% | 1 | No document content |
 > | PDF in Chrome / Acrobat | 0.0% | 1 | No document content |
@@ -109,8 +109,8 @@ two-column IEEE page (will be placed full width).
 >
 > Legend (four classes, with these colours): Incidental / open-triggered (dark red),
 > User-initiated (orange), Mitigation (setting off) (green), No document content (grey).
-> Add a small footnote/caption note: "† Edge/Copilot is a lower bound (some channels were
-> certificate-pinned)." Keep it uncluttered and professional; 0.0% rows will show as no
+> Do NOT add a dagger or any lower-bound note in the image (the paper caption states the
+> Edge/Copilot lower bound). Keep it uncluttered and professional; 0.0% rows will show as no
 > visible bar, which is correct.
 
 ### After you generate them
