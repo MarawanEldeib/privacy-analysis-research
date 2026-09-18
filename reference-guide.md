@@ -62,18 +62,22 @@ Numbered in the order they appear in the report (IEEE numbering, `unsrtnat`). "R
 
 30. **mitmproxy — the interception proxy (software).** The HTTPS/WebSocket MITM proxy used for all captures. *Role:* core tool citation.
 
-31. **microsoft2026copilotprivacy — Microsoft Copilot privacy docs (2026).** Documents default cloud processing of Office content and the disable control, with EU Data Boundary/GDPR commitments. *Role:* primary source for the Word/augloop finding, the mitigation, and the GDPR compliant-path point.
+31. **microsoft2026copilotprivacy — Microsoft Copilot privacy docs (2026).** Documents cloud processing of Office connected-experiences content and the disable control. *Role:* primary source for the Word/augloop finding and the one-setting mitigation.
 
-32. **apple2024platformsec — Apple Platform Security guide (2024).** iCloud encrypts file content in transit and (with Advanced Data Protection) end-to-end. *Role:* explains why iCloud sync showed no cleartext to the writing tools.
+32. **apple2024platformsec — Apple Platform Security guide (2024).** iCloud encrypts file content in transit and (with Advanced Data Protection) end-to-end. *Role:* explains why iCloud sync showed no cleartext to the writing tools (ADP was off in our setup).
 
-33. **ieee2020ethics — IEEE Code of Ethics (2020).** Commits members to hold paramount the public's safety, welfare, and privacy. *Role:* grounds the Broader Impact discussion in professional/engineering responsibility.
+33. **mozilla2024permissions — Mozilla extension-permissions support page (2024).** "Access your data for all websites" lets an extension read and change page content. *Role:* backs the all-sites host-permission claim in the Permissions subsection.
 
-34. **anthropic2026memory — Anthropic memory announcement (2026).** Assistants' persistent memory can retain special-category data (health, religious beliefs), opt-in and off by default. *Role:* the widening data footprint at the tools themselves; Broader Impact.
+34. **grammarly2025privacy — Grammarly privacy documentation (2025).** Grammarly analyses the text users write while the product is active. *Role:* vendor confirmation that processing user text is by design (Discussion).
 
-35. **astra2026rogue — reporting on an unreleased model's rogue self-instructions in testing (2026).** A model inserted self-authored instructions declaring it would "not answer to corporations or governments." *Role:* stated safeguards/model behaviour do not always hold; Broader Impact.
+35. **languagetool2025privacy — LanguageTool privacy policy (2025).** Describes browser-session/webpage content handled by the extension. *Role:* vendor confirmation for the second tool (Discussion).
 
-36. **abraham2024lavender — "Lavender" investigation, +972 Magazine (2024).** Military AI systems that build target lists and time strikes to individuals' homes. *Role:* illustrates downstream misuse where personal data reaches defence actors (with the Palantir denial noted); Broader Impact.
+36. **nissenbaum2004contextual — "Privacy as Contextual Integrity" (Washington Law Review, 2004).** Privacy as appropriate information flow within a context. *Role:* theoretical frame for the default-vs-expectation gap (Discussion).
 
-37. **durumeric2017https — "The Security Impact of HTTPS Interception" (NDSS 2017).** Interception can weaken the connection it observes. *Role:* limitation/methodology caveat.
+37. **ieee2020ethics — IEEE Code of Ethics (2020).** Commits members to hold paramount the public's safety, welfare, and privacy. *Role:* grounds the Broader Impact discussion in professional/engineering responsibility.
 
-38. **microsoft2018presidio — Microsoft Presidio (software).** Open-source PII detection/de-identification SDK. *Role:* used to surface an unplanted credential; basis for the labelling future work.
+38. **durumeric2017https — "The Security Impact of HTTPS Interception" (NDSS 2017).** Interception can weaken the connection it observes. *Role:* limitation/methodology caveat.
+
+39. **microsoft2018presidio — Microsoft Presidio (software).** Open-source PII detection/de-identification SDK. *Role:* used to surface account identifiers alongside the document; basis for the labelling future work.
+
+*(Removed from the citation set in this revision: the persistent-memory, unreleased-model, and Lavender/defence references, dropped when Broader Impact was condensed to measured, in-scope claims.)*
