@@ -61,3 +61,4 @@ report/log*.txt
 # DO NOT ignore results/ — final per-tool summaries and charts
 # (.flow archives are intentionally ignored above — they hold decrypted auth tokens.)
 _scratch/
+SECURITY-CLEANUP-STEPS.md

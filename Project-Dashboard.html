@@ -354,6 +354,12 @@ const CONDS = [
   {name:'Grammarly',     family:'Grammar checker', status:'complete', runs:5, exposure:99.0, secrets:12, cls:'t-complete', schip:'s-complete', slab:'Complete · 5/5 runs', channel:'capi.grammarly.com · WebSocket /freews'},
   {name:'LanguageTool',  family:'Grammar checker', status:'complete', runs:5, exposure:91.9, secrets:12, cls:'t-complete', schip:'s-complete', slab:'Complete · 5/5 runs', channel:'api.languagetool.org · POST /v2/check'},
   {name:'Baseline',      family:'Control (no extension)', status:'control', runs:3, exposure:0.0, secrets:0, cls:'t-control', schip:'s-control', slab:'Complete · 3/3 runs', channel:'none — nothing transmitted'},
+  {name:'DeepL desktop', family:'Translator (desktop · paste)', status:'complete', runs:3, exposure:99.6, secrets:12, cls:'t-complete', schip:'s-complete', slab:'Complete · 3 runs', channel:'www2.deepl.com'},
+  {name:'Word (connected experiences on)', family:'Office — open .docx', status:'complete', runs:3, exposure:96.8, secrets:12, cls:'t-complete', schip:'s-complete', slab:'Complete · 3 runs', channel:'augloop.svc.cloud.microsoft'},
+  {name:'Word Protected View + Grammarly', family:'Office Protected View', status:'complete', runs:2, exposure:94.2, secrets:12, cls:'t-complete', schip:'s-complete', slab:'Complete · 2 runs', channel:'capi.grammarly.com'},
+  {name:'Edge Copilot (PDF)', family:'Browser assistant (invoked)', status:'complete', runs:3, exposure:76.9, secrets:12, cls:'t-complete', schip:'s-complete', slab:'Complete · 3 runs · lower bound', channel:'copilot.microsoft.com'},
+  {name:'Word (connected experiences off)', family:'Mitigation — one setting', status:'control', runs:1, exposure:0.0, secrets:0, cls:'t-control', schip:'s-control', slab:'Mitigation · 1 run', channel:'socket opens, no document content'},
+  {name:'Passive (USB / iCloud / viewer)', family:'Storage / non-AI viewer', status:'control', runs:1, exposure:0.0, secrets:0, cls:'t-control', schip:'s-control', slab:'No content · 1 run each', channel:'none reaches the LLM tools'},
 ];
 const RUNS = [
   ...[1,2,3,4,5].map(r=>({tool:'Grammarly',run:r,exposure:99.0,secrets:12,canary:true,channel:'capi.grammarly.com (WebSocket)'})),
@@ -382,12 +388,15 @@ const ROAD=[
   {s:'done',b:'Analysis, charts & progress presentation',p:'Per-tool means ± 95% CI, comparison chart, this dashboard, and a supervisor progress deck.'},
   {s:'done',b:'Supervisor meeting — 23 July 2026',p:'Methodology approved; report format free. Agreed to broaden the study where feasible (desktop, more tools, background behaviour).'},
   {s:'done',b:'Information-type breakdown (Level 1) + traffic-over-time figure',p:'Grouped the 12 secrets by type (all types leaked by both tools, none by baseline) and plotted the paste-spike vs. background traffic.'},
-  {s:'done',b:'Written report (LaTeX, IEEE two-column)',p:'Submission-ready: 10 pages, title page + declaration of originality, 31 cited references, compiles clean. Includes the desktop, idle, and independent-evidence findings.'},
+  {s:'done',b:'Written report (LaTeX, IEEE two-column)',p:'13 pages, title page + declaration of originality, 41 cited references, page numbers, compiles clean. Browser + host phases, with environment / indicator / per-tool-confidence / RQ-answer tables and two figures.'},
   {s:'done',b:'Desktop probe + independent no-proxy evidence',p:'LanguageTool desktop checks on-device and sends nothing (0%). An independent tcpdump capture with NO proxy confirms Grammarly uploads the document straight to its AWS/CloudFront servers — ruling out proxy-induced behaviour.'},
   {s:'done',b:'Idle / background behaviour',p:'20-min no-action capture: Grammarly stays continuously connected (auth, config, A/B experimentation, telemetry, WebSocket) but sends NO document content or secrets while idle. Content exposure is input-triggered; a Firefox-background positive control proves the capture was live.'},
   {s:'done',b:'Level 2 — automatic PII discovery (Presidio)',p:'Presidio over the decrypted traffic surfaced additional transmitted identifiers (e.g. a Grammarly auth token + session IDs) beyond the 12 planted secrets.'},
   {s:'done',b:'Related-work grounding',p:'Related-work section grounded in 31 cited references.'},
-  {s:'todo',b:'Windows-VM phase (optional)',p:'Windows-only desktop apps (Grammarly desktop, DeepL, iCloud, free consumer Avast) + USB auto-read test, under a Windows mitmproxy harness. Optional per supervisor; time-permitting before 10 Oct.'},
+  {s:'done',b:'Host phase (Windows) complete',p:'Word/Office connected experiences 96.8%, DeepL desktop 99.6%, Edge/Copilot PDF 76.9% (lower bound), Grammarly desktop under Protected View 94.2%; one Office setting drops the Word transfer to 0%; USB/iCloud/non-AI viewers transmit no document content; device permissions + Avast checked.'},
+  {s:'done',b:'External pre-submission review incorporated',p:'Three-model review (ChatGPT, DeepSeek, Fable 5.1) reconciled: proposal indicator + per-tool confidence + RQ-answer tables, corrected character-coverage formula, host phase framed as exploratory, JWT/GDPR/Broader-Impact reframed, threats-to-validity, four diagrams merged to two.'},
+  {s:'done',b:'Public repo scrubbed',p:'Git history rewritten to redact real personal data (email, account id, tokens, device names) from every commit and the author email; force-push pending from the local machine.'},
+  {s:'todo',b:'Email report to supervisor + request presentation',p:'Send the finalized report, ask to book the project presentation before 30 Sep, and register the master thesis after the grade is released.'},
 ];
 
 /* ---------- HELPERS ---------- */
