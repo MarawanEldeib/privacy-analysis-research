@@ -469,7 +469,7 @@ per-host attribution.}
 \section{Results}
 \label{sec:results}
 
-\subsection{Headline: both tools transmit the whole document and every secret}
+\subsection{Whole-document transmission in the browser phase}
 
 Table~\ref{tab:results} summarises every measured condition and its receiving host across
 both phases; this subsection covers the browser phase, and the host phase follows in
@@ -657,7 +657,7 @@ endpoint, via posts to an \texttt{OfficeCopilotOrchestrationWorkflow}; augloop r
 same 96.8\% in every connected-experiences-enabled run. Microsoft documents that connected
 experiences analyse Office content in the cloud, are available unless the relevant control
 is disabled, and can be turned off through an Office privacy
-setting~\citep{microsoft2026copilotprivacy}. The transmission therefore came from the
+setting~\citep{microsoft2026connectedexp,microsoft2026copilotprivacy}. The transmission therefore came from the
 default productivity suite itself, not an add-in. We measured a consumer licence; the EU
 Data Boundary and processor-agreement commitments Microsoft offers apply to enterprise
 tenants and do not describe this configuration. Other Microsoft hosts seen during these
@@ -750,7 +750,7 @@ Passive (USB / iCloud / plain viewer) & none          & ---                     
   \label{fig:action-spectrum}
 \end{figure}
 
-\subsection{Permissions: the channel is text, not the microphone}
+\subsection{Permissions and the exposure channel}
 \label{sec:permissions}
 
 A natural question is whether these tools reach beyond text into device sensors. Auditing
@@ -834,7 +834,8 @@ Destination-host attribution identifies the receiving service, not the internal 
 \textbf{Internal validity.} The interception proxy could in principle change application
 behaviour; a proxy-free \texttt{tcpdump} run corroborated the browser upload, and
 interception can itself weaken the observed connection~\citep{durumeric2017https}.
-Certificate pinning leaves some host-phase channels unreadable (for example
+Certificate pinning, common in production clients~\citep{razaghpanah2017tls}, leaves some
+host-phase channels unreadable (for example
 \texttt{*.events.data.microsoft.com} and some Adobe and Google endpoints), so those figures
 are lower bounds; the browser phase had zero failed handshakes. The host phase has no
 separate all-tools-off Windows baseline; it relies on per-host attribution and the
