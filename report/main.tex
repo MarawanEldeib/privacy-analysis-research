@@ -540,8 +540,8 @@ No extension (baseline)& $\sim$16~kB (bkgd.) & 15 & 10 (0) \\
 \bottomrule
 \end{tabular}
 \par\vspace{2pt}
-{\footnotesize $^{\ast}$WebSocket transport; per-frame sizes are not in the JSON summaries,
-so this is taken from the flow archive.\par}
+{\footnotesize $^{\ast}$WebSocket transport; client-to-server payload observed in the
+capture (\mbox{5--6~kB} per run).\par}
 \end{table}
 
 \begin{table*}[t]
@@ -571,16 +571,34 @@ Passive (USB/iCloud/viewer)& host    & 0.0\%  & 0/12  & Not assessable ($N{=}1$)
 
 \subsection{What was transmitted, and how}
 
-Grammarly streamed the document to its backend over a WebSocket connection (about 6~kB of
-outbound application payload per run); LanguageTool sent it as an HTTPS \texttt{POST} to its
-own check endpoint (5.6~kB to a single host). In both cases the twelve planted identifiers,
+Grammarly streamed the document to its backend over a WebSocket connection (about 5--6~kB of
+client-to-server payload per run); LanguageTool sent it as an HTTPS \texttt{POST} to its own
+check endpoint (5.6~kB to a single host). In both cases the twelve planted identifiers,
 including the canary, were recovered from the decrypted client-to-server traffic. The
-$\sim$8~percentage-point gap between the two tools is a matching-coverage effect, not a
-difference in whether the sensitive content leaves: LanguageTool segments the text into
-per-sentence JSON units, so a few 20-character windows straddle segment boundaries and are
-not counted as contiguous, whereas both tools transmitted all twelve secrets. A
-whitespace-normalised recomputation would raise both figures toward the same ceiling; we
-report the raw coverage to stay faithful to the bytes on the wire.
+$\sim$8~percentage-point gap between the two tools is a coverage artefact, not a difference
+in whether sensitive content leaves: the characters LanguageTool did not cover are almost
+all newlines and short header or salutation lines (for example the \texttt{Date:} line and
+the ``Dear Marcus,'' greeting) that it sends as separate segments too short to fill a
+20-character window. Excluding whitespace, coverage is 98.9\% (Grammarly), 93.6\%
+(LanguageTool), and 82.2\% (Edge/Copilot); Edge's residual is its PDF text extraction
+dropping layout characters, and its pinned channels make that figure a lower bound. All
+three transmitted every one of the twelve secrets.
+
+The transmission is a single outbound burst at the moment of paste, after which the
+connection falls quiet (Figure~\ref{fig:burst}); the exposure is input-triggered, not
+continuous. The no-extension baseline is instructive: it generates more total traffic than
+either tool run (megabytes of browser and OS background activity), yet none of it carries
+document content, which is why a baseline is needed, to separate the environment's own
+chatter from document-bearing traffic.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig_burst.png}
+  \caption{Outbound traffic to the tool's own host is a single burst at the moment of paste,
+  then silence for the rest of the 60\,s capture. Cumulative client-to-server frames to
+  \texttt{grammarly.com} and \texttt{languagetool.org}, one representative run each.}
+  \label{fig:burst}
+\end{figure}
 
 \subsection{Beyond the planted secrets: account linkability}
 
@@ -591,13 +609,6 @@ did not test cross-session or cross-service linkage, and the token travels over 
 client's own encrypted connection to its backend, so this is a note on linkability rather
 than a credential-disclosure finding. We surfaced it with an automatic PII detector
 (Microsoft Presidio) over the decrypted bodies.
-
-The transmission is a single outbound burst at the moment of paste, after which the
-connection falls quiet; the exposure is input-triggered, not continuous. The no-extension
-baseline is instructive: it generates more total traffic than either tool run (megabytes of
-browser and OS background activity), yet none of it carries document content, which is why a
-baseline is needed, to separate the environment's own chatter from document-bearing
-traffic.
 
 \subsection{Independent corroboration without a proxy}
 
@@ -692,7 +703,9 @@ encryption, was off in our setup)~\citep{apple2024platformsec}, so it reaches Ap
 but is never exposed to the LLM writing tools. The same held for opening the file in a viewer with no cloud-AI
 integration (Notepad, Adobe~Acrobat, or Chrome's PDF viewer), and for opening the PDF in Edge
 without invoking Copilot (0/12 secrets; the passive Edge case matched only 1.8\% of the
-document's characters, incidental boilerplate rather than document content).
+document's characters, a single 37-character run of the generic phrase ``personally
+identifiable information'' with no planted secret, i.e.\ incidental boilerplate rather than
+document content).
 Consumer antivirus (\textbf{Avast}) is a separate class rather than an LLM tool: it
 uploaded an unknown executable to its cloud (CyberCapture) plus reputation and
 telemetry, but not the document's contents.
@@ -703,17 +716,41 @@ the writing tools until its text enters a surface they watch, so passively recei
 opening a file transmits nothing unless that surface has a cloud-AI integration watching
 the content. Content leaves the machine whenever it enters such a surface, whether the user
 pastes into a writing assistant, invokes an assistant, or opens the file in a
-cloud-AI-enabled editor.
+cloud-AI-enabled editor. Table~\ref{tab:rq} answers the research question directly: for each
+surface it gives the trigger, the user action required, the recipient, and whether an
+off-switch exists.
+
+\begin{table*}[t]
+\centering
+\caption{Answer to the research question: how exposure differs across surfaces. Everything
+that enters a watched surface transmits nearly the whole document; what differs is the
+trigger, the action required, the recipient, and the available off-switch.}
+\label{tab:rq}
+\footnotesize
+\begin{tabular}{@{}lllll@{}}
+\toprule
+\textbf{Surface} & \textbf{Trigger} & \textbf{User action} & \textbf{Recipient} & \textbf{Off-switch} \\
+\midrule
+Grammarly (browser extension)      & incidental       & none beyond typing/paste & \texttt{capi.grammarly.com}          & disable/remove extension \\
+LanguageTool (browser extension)   & incidental       & none beyond typing/paste & \texttt{api.languagetool.org}        & disable/remove extension \\
+DeepL desktop                      & user-initiated   & paste into the app       & \texttt{www2.deepl.com}              & do not paste \\
+Word (connected experiences)       & incidental       & open the file            & \texttt{augloop.svc.cloud.microsoft} & one Office setting \\
+Edge + Copilot                     & user-initiated   & invoke Copilot           & \texttt{copilot.microsoft.com}       & do not invoke \\
+Grammarly desktop (in Word)        & incidental       & open the file            & \texttt{capi.grammarly.com}          & quit/remove client \\
+Passive (USB / iCloud / plain viewer) & none          & ---                      & none observed                        & n/a (no transmission) \\
+\bottomrule
+\end{tabular}
+\end{table*}
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/cgpt_action_spectrum.png}
   \caption{Document characters transmitted to external servers, by user action.
-  Submitting to a cloud AI tool or simply opening the document in Word leaks nearly all of
-  it and every planted secret; one Office setting drops the Word leak to 0\%, and passive
-  receipt or non-AI viewers transmit nothing. Colour encodes the interaction class; the
-  per-bar run count $N$ varies (see Table~\ref{tab:results}), so equal bar lengths are not
-  equal statistical weight.}
+  Submitting to a cloud AI tool or simply opening the document in Word transmits nearly all
+  of it and every planted secret; one Office setting drops the Word transmission to 0\%, and
+  passive receipt or non-AI viewers transmit nothing. Colour encodes the interaction class;
+  the per-bar run count $N$ varies (see Table~\ref{tab:results}), so equal bar lengths are
+  not equal statistical weight.}
   \label{fig:action-spectrum}
 \end{figure}
 
