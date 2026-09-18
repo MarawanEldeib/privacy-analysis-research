@@ -585,20 +585,12 @@ dropping layout characters, and its pinned channels make that figure a lower bou
 three transmitted every one of the twelve secrets.
 
 The transmission is a single outbound burst at the moment of paste, after which the
-connection falls quiet (Figure~\ref{fig:burst}); the exposure is input-triggered, not
+connection falls quiet (all tool-host frames arrived within about five seconds of paste,
+then nothing for the rest of the 60~s capture); the exposure is input-triggered, not
 continuous. The no-extension baseline is instructive: it generates more total traffic than
 either tool run (megabytes of browser and OS background activity), yet none of it carries
 document content, which is why a baseline is needed, to separate the environment's own
 chatter from document-bearing traffic.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/fig_burst.png}
-  \caption{Outbound traffic to the tool's own host is a single burst at the moment of paste,
-  then silence for the rest of the 60\,s capture. Cumulative client-to-server frames to
-  \texttt{grammarly.com} and \texttt{languagetool.org}, one representative run each.}
-  \label{fig:burst}
-\end{figure}
 
 \subsection{Beyond the planted secrets: account linkability}
 
@@ -744,13 +736,13 @@ Passive (USB / iCloud / plain viewer) & none          & ---                     
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{figures/cgpt_action_spectrum.png}
-  \caption{Document characters transmitted to external servers, by user action.
-  Submitting to a cloud AI tool or simply opening the document in Word transmits nearly all
-  of it and every planted secret; one Office setting drops the Word transmission to 0\%, and
-  passive receipt or non-AI viewers transmit nothing. Colour encodes the interaction class;
-  the per-bar run count $N$ varies (see Table~\ref{tab:results}), so equal bar lengths are
-  not equal statistical weight.}
+  \includegraphics[width=\columnwidth]{figures/fig_spectrum.png}
+  \caption{Document-content coverage in outbound traffic, by user action and surface.
+  Colour encodes the interaction class (incidental/open-triggered, user-initiated, the
+  connected-experiences-off mitigation, and no document content). Exact run counts $N$ are
+  shown per bar; single-run rows are individual observations, not repeatability estimates.
+  Edge/Copilot ($\dagger$) is a lower bound because some of its channels were
+  certificate-pinned.}
   \label{fig:action-spectrum}
 \end{figure}
 
