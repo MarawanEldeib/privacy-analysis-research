@@ -62,22 +62,26 @@ Numbered in the order they appear in the report (IEEE numbering, `unsrtnat`). "R
 
 30. **mitmproxy — the interception proxy (software).** The HTTPS/WebSocket MITM proxy used for all captures. *Role:* core tool citation.
 
-31. **microsoft2026copilotprivacy — Microsoft Copilot privacy docs (2026).** Documents cloud processing of Office connected-experiences content and the disable control. *Role:* primary source for the Word/augloop finding and the one-setting mitigation.
+31. **microsoft2026connectedexp — Microsoft "Connected experiences in Office" (Microsoft Learn, 2026).** States that connected experiences analyse Office content in the cloud and are available unless the control is disabled. *Role:* primary source for the connected-experiences default and disable control (Word/augloop finding).
 
-32. **apple2024platformsec — Apple Platform Security guide (2024).** iCloud encrypts file content in transit and (with Advanced Data Protection) end-to-end. *Role:* explains why iCloud sync showed no cleartext to the writing tools (ADP was off in our setup).
+32. **microsoft2026copilotprivacy — Microsoft Copilot privacy docs (2026).** Documents cloud processing of Office content and the disable control. *Role:* supports the Word/augloop finding and the one-setting mitigation.
 
-33. **mozilla2024permissions — Mozilla extension-permissions support page (2024).** "Access your data for all websites" lets an extension read and change page content. *Role:* backs the all-sites host-permission claim in the Permissions subsection.
+33. **apple2024platformsec — Apple Platform Security guide (2024).** iCloud encrypts file content in transit and (with Advanced Data Protection) end-to-end. *Role:* explains why iCloud sync showed no cleartext to the writing tools (ADP was off in our setup).
 
-34. **grammarly2025privacy — Grammarly privacy documentation (2025).** Grammarly analyses the text users write while the product is active. *Role:* vendor confirmation that processing user text is by design (Discussion).
+34. **mozilla2024permissions — Mozilla extension-permissions support page (2024).** "Access your data for all websites" lets an extension read and change page content. *Role:* backs the all-sites host-permission claim in the Permissions subsection.
 
-35. **languagetool2025privacy — LanguageTool privacy policy (2025).** Describes browser-session/webpage content handled by the extension. *Role:* vendor confirmation for the second tool (Discussion).
+35. **grammarly2025privacy — Grammarly privacy documentation (2025).** Grammarly analyses the text users write while the product is active. *Role:* vendor confirmation that processing user text is by design (Discussion).
 
-36. **nissenbaum2004contextual — "Privacy as Contextual Integrity" (Washington Law Review, 2004).** Privacy as appropriate information flow within a context. *Role:* theoretical frame for the default-vs-expectation gap (Discussion).
+36. **languagetool2025privacy — LanguageTool privacy policy (2025).** Describes browser-session/webpage content handled by the extension. *Role:* vendor confirmation for the second tool (Discussion).
 
-37. **ieee2020ethics — IEEE Code of Ethics (2020).** Commits members to hold paramount the public's safety, welfare, and privacy. *Role:* grounds the Broader Impact discussion in professional/engineering responsibility.
+37. **nissenbaum2004contextual — "Privacy as Contextual Integrity" (Washington Law Review, 2004).** Privacy as appropriate information flow within a context. *Role:* theoretical frame for the default-vs-expectation gap (Discussion).
 
-38. **durumeric2017https — "The Security Impact of HTTPS Interception" (NDSS 2017).** Interception can weaken the connection it observes. *Role:* limitation/methodology caveat.
+38. **ieee2020ethics — IEEE Code of Ethics (2020).** Commits members to hold paramount the public's safety, welfare, and privacy. *Role:* grounds the Broader Impact discussion in professional/engineering responsibility.
 
-39. **microsoft2018presidio — Microsoft Presidio (software).** Open-source PII detection/de-identification SDK. *Role:* used to surface account identifiers alongside the document; basis for the labelling future work.
+39. **durumeric2017https — "The Security Impact of HTTPS Interception" (NDSS 2017).** Interception can weaken the connection it observes. *Role:* limitation/methodology caveat.
+
+40. **razaghpanah2017tls — "Studying TLS Usage in Android Apps" (ACM CoNEXT 2017).** Measures certificate pinning and TLS practices in production apps. *Role:* supports the Limitations point that pinning is common and makes some channels a lower bound.
+
+41. **microsoft2018presidio — Microsoft Presidio (software).** Open-source PII detection/de-identification SDK. *Role:* used to surface account identifiers alongside the document; basis for the labelling future work.
 
 *(Removed from the citation set in this revision: the persistent-memory, unreleased-model, and Lavender/defence references, dropped when Broader Impact was condensed to measured, in-scope claims.)*
