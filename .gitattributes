@@ -4,6 +4,7 @@
 
 *.sh        text eol=lf
 Makefile    text eol=lf
+.githooks/* text eol=lf
 *.py        text eol=lf
 
 # Default: let git decide
