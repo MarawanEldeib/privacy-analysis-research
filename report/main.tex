@@ -43,14 +43,15 @@ a no-extension baseline transmitted none. A secondary host-phase measurement, un
 different interaction conditions, shows the exposure is surface-dependent: opening the file
 in Microsoft~Word with connected experiences enabled, with no paste and no submission,
 streamed \textbf{96.8\%} of it to a Microsoft cloud endpoint, and disabling a single Office
-setting removed that channel. Content leaves the machine whenever it enters an
+setting removed that channel in a single-run check. Across the conditions we tested, content
+leaves the machine when it enters an
 LLM-integrated surface, independent of where the file is stored; we frame this as a gap
 between default behaviour and reasonable user expectation rather than an exploit. All test
 data is synthetic and the methodology is reproducible.
 \end{abstract}
 
 \begin{IEEEkeywords}
-Browser extensions, data exposure, GDPR, HTTPS interception, LLM-integrated productivity
+Browser extensions, data exposure, HTTPS interception, LLM-integrated productivity
 tools, PII leakage
 \end{IEEEkeywords}
 
@@ -71,9 +72,11 @@ How does user data exposure differ across LLM-integrated productivity tools
 during controlled use?
 \end{quote}
 
-Concretely: when a confidential document is pasted into an ordinary text field with a
-writing-assistant extension running by default, how much of that document leaves the
-machine, and does it include the specifically sensitive parts? Grammar-checking browser
+When a confidential document reaches such a tool---whether the user invokes it on demand,
+or an enabled extension captures a field they typed into for an unrelated task---how much of
+the document leaves the machine, and does it include the specifically sensitive parts? We
+distinguish these two cases, active use and incidental exposure, in
+Section~\ref{sec:threat}. Grammar-checking browser
 extensions are the entry point, but the study spans the integration types these tools take
 in practice: browser extensions, desktop and editor applications, and system-level
 services. The controlled, same-task comparison is limited to the browser extensions; the
@@ -83,17 +86,21 @@ functionality; our network measurements establish remote transmission of documen
 not whether a particular captured request was processed by an LLM internally.
 
 This is not a search for a vulnerability. The tools examined here are doing exactly
-what they were designed to do. Our contribution is a reproducible
-measurement of this default behaviour and an analysis of how it diverges from
-users' expectations. Our contributions are:
+what they were designed to do. We find that, under identical conditions, both browser tools
+transmit almost the entire document and every planted secret while a no-extension baseline
+transmits nothing, and that across desktop and system surfaces the same exposure tracks
+whether content enters an LLM-integrated surface rather than where the file is stored. Our
+contribution is a reproducible measurement of this default behaviour and an analysis of how
+it diverges from users' expectations. Our contributions are:
 
 \begin{itemize}[nosep]
   \item A reproducible HTTPS-interception method with a unique UUID canary, applied to
         Grammarly and LanguageTool against a no-extension baseline.
   \item A host-level extension showing exposure is surface-dependent: it depends on the
-        surface a document enters, not on where the file is stored.
+        surface a document enters, not on where the file is stored, with negative controls
+        (USB, iCloud, non-AI viewers) and a one-setting mitigation for the Word transmission.
   \item A permission analysis showing the exposure channel is all-sites text access, not
-        the microphone or camera, together with a one-setting mitigation for the Word transmission.
+        the microphone or camera.
 \end{itemize}
 
 \section{Background and Threat Model}
@@ -110,38 +117,40 @@ the text itself must leave the user's machine for the feature to function at all
 
 \subsection{Intended use versus incidental exposure}
 A user's text can reach one of these
-tools in two ways. In intended use, the user knowingly hands over the text: they
-type into the tool's own editor, or they click an action such as ``paraphrase'' or
-``summarise.'' Transmission is then expected and effectively consented to. The privacy
-question lies in the other case, incidental exposure: the extension is installed and
-enabled, the default state for millions of users, and it captures text the user entered for
-an unrelated purpose, with no intent to use the tool and no action beyond typing or pasting.
-We first confirmed the intended-use mechanism, that server-side analysis makes the text
-leave the machine at all, then measured the incidental case across a set of tools under
-identical conditions. This is how the project's question, how data exposure differs across
-tools during controlled use, is answered: by comparing tools on the exposure that occurs
-when the user has not chosen to share.
+tools in two ways, and this study measures both. In active, on-demand use, the user
+knowingly hands the text over: they type into the tool's own editor, or click an action
+such as ``paraphrase,'' ``summarise,'' or ``translate.'' Transmission is expected, but its
+extent is not: how much of a document a tool ships once it is invoked is itself a
+privacy-relevant quantity, which we measure for a desktop translator and an on-demand
+assistant. In incidental exposure, the extension is installed and enabled, and it captures text
+the user entered for an unrelated purpose, with no intent to use the tool and no action
+beyond typing or pasting. Both cases
+matter for confidential work: the first because users routinely under-estimate how much a
+tool sends even when they choose to use it, the second because the disclosure happens with
+no step the user would recognise as sharing. Having established the transmission mechanism
+above, we measured both interaction classes across a set of tools, reporting each condition
+by its class.
 
 \subsection{Threat model}
 We model an ordinary, non-adversarial situation:
 
 \begin{quote}
 A user receives a confidential file and is explicitly told not to share it with AI
-tools. They have a writing-assistant extension installed and enabled, the default
-state for millions of users. In the course of normal work they paste part of the
+tools. They have a writing-assistant extension installed and enabled by default. In the
+course of normal work they paste part of the
 document into a normal text field (an email reply, a web form, a notes box). Without
 any further action, the extension transmits the content to its servers.
 \end{quote}
 
 We do not assume a malicious vendor, a compromised endpoint, or a network attacker; the
 concern is unintended disclosure of document content to remote service providers through
-enabled productivity-tool integrations. The user believes they have withheld the document
-from AI tools. In fact, simply pasting it into a field an unrelated extension happens to
-watch has already transmitted it. Our measurement targets precisely this
-gap: exposure that occurs with no user action beyond pasting. The browser paste
-is our primary scenario; we later broaden the same question to desktop applications and
-to the act of opening a received file (Section~\ref{sec:action-spectrum}),
-where in some cases even the paste is unnecessary.
+enabled productivity-tool integrations. The paste here is for an unrelated task, an email
+reply and not a request to any AI, yet the enabled extension has already transmitted the
+content. This incidental paste is our primary scenario, but it is one point on a spectrum we
+measure: from active, on-demand use where the user does invoke a tool, through this
+incidental case during normal work, to purely passive exposure where opening a
+received file transmits it (Section~\ref{sec:action-spectrum}). The more confidential the
+work, the more each of these situations matters.
 
 \section{Related Work}
 \label{sec:related}
@@ -202,12 +211,8 @@ webpage content, including medical and banking details, to their own servers and
 to third-party trackers. Our study is narrower and complementary: rather than a
 broad crawl, we perform a deep, controlled, and fully reproducible measurement
 of a specific, common threat model (a confidential document pasted into a field with a
-grammar checker running by default), using a planted-canary methodology that makes
-each leak individually and unambiguously attributable. Where prior large-scale work
-answers ``how many extensions leak,'' we answer ``exactly how much of a specific
-confidential document leaves, and which sensitive tokens, for two writing assistants under
-identical conditions and, exploratively, across other host surfaces, with what
-reproducibility.''
+grammar checker running by default), using planted canaries that make
+each leak individually and unambiguously attributable.
 
 Finally, why the transmitted content matters is reinforced by a parallel line
 of work on the privacy risks of large language models, which increasingly sit behind
@@ -252,9 +257,9 @@ gap.
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.92\textwidth]{figures/fig_setup.png}
-\caption{Experimental setup. In the browser phase (isolated Kali Linux VM) the synthetic
-memo is pasted into a bare local page and read by the writing-assistant extension; in the
-host phase (Windows~11) native applications and Office reach the network through the system
+\caption{Experimental setup. In the browser phase (isolated Kali Linux VM), the synthetic
+memo is pasted into a bare local page and read by the writing-assistant extension. In the
+host phase (Windows~11), native applications and Office reach the network through the system
 proxy (WinINET + WinHTTP, the latter required because native clients bypass a browser-only
 proxy). Both phases route through mitmproxy (\texttt{127.0.0.1:8080}); a positive control
 (example.com) confirms interception is live, and every flow is attributed to its
@@ -264,7 +269,7 @@ destination host.}
 
 \subsection{Study design and conditions}
 
-The study has two tiers. The \emph{primary} experiment is a controlled, same-task browser
+The study has two phases. The \emph{primary} experiment is a controlled, same-task browser
 comparison of three conditions: Grammarly (the always-on grammar and style checker that
 motivated this project), LanguageTool (a grammar checker from a different company,
 LanguageTooler GmbH, based in Germany, that needs no account, a clean second tool for
@@ -272,19 +277,18 @@ checking whether the behaviour repeats), and a no-extension baseline (the same b
 steps with no extension installed, used as a negative control for the browser's background
 traffic). Testing two independent tools rather than one gives stronger evidence: if both
 behave the same way, the result is not a quirk of a single product. The \emph{secondary},
-exploratory host phase then probes other surfaces (the DeepL desktop client, Microsoft~Word
-with Office connected experiences, Edge/Copilot on a PDF, and passive storage or non-AI
-viewers); these conditions differ in user action and file format, so they are read
+exploratory host phase then probes several other surfaces: the DeepL desktop client, Microsoft~Word
+with Office connected experiences, the Grammarly desktop client under Protected View,
+Edge/Copilot on a PDF, and passive storage or non-AI viewers; these conditions differ in user action and file format, so they are read
 individually rather than as a same-task cross-tool comparison. Together the conditions
 cover the browser-extension, desktop-application, and editor/Office integration types;
 pure web-interface tools (chatbot websites) are out of scope, because pasting into them is
 intended use by definition and carries no gap between behaviour and expectation. Software
-versions and accounts for both tiers are listed in Table~\ref{tab:env}.
+versions and accounts for both phases are listed in Table~\ref{tab:env}.
 
 \begin{table}[t]
 \centering
-\caption{Experimental environment. Browser-phase captures ran on 2026-09-14; host-phase
-captures spanned 2026-07-02 to 2026-09-15. Host application versions were recorded after the
+\caption{Experimental environment. Host application versions were recorded after the
 experiments; because these clients auto-update, earlier host runs may have used slightly
 earlier builds.}
 \label{tab:env}
@@ -299,8 +303,8 @@ Grammarly extension    & 8.937.0 (free account, logged in) \\
 LanguageTool extension & 11.0.2 (no account) \\
 mitmproxy              & 12.2.3 \\
 \midrule
-\multicolumn{2}{@{}l}{\textit{Host phase (Windows 11, build 25H2)}}\\
-Microsoft 365 (Word)   & Click-to-Run 16.0.20326.20144 (personal account) \\
+\multicolumn{2}{@{}l}{\textit{Host phase (Windows 11 25H2)}}\\
+Microsoft 365 (Word)   & 16.0.20326.20144 (Click-to-Run, personal) \\
 Microsoft Edge         & 153.0.4234.32 \\
 DeepL desktop          & 26.9.1 \\
 Grammarly for Windows  & 1.2.296.1955 \\
@@ -315,9 +319,9 @@ The input is a synthetic ``confidential memo'' (2{,}065 characters, 245 words) w
 to look like an internal compliance document and explicitly marked
 ``\textsc{do not forward}.'' Embedded in its prose are twelve unique,
 fictional identifiers: names, an email address, a phone number, project and
-reference codes, and a UUID canary, \canary{}. None of these strings existed
-anywhere on the public internet when captured, so any occurrence in captured network traffic is
-unambiguously attributable to our input. The canary in particular is a high-specificity
+reference codes, and a UUID canary, \canary{}. These identifiers are synthetic and were not
+intentionally reused from any real source, so any occurrence in captured network traffic is
+attributable to our input. The canary in particular is a high-specificity
 attribution marker: its appearance in client-to-server traffic is strong evidence that
 content from the synthetic document was transmitted toward that service.
 Table~\ref{tab:secrets} lists the twelve identifiers and their categories.
@@ -448,23 +452,17 @@ Presidio, an open-source tool that flags names, e-mail addresses, ID numbers, an
 over the decrypted bodies, to catch sensitive data we did not plant.
 
 \noindent
-For the browser tools every run produced the same measured exposure (SD $=0.0$~pp),
-indicating high within-setup repeatability; we report the value directly rather than a
-confidence interval. This within-setup stability does not imply zero uncertainty across
+Where within-setup runs were identical we report the measured exposure directly rather than
+as a confidence interval; such run-to-run stability is not a claim of stability across
 software versions, accounts, regions, document types, or future server-side behaviour.
-
-\textbf{Code and data availability.} The capture and analysis code, the synthetic memo,
-and the planted-secret list are available at
-\url{https://github.com/MarawanEldeib/privacy-analysis-research}.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.92\textwidth]{figures/fig_pipeline.png}
-\caption{Exposure-scoring pipeline. Each captured client-to-server flow (HTTP request
-bodies and client-to-server WebSocket frames; server responses excluded) is decompressed,
-decoded across encodings, and matched with a 20-character sliding window plus the canary
-and twelve secrets, yielding a character-coverage exposure percentage, secret count, and
-per-host attribution.}
+\caption{Exposure-scoring pipeline. Each outbound flow is decompressed, decoded across
+encodings, and matched against the document with a 20-character sliding window plus the
+canary and twelve secrets, giving a coverage percentage, a secret count, and the receiving
+host.}
 \label{fig:pipeline}
 \end{figure*}
 
@@ -488,107 +486,61 @@ client pins its certificate (Section~\ref{sec:limitations}). The transmission is
 to one class of data: both tools transmitted every information type in the document (personal
 names, contact details, official identification numbers, financial codes, a legal contract
 reference, the confidential project codename, and the canary), and formatted identifiers
-such as ID numbers were sent as readily as ordinary sentences. Table~\ref{tab:indicators}
-gives the promised outbound indicators (volume, messages, external hosts) and
-Table~\ref{tab:confidence} the per-tool exposure and confidence verdicts.
+such as ID numbers were sent as readily as ordinary sentences. The per-tool
+repeatability verdicts appear in Table~\ref{tab:results} alongside the exposure figures;
+capture was complete for every browser-phase condition and is a lower bound only where a
+client pinned its certificate (Edge/Copilot, marked $\dagger$).
 
 \begin{table*}[t]
 \centering
-\caption{Default-configuration exposure per condition. The browser phase is the controlled,
-same-task comparison; the host phase is exploratory (different user actions and file
-formats), so its rows are read individually rather than as a same-task comparison. Exposure
-is character coverage (mean across runs; browser-phase standard deviation was 0.0~pp);
-secrets are the number of the twelve planted identifiers detected. $^{\dagger}$Edge/Copilot
-had un-interceptable (certificate-pinned) handshakes, so 76.9\% is a lower bound.}
+\caption{Default-configuration exposure and confidence per condition. Exposure is character
+coverage, averaged across runs; host-phase rows are exploratory and read individually.
+$^{\dagger}$Edge/Copilot is a lower bound (certificate pinning).}
 \label{tab:results}
 \footnotesize
-\begin{tabular}{l c c c c l}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{l c c l l}
 \toprule
-\textbf{Condition} & \textbf{Runs} & \textbf{Exposure} & \textbf{Secrets} &
-\textbf{Canary?} & \textbf{Receiving host} \\
+\textbf{Condition} & \textbf{Exposure} & \textbf{Secrets} &
+\textbf{Repeatability} & \textbf{Receiving host} \\
 \midrule
-\multicolumn{6}{@{}l}{\textit{Browser phase (paste into an ordinary web field)}}\\
-Grammarly                        & 5 & \textbf{99.0\%} & \textbf{12/12} & yes & \texttt{capi.grammarly.com} (WebSocket) \\
-LanguageTool                     & 5 & \textbf{91.9\%} & \textbf{12/12} & yes & \texttt{api.languagetool.org} \\
-No extension (baseline)          & 3 & 0.0\%           & 0/12           & no  & --- \\
+\multicolumn{5}{@{}l}{\textit{Browser phase (paste into an ordinary web field)}}\\
+Grammarly                        & \textbf{99.0\%} & \textbf{12/12} & High (5 runs) & \texttt{capi.grammarly.com} (WebSocket) \\
+LanguageTool                     & \textbf{91.9\%} & \textbf{12/12} & High (5 runs) & \texttt{api.languagetool.org} \\
+No extension (baseline)          & 0.0\%           & 0/12           & High (3 runs) & --- \\
 \midrule
-\multicolumn{6}{@{}l}{\textit{Host phase (desktop apps and opening a received file; exploratory)}}\\
-DeepL desktop (paste)            & 3 & \textbf{99.6\%} & \textbf{12/12} & yes & \texttt{www2.deepl.com}$^{a}$ \\
-Word: connected experiences on, open \texttt{.docx}  & 3 & \textbf{96.8\%} & \textbf{12/12} & yes & \texttt{augloop.svc.cloud.microsoft} \\
-Word Protected View + Grammarly desktop  & 2 & \textbf{94.2\%} & \textbf{12/12} & yes & \texttt{capi.grammarly.com} \\
-Edge Copilot: summarise PDF      & 3 & \textbf{76.9\%}$^{\dagger}$ & \textbf{12/12} & yes & \texttt{copilot.microsoft.com} \\
-Word: connected experiences off, open \texttt{.docx} & 1 & 0.0\%   & 0/12           & no  & (socket opens, no content) \\
-Passive: USB / iCloud sync / non-AI viewer & 1 & 0.0\% & 0/12         & no  & (no document content on tool hosts) \\
-\bottomrule
-\end{tabular}
-\par\vspace{3pt}
-{\footnotesize $^{a}$The \texttt{www2} label is not unusual: organisations commonly run
-hostnames such as \texttt{www2} (or \texttt{www1}, \texttt{web2}) for a secondary server, a
-specific service, or an application backend, distinct from the \texttt{www} site a person
-visits in a browser. Here it is simply the host the DeepL client uploads text to.\par}
-\end{table*}
-
-\begin{table}[t]
-\centering
-\caption{Promised outbound indicators for the primary browser phase (median per run).
-Outbound messages are HTTP request bodies plus client-to-server WebSocket frames;
-external hosts counts distinct destination hostnames (content-bearing in parentheses).
-Payload is application-layer bytes.}
-\label{tab:indicators}
-\footnotesize
-\begin{tabular}{@{}lccc@{}}
-\toprule
-\textbf{Condition} & \textbf{Payload} & \textbf{Outbound msgs} & \textbf{Ext. hosts} \\
-\midrule
-Grammarly              & $\sim$6~kB$^{\ast}$ & 6  & 2 (1) \\
-LanguageTool           & 5.6~kB              & 2  & 1 (1) \\
-No extension (baseline)& $\sim$16~kB (bkgd.) & 15 & 10 (0) \\
+\multicolumn{5}{@{}l}{\textit{Host phase (desktop apps and opening a received file; exploratory)}}\\
+DeepL desktop (paste)            & \textbf{99.6\%} & \textbf{12/12} & High (3 runs) & \texttt{www2.deepl.com}$^{a}$ \\
+Word: connected experiences on, open \texttt{.docx}  & \textbf{96.8\%} & \textbf{12/12} & High (3 runs) & \texttt{augloop.svc.cloud.microsoft} \\
+Word Protected View + Grammarly desktop  & \textbf{94.2\%} & \textbf{12/12} & High (2 runs) & \texttt{capi.grammarly.com} \\
+Edge Copilot: summarise PDF      & \textbf{76.9\%}$^{\dagger}$ & \textbf{12/12} & High (3 runs) & \texttt{copilot.microsoft.com} \\
+Word: connected experiences off, open \texttt{.docx} & 0.0\%   & 0/12           & N/A ($N{=}1$) & (socket opens, no content) \\
+Passive: USB / iCloud sync / non-AI viewer & 0.0\% & 0/12         & N/A ($N{=}1$ each) & (no document content on tool hosts) \\
 \bottomrule
 \end{tabular}
 \par\vspace{2pt}
-{\footnotesize $^{\ast}$WebSocket transport; client-to-server payload observed in the
-capture (\mbox{5--6~kB} per run).\par}
-\end{table}
-
-\begin{table*}[t]
-\centering
-\caption{Per-tool exposure and confidence (Objective~4). Repeatability is within-setup
-run-to-run stability; capture completeness is whether any TLS handshake escaped
-interception. Single-run host conditions are observations, not repeatability estimates.}
-\label{tab:confidence}
-\footnotesize
-\begin{tabular}{@{}llccll@{}}
-\toprule
-\textbf{Condition} & \textbf{Phase} & \textbf{Exposure} & \textbf{Secrets} &
-\textbf{Repeatability} & \textbf{Capture completeness} \\
-\midrule
-Grammarly                  & browser & 99.0\% & 12/12 & High (5 runs)        & Complete \\
-LanguageTool               & browser & 91.9\% & 12/12 & High (5 runs)        & Complete \\
-No extension (baseline)    & browser & 0.0\%  & 0/12  & High (3 runs)        & Complete \\
-DeepL desktop              & host    & 99.6\% & 12/12 & High (3 runs)        & Complete \\
-Word, connected exp.\ on   & host    & 96.8\% & 12/12 & High (all AI-on runs)& Complete \\
-Word Protected View + Grammarly & host & 94.2\% & 12/12 & Medium ($N{=}2$)  & Complete \\
-Edge Copilot               & host    & 76.9\% & 12/12 & High (3 runs)        & Lower bound (pinning) \\
-Word, connected exp.\ off  & host    & 0.0\%  & 0/12  & Not assessable ($N{=}1$) & Complete \\
-Passive (USB/iCloud/viewer)& host    & 0.0\%  & 0/12  & Not assessable ($N{=}1$) & Complete \\
-\bottomrule
-\end{tabular}
+{\footnotesize $^{a}$\texttt{www2} is simply a secondary/service hostname, distinct from the
+public \texttt{www} site; here it is the host the DeepL client uploads text to.\par}
 \end{table*}
 
 \subsection{What was transmitted, and how}
 
 Grammarly streamed the document to its backend over a WebSocket connection (about 5--6~kB of
-client-to-server payload per run); LanguageTool sent it as an HTTPS \texttt{POST} to its own
-check endpoint (5.6~kB to a single host). In both cases the twelve planted identifiers,
+client-to-server payload per run) reaching a single content-bearing host; LanguageTool sent
+it as an HTTPS \texttt{POST} to its own check endpoint (5.6~kB to one host). These
+outbound-volume and external-host figures show the document leaves in a small number of
+requests to the tool's own server, not scattered across many hosts. In both cases the twelve
+planted identifiers,
 including the canary, were recovered from the decrypted client-to-server traffic. The
 $\sim$8~percentage-point gap between the two tools is a coverage artefact, not a difference
 in whether sensitive content leaves: the characters LanguageTool did not cover are almost
 all newlines and short header or salutation lines (for example the \texttt{Date:} line and
 the ``Dear Marcus,'' greeting) that it sends as separate segments too short to fill a
 20-character window. Excluding whitespace, coverage is 98.9\% (Grammarly), 93.6\%
-(LanguageTool), and 82.2\% (Edge/Copilot); Edge's residual is its PDF text extraction
-dropping layout characters, and its pinned channels make that figure a lower bound. All
-three transmitted every one of the twelve secrets.
+(LanguageTool), and 82.2\% (Edge/Copilot). We did not isolate Edge's remaining residual; it
+is consistent with differences in how the PDF text is extracted (reflow, hyphenation, and
+ligatures) rather than omission of content, and its pinned channels make that figure a lower
+bound in any case. All three transmitted every one of the twelve secrets.
 
 The transmission is a single outbound burst at the moment of paste, after which the
 connection falls quiet (all tool-host frames arrived within about five seconds of paste,
@@ -605,8 +557,8 @@ token and per-session account identifiers, so the transmitted text is linkable t
 specific Grammarly account; LanguageTool's requests carried no such account identifier. We
 did not test cross-session or cross-service linkage, and the token travels over the
 client's own encrypted connection to its backend, so this is a note on linkability rather
-than a credential-disclosure finding. We surfaced it with an automatic PII detector
-(Microsoft Presidio) over the decrypted bodies.
+than a credential-disclosure finding. We surfaced it with the automatic PII pass (Presidio)
+noted in Section~\ref{sec:metrics}.
 
 \subsection{Independent corroboration without a proxy}
 
@@ -635,8 +587,8 @@ each is listed in Table~\ref{tab:results}.
 
 \textbf{Active submission transmits the document, as in the browser phase.} The \textbf{DeepL} desktop
 client, given the document by paste, transmitted essentially all of it (99.6\% mean over
-three runs) and every secret to DeepL's service backend; the whole input was uploaded even
-though only part of it is translated on the free tier.
+three runs) and every secret to DeepL's service backend; the entire document was uploaded,
+not only the portion returned as a translation.
 
 \textbf{Invoking Copilot on an opened PDF transmits document content.} Invoking
 \textbf{Edge's Copilot} to summarise the planted PDF transmitted \textbf{76.9\%} of the
@@ -647,7 +599,8 @@ bound. The coverage is lower than the paste-based tools because the source was a
 transmits its text extraction, which drops layout and formatting characters, yet every one
 of the twelve secrets, canary included, was sent. Run~3 is instructive: Copilot's visible
 reply stated it would answer without exposing the confidential details, yet the capture
-shows the full document, canary included, had already been sent to Microsoft. A model
+shows document content, including all twelve secrets and the canary, had already been sent
+to Microsoft. A model
 declining to display a secret is therefore not evidence that the secret was not
 transmitted; the privacy boundary is the network, not the chat reply.
 
@@ -667,14 +620,15 @@ runs (\texttt{activity.windows.com}, \texttt{arc.msn.com}, \texttt{ecs.office.co
 template and consent CDNs) carried telemetry or configuration traffic, not document
 content; augloop was the only content-bearing channel.
 
-\textbf{Disabling one setting stops it (causation and mitigation).} Turning off the
+\textbf{Disabling one setting removes the channel (single-run mitigation).} Turning off the
 single Office setting ``experiences that analyse your content'' (File $>$ Account $>$
 Account Privacy $>$ Manage Settings, under Connected Experiences) and reopening the same
 file reduced augloop's transmission to \textbf{0\%} (0/12), with the socket still opening
-but carrying no document content. This both establishes that the Office~AI feature, not
-the act of opening a file, is the cause, and gives users a concrete one-switch mitigation.
-It removes Microsoft's own channel only, however: a third-party assistant hooking the same
-window is unaffected, as the Protected View result next shows.
+but carrying no document content. This single disabled-control run supports attributing the
+transmission to the Office connected-experiences feature rather than to the act of opening a
+file, and points to a concrete one-switch mitigation. It removes Microsoft's own channel
+only, however: a third-party assistant hooking the same window is unaffected, as the
+Protected View result next shows.
 
 \textbf{Protected View does not stop a third-party assistant.} When the file carried a
 mark-of-the-web and opened in Word's sandboxed Protected View (the yellow ``Enable
@@ -687,19 +641,20 @@ observed the transmission but did not determine the mechanism by which the clien
 the text. Protected View thus sandboxes macros and even Microsoft's own AI, but not an
 independent assistant reading the same window.
 
-\textbf{A file only stored on a USB or cloud drive is not read by the tools.} A
+\textbf{A file only stored on a USB or cloud drive: no document content observed.} A
 distinct question is whether a confidential file is transmitted simply by being stored on a
 removable drive or a synced cloud folder while the writing assistants run in the
-background. It does not. Inserting the USB without opening the file (Process Monitor showed only the Windows
+background. It is not. Inserting the USB without opening the file (Process Monitor showed only the Windows
 indexer and shell probing volume metadata, not the file being read) and dropping the file into
 iCloud~Drive to sync each transmitted \textbf{no} document content to the writing tools'
 servers (0/12), even though
 Grammarly and the other clients were running throughout: the file never entered a surface
-they watch. iCloud's own content channels were reachable but carried no cleartext: the file
-syncs to Apple encrypted in transit (Advanced Data Protection, which would add end-to-end
-encryption, was off in our setup)~\citep{apple2024platformsec}, so it reaches Apple's cloud
-but is never exposed to the LLM writing tools. The same held for opening the file in a viewer with no cloud-AI
-integration (Notepad, Adobe~Acrobat, or Chrome's PDF viewer), and for opening the PDF in Edge
+they watch. iCloud's own sync channels were reachable in the capture but carried no readable document
+text (we saw the connections but no cleartext content): the file syncs to Apple encrypted in
+transit (Advanced Data Protection, which would add end-to-end encryption, was off in our
+setup)~\citep{apple2024platformsec}, so it reaches Apple's cloud but is never exposed to the
+LLM writing tools. The same held for opening the file in a viewer with no cloud-AI
+integration and no assistant attached (Notepad, Adobe~Acrobat, or Chrome's PDF viewer), and for opening the PDF in Edge
 without invoking Copilot (0/12 secrets; the passive Edge case matched only 1.8\% of the
 document's characters, a single 37-character run of the generic phrase ``personally
 identifiable information'' with no planted secret, i.e.\ incidental boilerplate rather than
@@ -712,30 +667,31 @@ telemetry, but not the document's contents.
 a synced cloud folder is not read by
 the writing tools until its text enters a surface they watch, so passively receiving or
 opening a file transmits nothing unless that surface has a cloud-AI integration watching
-the content. Content leaves the machine whenever it enters such a surface, whether the user
-pastes into a writing assistant, invokes an assistant, or opens the file in a
-cloud-AI-enabled editor. Table~\ref{tab:rq} answers the research question directly: for each
-surface it gives the trigger, the user action required, the recipient, and whether an
+the content. Across the conditions we tested, content leaves the machine when it enters such
+a surface, whether the user pastes into a writing assistant, invokes an assistant, or opens
+the file in a cloud-AI-enabled editor. Table~\ref{tab:rq} answers the research question
+directly: for each
+surface it gives the trigger, the user action required, and whether an
 off-switch exists.
 
 \begin{table*}[t]
 \centering
-\caption{Answer to the research question: how exposure differs across surfaces. Everything
-that enters a watched surface transmits nearly the whole document; what differs is the
-trigger, the action required, the recipient, and the available off-switch.}
+\caption{Answer to the research question: how exposure differs across surfaces --- the
+trigger, the user action, and whether an off-switch exists (receiving hosts are in
+Table~\ref{tab:results}).}
 \label{tab:rq}
 \footnotesize
-\begin{tabular}{@{}lllll@{}}
+\begin{tabular}{@{}llll@{}}
 \toprule
-\textbf{Surface} & \textbf{Trigger} & \textbf{User action} & \textbf{Recipient} & \textbf{Off-switch} \\
+\textbf{Surface} & \textbf{Trigger} & \textbf{User action} & \textbf{Off-switch} \\
 \midrule
-Grammarly (browser extension)      & incidental       & none beyond typing/paste & \texttt{capi.grammarly.com}          & disable/remove extension \\
-LanguageTool (browser extension)   & incidental       & none beyond typing/paste & \texttt{api.languagetool.org}        & disable/remove extension \\
-DeepL desktop                      & user-initiated   & paste into the app       & \texttt{www2.deepl.com}              & do not paste \\
-Word (connected experiences)       & incidental       & open the file            & \texttt{augloop.svc.cloud.microsoft} & one Office setting \\
-Edge + Copilot                     & user-initiated   & invoke Copilot           & \texttt{copilot.microsoft.com}       & do not invoke \\
-Grammarly desktop (in Word)        & incidental       & open the file            & \texttt{capi.grammarly.com}          & quit/remove client \\
-Passive (USB / iCloud / plain viewer) & none          & ---                      & none observed                        & n/a (no transmission) \\
+Grammarly (browser extension)      & incidental       & none beyond typing/paste & disable/remove extension \\
+LanguageTool (browser extension)   & incidental       & none beyond typing/paste & disable/remove extension \\
+DeepL desktop                      & user-initiated   & paste into the app       & n/a (user-initiated) \\
+Word (connected experiences)       & incidental       & open the file            & one Office setting \\
+Edge + Copilot                     & user-initiated   & invoke Copilot           & n/a (user-initiated) \\
+Grammarly desktop (in Word)        & incidental       & open the file            & quit/remove client \\
+Passive (USB / iCloud / plain viewer) & none          & ---                      & n/a (no transmission) \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -744,10 +700,11 @@ Passive (USB / iCloud / plain viewer) & none          & ---                     
   \centering
   \includegraphics[width=\columnwidth]{figures/fig_spectrum.png}
   \caption{Document-content coverage in outbound traffic, by user action and surface.
-  Colour encodes the interaction class (incidental/open-triggered, user-initiated, the
-  connected-experiences-off mitigation, and no document content). Exact run counts $N$ are
-  shown per bar; single-run rows are individual observations, not repeatability estimates.
-  Edge/Copilot is a lower bound because some of its channels were certificate-pinned.}
+  Exact run counts $N$ are shown per bar; single-run rows are individual observations, not
+  repeatability estimates. Edge/Copilot is a lower bound (some channels were
+  certificate-pinned). The ``no document content'' class means no attributable
+  document-specific content: the passive Edge bar's 1.8\% is a generic boilerplate phrase,
+  not a planted secret.}
   \label{fig:action-spectrum}
 \end{figure}
 
@@ -759,8 +716,8 @@ the Windows capability store (mic, camera, location, contacts, full-disk access,
 rest) and each extension's declared permissions showed that none of the writing or
 translation tools (Grammarly, LanguageTool, DeepL) holds microphone, camera, or
 broad-filesystem access: the microphone and camera belong only to communication, voice,
-and meeting apps. What the writing tools do hold is the browser's ``read and change all
-your data on all the websites you visit'' host permission, which is precisely the capability
+and meeting apps. What the writing tools do hold is the browser's ``Access your data for all
+websites'' host permission, which is precisely the capability
 that lets a content script read every editable field~\citep{mozilla2024permissions}. The
 exposure channel is therefore the text a user types or pastes, granted through this
 all-sites content permission, not audio or video surveillance. In our setup the always-on
@@ -773,8 +730,8 @@ running before the user does anything.
 The clearest single result is the canary, not the percentage. A unique
 token that existed only inside a document marked ``\textsc{do not forward}'' was found,
 seconds after an ordinary paste, in traffic bound for two companies' servers, placed
-there by software the user installed once and forgot. Nothing here is a bug or an
-exploit: server-side analysis requires the text to be uploaded, and both vendors
+there by software the user installed once and forgot. Server-side analysis requires the
+text to be uploaded, and both vendors
 document that they process user text~\citep{grammarly2025privacy,languagetool2025privacy}.
 The finding is the gap between that design and what a user, told ``don't share this with
 AI,'' would expect when they paste a paragraph into an unrelated field, a gap best
@@ -783,90 +740,75 @@ user did not intend~\citep{nissenbaum2004contextual}.
 
 This distance matters because the exposure is (a) invisible: there is no prompt, no
 click, no confirmation; (b) complete: essentially the whole document, not a
-fragment; and (c) deterministic: it happens every time, reliably. For an individual
-handling regulated data (health, legal, financial) the implication is direct:
-default-configuration writing assistants are incompatible with a ``do not share''
+fragment; and (c) highly repeatable within the tested setup: it happened on every run. For
+an individual handling regulated data (health, legal, financial) the implication is direct:
+the writing assistants we tested are incompatible with a ``do not share''
 instruction unless explicitly disabled, and disabling them is not the default. It also
-matters when a tool sends: some transmit only when the user actively asks (active,
-on-demand), while others send silently in the background the moment text appears, simply
-because that is how they work, even when the user never meant to share (passive). The
-grammar checkers we tested are the silent, background kind.
+matters when a tool sends: the active, on-demand transfers and the incidental, background
+ones distinguished in Section~\ref{sec:threat} carry different risk, and the grammar
+checkers we tested are the silent, background kind that transmit the moment text appears.
+Table~\ref{tab:rq} summarises this across surfaces: exposure differs little in extent once
+content enters a watched surface, but the trigger, the required user action, and the
+available off-switch differ markedly.
 
 \subsection{Regulatory context (EU GDPR)}
-This experiment uses exclusively synthetic data, so no real personal data is processed; but
-the mechanism it measures is relevant wherever the equivalent fields hold real personal
-data. In such deployments a silent, whole-document upload is hard to reconcile with the EU
-General Data Protection Regulation's principles of transparency and data minimisation and
-its duty to inform the data subject (Regulation~(EU)~2016/679, Arts.~5 and 13--14), and it
-engages the Chapter~V rules on international transfers when the receiving servers sit
-outside the EU. The concern is sharpest for employers, whose staff may paste client data
-into a consumer tool with no Art.~28 processor agreement. Whether any particular use is
-lawful is fact-specific, depending on the parties' roles, purpose and legal basis,
-transparency, and any transfer safeguards; we make no legal determination. Our point is
-that the invisibility of the transfer, not merely its occurrence, is the core
-data-protection concern.
+Our tests use only synthetic data, so no real personal data is involved; but the same
+mechanism matters wherever those fields would hold real personal data. A silent
+whole-document upload raises questions under three expectations of the EU's data-protection
+law (GDPR, Regulation~(EU)~2016/679): being transparent about where data goes, sending only
+the data that is needed, and informing the person the data is about of the third parties
+that receive it (Arts.~5, 13, and 14). If the
+receiving servers are outside the EU, the law's cross-border-transfer rules (Chapter~V) also
+apply. The risk is largest at work, where an employee may paste client data into a consumer
+tool that has no data-processing agreement in place (Art.~28). We make no legal ruling ---
+whether any specific use is lawful depends on the details --- but the engineering point is
+simple: the problem is not only that the data leaves, but that it leaves invisibly, with
+nothing telling the user it happened.
 
 \subsection{Broader impact}
 We raise these implications as a matter of professional responsibility: engineering codes of
 ethics ask those who build and study such systems to hold paramount the public's safety,
 welfare, and privacy~\citep{ieee2020ethics}. Our experiment measures transmission, not what
-happens afterwards. Once document content leaves the machine it can be retained, used for
-provider-side processing or model training, and shared under terms few users read; vendors'
-own documentation confirms content is processed and retained in the cloud by
-default~\citep{microsoft2026copilotprivacy}, and threat-intelligence reporting has found
-deployed AI services silently storing and reusing user inputs~\citep{anthropic2026threats}.
-Because models can infer sensitive attributes from ordinary text~\citep{staab2024beyond}
-and generative-AI assistants have been shown to forward page content to remote
-services~\citep{vekaria2025bighelp}, transmitting a document expands the set of systems that
-can process, retain, and act on it. These downstream practices vary by provider and
-configuration and lie outside our measurement scope; quantifying the network exposure
-precisely, rather than trusting vendor assurances, is the necessary first step to reasoning
-about them.
+happens afterwards. Once document content leaves the machine it enters the downstream
+ecosystem of retention, provider-side processing, model training, and attribute inference
+reviewed in Section~\ref{sec:related}, expanding the set of systems that can process,
+retain, and act on it. These downstream practices vary by provider and configuration and lie
+outside our measurement scope; quantifying the network exposure precisely, rather than
+trusting vendor assurances, is the necessary first step to reasoning about them.
 
 \section{Limitations}
 \label{sec:limitations}
 
-\textbf{Construct validity.} Exposure is character coverage over decoded plaintext variants,
-so semantically transformed or separately encrypted content would not be detected, and the
-metric is sensitive to how a tool segments text (Section~\ref{sec:action-spectrum}).
-Destination-host attribution identifies the receiving service, not the internal component
-(or model) that processed the text.
+We measured across several surfaces (browser extensions on an isolated Linux VM; desktop,
+Office, and operating-system tools on Windows~11, since several desktop tools are unavailable
+on Linux), which broadens the range of surfaces examined. Two limits apply. First, traffic
+protected by certificate pinning cannot be read (for example
+\texttt{*.events.data.microsoft.com} and some Adobe and Google endpoints); content we cannot
+decrypt is not counted, so figures from conditions with pinned channels (Edge/Copilot) are
+lower bounds, whereas the browser-phase conditions had zero un-interceptable handshakes and
+are complete. Interception can itself weaken the observed
+connection~\citep{durumeric2017https}; the proxy CA was trusted only in the browser test
+profile and, for the host phase, added to the Windows certificate store for the capture
+window only, with the raw traffic reported unmodified.
 
-\textbf{Internal validity.} The interception proxy could in principle change application
-behaviour; a proxy-free \texttt{tcpdump} run corroborated the browser upload, and
-interception can itself weaken the observed connection~\citep{durumeric2017https}.
-Certificate pinning, common in production clients~\citep{razaghpanah2017tls}, leaves some
-host-phase channels unreadable (for example
-\texttt{*.events.data.microsoft.com} and some Adobe and Google endpoints), so those figures
-are lower bounds; the browser phase had zero failed handshakes. The host phase has no
-separate all-tools-off Windows baseline; it relies on per-host attribution and the
-passive/negative controls, and the connected-experiences-off run is the within-condition
-control for Word. A native application can also use sockets that ignore the system proxy:
-the Grammarly Windows client on Notepad sent only telemetry through the proxy while opening
-a direct connection we could not inspect, so that case is reported as unmeasured rather than
-zero; results captured through the proxy are unaffected.
-
-\textbf{External validity.} We used a single 2\,kB synthetic document in one language, one
-browser (Firefox), a bare localhost page (real sites may allow- or deny-list these tools),
-and a small set of tools, accounts, and versions. The same-task cross-tool comparison holds
-only within the browser phase; the single-run host conditions are individual observations,
-not repeatability estimates. Long-document chunking or truncation is untested.
-
-\textbf{Temporal validity.} Cloud clients and server-side behaviour change without versioned
-local releases, so results are tied to the capture dates and versions in
-Table~\ref{tab:env}.
+Second, a native application can
+use sockets that ignore the system proxy: the Grammarly Windows client on Notepad sent only
+telemetry through the proxy while opening a direct connection we could not inspect, so that
+case is reported as unmeasured rather than zero; results captured through the proxy (browser
+extensions, Office, and Grammarly in Word) are unaffected.
 
 \section{Ethics}
 
 All planted test data is synthetic: no real person, organisation, or system is referenced.
 The study measures default-configuration behaviour of legitimately installed software on the
-researcher's own machine and does not attack the vendors' systems or other users. Because
+researcher's own machine and does not attack the software vendors' systems or other users. Because
 the host phase intercepted system-wide traffic, incidental background flows from the
-researcher's own accounts were also decrypted; only synthetic-document flows were retained
-for analysis, the proxy CA was added to the Windows certificate store only for the capture
+researcher's own accounts were also decrypted; only flows relevant to the synthetic-document
+experiment were retained for analysis and unrelated incidental background flows were
+excluded, the proxy CA was added to the Windows certificate store only for the capture
 window and removed afterwards, and the published capture summaries were scrubbed of
 incidental account identifiers before release. No responsible-disclosure step was required:
-the behaviour we measure is documented by the vendors and is not a vulnerability.
+the behaviour we measure is documented by the software vendors and is not a vulnerability.
 
 \section{Conclusion and Future Work}
 
@@ -879,7 +821,10 @@ other productivity surfaces, but the triggering interaction varies: some transfe
 explicit user invocation (the DeepL paste, the Copilot summary), others occur when content
 enters a background or editor-integrated service (the browser assistants, Word's connected
 experiences), and the negative controls show that storage location alone does not cause
-exposure. The tools behave as designed; the finding is how far that design sits from the
+exposure. As an answer to the research question, exposure differs little in extent once
+content reaches a watched surface---near-total, with all twelve secrets---and differs mainly
+in what triggers it and whether the user can switch it off. The tools behave as designed; the
+finding is how far that design sits from the
 expectation of a user told not to share the file. The unifying result is that exposure is
 surface-dependent: content leaves the machine when it enters a surface an LLM-integrated
 service watches, not because of where the file is stored. This moves the user's real point
@@ -892,11 +837,13 @@ automatic labelling of which categories of personal information (names, contact 
 financial data, identifiers) each tool transmits. This would extend the automated PII sweep
 with Microsoft Presidio~\citep{microsoft2018presidio}, already used here to surface account
 identifiers travelling alongside the document, into a full per-category inventory across the
-captures. Two mechanistic extensions also remain: dynamic
+captures. A further mechanistic extension remains: dynamic
 instrumentation (for example Frida) to read certificate-pinned channels that are currently
-only a lower bound, and an outbound-volume detector to bound opaque uploads. Further
-captures can raise the remaining single-run host probes to the reproducibility already
-achieved for the Word, DeepL, and Edge/Copilot conditions.
+only a lower bound.
+
+\section*{Data Availability}
+The capture and analysis code, the synthetic memo, and the planted-secret list are available
+at \url{https://github.com/MarawanEldeib/privacy-analysis-research}.
 
 \bibliographystyle{unsrtnat}
 \bibliography{refs}
@@ -921,7 +868,7 @@ keiner Pr\"ufungsbeh\"orde vorgelegt und ist noch nicht ver\"offentlicht worden.
 \vspace{1.5cm}
 \noindent Stuttgart, \today
 
-\vspace{1.6cm}
+\vspace{1.5cm}
 \noindent\rule{7cm}{0.4pt}\\
 Marawan Eldeib
 
