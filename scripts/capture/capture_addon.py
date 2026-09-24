@@ -355,6 +355,40 @@ def find_tokens_in_text(text: str) -> list[str]:
     return sorted(found)
 
 
+# Credential redaction for the SAVED json only. Captures include the capture
+# host's own auth traffic (e.g. Claude/Anthropic OAuth refreshes), and body
+# previews once published live tokens to GitHub (2026-09-14 incident).
+# Scoring runs on the full in-memory text before this, so results are
+# unaffected. Patterns target credential formats only and cannot match the
+# planted SENSITIVE_TOKENS.
+_REDACTED = "[REDACTED]"
+# (pattern, replacement); group 1, where present, is a label kept verbatim.
+_SECRET_PATTERNS = [
+    (re.compile(r"sk-ant-[a-z]{3}\d{2}-[A-Za-z0-9_\-]{20,}"), _REDACTED),     # Anthropic keys/OAuth
+    (re.compile(r"sk-(?:proj|svcacct|admin)-[A-Za-z0-9_\-]{32,}|sk-[A-Za-z0-9]{40,}"), _REDACTED),  # OpenAI keys
+    (re.compile(r"(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{40,}"), _REDACTED),
+    (re.compile(r"ya29\.[0-9A-Za-z_\-]{30,}"), _REDACTED),                    # Google OAuth
+    (re.compile(r"eyJ[A-Za-z0-9_\-]{10,}\.eyJ[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-]{10,}"), _REDACTED),  # JWTs
+    (re.compile(r"(?i)(bearer\s+)[A-Za-z0-9_\-\.=~+/]{20,}"), r"\1" + _REDACTED),
+    (re.compile(r'(?i)("(?:access_token|refresh_token|id_token|session_key|sessionkey|api_key|apikey|client_secret)"\s*:\s*")[^"]{8,}'),
+     r"\1" + _REDACTED),
+    (re.compile(r"(?i)((?:sessionKey|__Secure-[A-Za-z\-]+|grauth|csrf-token)=)[A-Za-z0-9_\-%\.]{8,}"), r"\1" + _REDACTED),
+]
+
+
+def redact_secrets(obj):
+    """Return a copy of obj with credential values replaced by [REDACTED]."""
+    if isinstance(obj, str):
+        for rx, repl in _SECRET_PATTERNS:
+            obj = rx.sub(repl, obj)
+        return obj
+    if isinstance(obj, dict):
+        return {k: redact_secrets(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [redact_secrets(v) for v in obj]
+    return obj
+
+
 def make_body_preview(text):
     if not text:
         return ""
@@ -631,7 +665,7 @@ class ExposureTracker:
             out_path = out_dir / f"run_{RUN_ID}.json"
 
         with open(out_path, "w", encoding="utf-8") as f:
-            json.dump(session, f, indent=2, ensure_ascii=False)
+            json.dump(redact_secrets(session), f, indent=2, ensure_ascii=False)
 
         s = session["summary"]
         sep = "=" * 65
